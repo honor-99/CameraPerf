@@ -21,7 +21,7 @@ body:
     id: component
     attributes:
       label: Component
-      description: Which part of SmartPerfetto is affected?
+      description: Which part of CameraPerf is affected?
       options:
         - AI Analysis (Agent)
         - Skills (YAML)

@@ -1,5 +1,5 @@
 /**
- * Test Utilities for SmartPerfetto Backend Tests
+ * Test Utilities for CameraPerf Backend Tests
  *
  * Provides reusable utility functions for testing:
  * - waitForCondition - waits for a condition with timeout

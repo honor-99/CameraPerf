@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * CLI bootstrap: env loading + path layout + API key validation.
@@ -59,9 +59,9 @@ export function bootstrap(options: BootstrapOptions = {}): BootstrapResult {
     }
     loadEnv(envFile);
     const paths = computePaths(sessionDir);
-    // Keep helper services that read SMARTPERFETTO_HOME directly (for example
+    // Keep helper services that read CAMERAPERF_HOME directly (for example
     // the CLI-managed trace_processor_shell cache) aligned with --session-dir.
-    process.env.SMARTPERFETTO_HOME = paths.home;
+    process.env.CAMERAPERF_HOME = paths.home;
     ensureLayout(paths);
     memoizedResult = { paths };
   }
@@ -81,7 +81,7 @@ export function bootstrap(options: BootstrapOptions = {}): BootstrapResult {
  * Load env from (in order, first wins):
  *   1. --env-file argument
  *   2. backend/.env relative to this compiled file
- *   3. ~/.smartperfetto/env
+ *   3. ~/.camerapref/env
  *
  * Missing files are silently skipped; only an explicitly-passed --env-file
  * is required to exist.
@@ -106,14 +106,14 @@ function loadEnv(explicitFile?: string): void {
   }
 
   // Last chance: user-level override.
-  const userEnv = path.join(process.env.HOME || '', '.smartperfetto', 'env');
+  const userEnv = path.join(process.env.HOME || '', '.camerapref', 'env');
   if (fs.existsSync(userEnv)) dotenv.config({ path: userEnv, quiet: true, override: true });
 }
 
 /**
  * Walk up from this module's __dirname to find the backend package root
- * (the one containing a SmartPerfetto CLI `package.json` with the `smp` or
- * `smartperfetto` bin entry). Used both to locate `.env` and to pin
+ * (the one containing a CameraPerf CLI `package.json` with the `smp` or
+ * `camerapref` bin entry). Used both to locate `.env` and to pin
  * `process.cwd()` so CWD-relative paths in the service layer resolve to
  * the right `backend/data/` and `backend/logs/` dirs.
  *
@@ -128,7 +128,7 @@ function findBackendRoot(): string | null {
     if (fs.existsSync(pkgPath)) {
       try {
         const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-        if (isSmartPerfettoPackage(pkg)) {
+        if (isCameraPerfPackage(pkg)) {
           return dir;
         }
       } catch {
@@ -142,11 +142,11 @@ function findBackendRoot(): string | null {
   return null;
 }
 
-function isSmartPerfettoPackage(pkg: any): boolean {
-  const hasCliBin = Boolean(pkg?.bin?.smp || pkg?.bin?.smartperfetto);
+function isCameraPerfPackage(pkg: any): boolean {
+  const hasCliBin = Boolean(pkg?.bin?.smp || pkg?.bin?.camerapref);
   return hasCliBin && (
-    pkg.name === '@gracker/smartperfetto' ||
-    pkg.name === 'smart-perfetto-backend'
+    pkg.name === '@gracker/camerapref' ||
+    pkg.name === 'camera-perf-backend'
   );
 }
 

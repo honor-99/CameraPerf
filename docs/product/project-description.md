@@ -1,8 +1,8 @@
-# SmartPerfetto Project Description
+# CameraPerf Project Description
 
 ## Overview
 
-**SmartPerfetto** is an AI-powered Android performance analysis platform that integrates with Google's Perfetto trace viewer. It uses Claude Agent SDK to automatically analyze performance traces, identify root causes of jank/ANR/startup issues, and provide actionable optimization suggestions with evidence-backed reasoning.
+**CameraPerf** is an AI-powered Android performance analysis platform that integrates with Google's Perfetto trace viewer. It uses Claude Agent SDK to automatically analyze performance traces, identify root causes of jank/ANR/startup issues, and provide actionable optimization suggestions with evidence-backed reasoning.
 
 ## Target Users
 
@@ -25,7 +25,7 @@ LLMs alone cannot solve this because:
 3. **Structured methodology** — Root cause analysis requires multi-phase, cross-subsystem reasoning
 4. **Reliability** — Same trace should produce consistent conclusions
 
-SmartPerfetto solves this by giving Claude precise "instruments" (SQL queries via trace_processor) and structured "methodology" (scene-specific strategies), letting the LLM focus on reasoning and synthesis.
+CameraPerf solves this by giving Claude precise "instruments" (SQL queries via trace_processor) and structured "methodology" (scene-specific strategies), letting the LLM focus on reasoning and synthesis.
 
 ## Architecture
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Test Command
@@ -32,7 +32,7 @@ export const testCommand = new Command('test')
   .option('-p, --package <name>', 'Package name filter')
   .option('-v, --verbose', 'Show detailed output')
   .action(async (skillId: string, options: { trace: string; package?: string; verbose?: boolean }) => {
-    console.log(colors.bold('\nSmartPerfetto Skill Tester\n'));
+    console.log(colors.bold('\nCameraPerf Skill Tester\n'));
 
     const tracePath = path.resolve(options.trace);
 

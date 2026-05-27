@@ -1,6 +1,6 @@
 # agentv3 运行时
 
-agentv3 是 SmartPerfetto 当前主运行时。它使用 Claude Agent SDK 作为编排层，通过 MCP 工具访问 trace 数据，并把场景策略、Skill 结果、SQL 证据和 verifier 组合成最终中文 Insight。
+agentv3 是 CameraPerf 当前主运行时。它使用 Claude Agent SDK 作为编排层，通过 MCP 工具访问 trace 数据，并把场景策略、Skill 结果、SQL 证据和 verifier 组合成最终中文 Insight。
 
 ## 入口
 
@@ -112,4 +112,4 @@ agentv3 常见事件：
 - SDK session ID 持久化到 `logs/claude_session_map.json`。
 - 多轮追问复用 sessionId，并通过 SDK `resume` 恢复上下文。
 - 同一 session 的并发分析由 `activeAnalyses` 防重入。
-- CLI session 存储在 `~/.smartperfetto/sessions/`，但复用同一套后端持久化能力。
+- CLI session 存储在 `~/.camerapref/sessions/`，但复用同一套后端持久化能力。

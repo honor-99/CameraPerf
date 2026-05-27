@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Pipeline Skill Loader
@@ -37,7 +37,7 @@ export interface PipelineKeySlice {
 export interface SmartFilterConfig {
   enabled: boolean;
   description?: string;
-  // NOTE: Currently SmartPerfetto uses a centralized active-process query for smart pinning.
+  // NOTE: Currently CameraPerf uses a centralized active-process query for smart pinning.
   // This field is kept optional for forward compatibility with per-instruction SQL filtering.
   detection_sql?: string;
   fallback_sql?: string;

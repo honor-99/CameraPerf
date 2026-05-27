@@ -1,6 +1,6 @@
 # CameraPerf — 专注 Camera 预览/录像性能的精简方案
 
-> 从 SmartPerfetto（通用 Android 性能分析）收缩到 CameraPerf（Camera 预览+录像性能）
+> 从 CameraPerf（通用 Android 性能分析）收缩到 CameraPerf（Camera 预览+录像性能）
 > 原则：只保留与 Camera 场景直接相关的资产，其他全部砍掉
 
 ---
@@ -234,7 +234,7 @@ UI 交互相关:
 
 ## 三、最终代码规模
 
-| 层次 | SmartPerfetto | 通用精简版 | CameraPerf | 相比原始 |
+| 层次 | CameraPerf | 通用精简版 | CameraPerf | 相比原始 |
 |------|:---:|:---:|:---:|:---:|
 | agent 编排核心 | ~80K | ~20K | ~15K | **-81%** |
 | Skill 引擎 | ~8K | ~8K | ~8K | 0 |
@@ -421,7 +421,7 @@ Phase 3: 优化和完善（持续）
 
 ### 🔑 决策 1: 为什么要从 Camera 切入？
 
-1. **SmartPerfetto 已有 camera_pipeline 定义**——不是从零开始
+1. **CameraPerf 已有 camera_pipeline 定义**——不是从零开始
 2. **Camera 问题域明确可枚举**——预览卡顿、录像丢帧、发热、启动慢、切换慢，5 类
 3. **Camera trace 数据源清晰**——FrameTimeline + Fence + BufferQueue + CPU/GPU/thermal
 4. **市场缺口**——没有针对 Camera 性能的专用 AI 分析工具
@@ -438,10 +438,10 @@ Phase 3: 优化和完善（持续）
 
 ### 🔑 决策 3: 要不要保留 Log 分析？
 
-**Phase 3 再加。** 先让 Trace 分析工具 work，因为它是 SmartPerfetto 最成熟的资产。Log 分析是新增模块，可以独立开发。
+**Phase 3 再加。** 先让 Trace 分析工具 work，因为它是 CameraPerf 最成熟的资产。Log 分析是新增模块，可以独立开发。
 
 ---
 
 > 版本: CameraPerf v0.1
-> 基础: SmartPerfetto → 通用精简版 → CameraPerf
+> 基础: CameraPerf → 通用精简版 → CameraPerf
 > 目标: 132K 行代码，25 个 Skills，3 个策略，专注 Camera 性能诊断

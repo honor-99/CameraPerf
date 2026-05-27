@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Terminal renderer for StreamingUpdate events.
@@ -11,7 +11,7 @@
  * output is easier to grep and read in CI/scripts.
  *
  * ANSI colors are stripped when stdout is not a TTY or `--no-color`
- * is passed — ensures `smartperfetto analyze ... > log.txt` stays clean.
+ * is passed — ensures `camerapref analyze ... > log.txt` stays clean.
  */
 
 import type { StreamingUpdate } from '../../agent/types';

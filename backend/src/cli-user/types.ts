@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * CLI-internal types.
  *
- * Persisted file schemas for `~/.smartperfetto/`. Stable — bumping a
+ * Persisted file schemas for `~/.camerapref/`. Stable — bumping a
  * field requires a migration. Everything else is ephemeral / derivable.
  */
 
@@ -29,7 +29,7 @@ export interface CliSessionConfig {
   turnCount: number;
 }
 
-/** One row in `~/.smartperfetto/index.json` — the global session catalog. */
+/** One row in `~/.camerapref/index.json` — the global session catalog. */
 export interface CliSessionIndexEntry {
   sessionId: string;
   createdAt: number;

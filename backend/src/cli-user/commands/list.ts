@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * `smartperfetto list` — enumerate stored sessions.
+ * `camerapref list` — enumerate stored sessions.
  *
- * Source of truth: `~/.smartperfetto/index.json`. We deliberately do NOT
+ * Source of truth: `~/.camerapref/index.json`. We deliberately do NOT
  * fall back to scanning the filesystem when the index is missing/empty —
  * the index is rebuilt on every `analyze` / `resume` / `rm`, so an empty
  * index genuinely means "no sessions", not "index is stale".

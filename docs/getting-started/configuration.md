@@ -1,8 +1,8 @@
 # 配置指南
 
-SmartPerfetto 本地源码运行时可以直接使用 Claude Code 的本地认证/配置；如果这个终端里的 `claude` 已经能正常写代码，可以不创建 `.env`。这既包括 Claude Code 官方订阅，也包括 Claude Code 已经配置好的第三方 base URL + API key。需要显式配置 API key、代理或 Docker 运行时，再使用 env 文件。
+CameraPerf 本地源码运行时可以直接使用 Claude Code 的本地认证/配置；如果这个终端里的 `claude` 已经能正常写代码，可以不创建 `.env`。这既包括 Claude Code 官方订阅，也包括 Claude Code 已经配置好的第三方 base URL + API key。需要显式配置 API key、代理或 Docker 运行时，再使用 env 文件。
 
-Perfetto UI 的 AI Assistant 设置面板只配置 SmartPerfetto 后端连接。其中 `Backend API Key` 对应 `SMARTPERFETTO_API_KEY` 后端鉴权，不是第三方大模型 provider key。模型 provider 凭证来自 Claude Code 本地配置，或来自下面的后端/Docker env 文件。
+Perfetto UI 的 AI Assistant 设置面板只配置 CameraPerf 后端连接。其中 `Backend API Key` 对应 `CAMERAPERF_API_KEY` 后端鉴权，不是第三方大模型 provider key。模型 provider 凭证来自 Claude Code 本地配置，或来自下面的后端/Docker env 文件。
 
 本地源码运行的后端配置位于 `backend/.env`。推荐从模板开始：
 
@@ -12,7 +12,7 @@ cp backend/.env.example backend/.env
 
 ## LLM 配置
 
-SmartPerfetto 当前主运行时是 agentv3，基于 Claude Agent SDK 编排 MCP 工具、Skill 和策略。本机 Claude Code 已经可用时，可以依赖 Claude Code 的本地认证/配置；如果要显式直连 Anthropic API，则配置：
+CameraPerf 当前主运行时是 agentv3，基于 Claude Agent SDK 编排 MCP 工具、Skill 和策略。本机 Claude Code 已经可用时，可以依赖 Claude Code 的本地认证/配置；如果要显式直连 Anthropic API，则配置：
 
 ```bash
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
@@ -31,7 +31,7 @@ CLAUDE_LIGHT_MODEL=your-light-model
 
 ### 运行时与 Provider 诊断
 
-Claude Code 自己的本地认证/配置是 Claude Agent SDK 的原生认证路径，不管它背后是 Anthropic 订阅还是 Claude Code 里配置好的第三方 endpoint。SmartPerfetto 不会自动读取 Codex CLI、Gemini CLI 或 OpenCode 的登录态；那些工具管理的是各自 CLI 的配置文件。
+Claude Code 自己的本地认证/配置是 Claude Agent SDK 的原生认证路径，不管它背后是 Anthropic 订阅还是 Claude Code 里配置好的第三方 endpoint。CameraPerf 不会自动读取 Codex CLI、Gemini CLI 或 OpenCode 的登录态；那些工具管理的是各自 CLI 的配置文件。
 
 接入 MiMo、DeepSeek、OpenAI、Kimi、MiniMax 等第三方模型时，请让代理层暴露 Anthropic Messages 兼容接口，然后配置：
 
@@ -97,13 +97,13 @@ FRONTEND_URL=http://localhost:10000
 如果后端暴露给多人或外网，设置：
 
 ```bash
-SMARTPERFETTO_API_KEY=replace_with_a_strong_random_secret
+CAMERAPERF_API_KEY=replace_with_a_strong_random_secret
 ```
 
 受保护接口需要请求头：
 
 ```http
-Authorization: Bearer <SMARTPERFETTO_API_KEY>
+Authorization: Bearer <CAMERAPERF_API_KEY>
 ```
 
 ## 上传与 trace processor
@@ -148,9 +148,9 @@ chmod +x /absolute/path/to/trace_processor_shell
 内存级限流，适合公开试用环境的基础保护：
 
 ```bash
-SMARTPERFETTO_USAGE_MAX_REQUESTS=200
-SMARTPERFETTO_USAGE_MAX_TRACE_REQUESTS=100
-SMARTPERFETTO_USAGE_WINDOW_MS=86400000
+CAMERAPERF_USAGE_MAX_REQUESTS=200
+CAMERAPERF_USAGE_MAX_TRACE_REQUESTS=100
+CAMERAPERF_USAGE_WINDOW_MS=86400000
 ```
 
 重启后限流状态会丢失；生产部署如果需要严格配额，应在反向代理或 API 网关层增加持久化限流。

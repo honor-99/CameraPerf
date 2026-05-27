@@ -1,6 +1,6 @@
 # 应用启动分析 SOP (Standard Operating Procedure)
 
-> 版本: 1.0.0 | 最后更新: 2024-12 | 作者: SmartPerfetto Team
+> 版本: 1.0.0 | 最后更新: 2024-12 | 作者: CameraPerf Team
 
 ## 1. 概述
 

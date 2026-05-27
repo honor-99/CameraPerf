@@ -1,4 +1,4 @@
-# SmartPerfetto 项目核心架构拆解报告
+# CameraPerf 项目核心架构拆解报告
 
 > 基于源码分析 + 文档，为后续精简重构到「Trace智能拆解工具 + Log分析工具」提供依据。
 
@@ -6,7 +6,7 @@
 
 ## 一、项目定位
 
-SmartPerfetto 是基于 Google Perfetto 的 **Android 性能分析平台**，在 Perfetto UI 基础上增加 AI 分析层：用户用自然语言提问，后端通过 Claude Agent SDK 编排 SQL 查询和 YAML 定义的 Skill（预定义分析技能），输出结构化性能诊断结论。
+CameraPerf 是基于 Google Perfetto 的 **Android 性能分析平台**，在 Perfetto UI 基础上增加 AI 分析层：用户用自然语言提问，后端通过 Claude Agent SDK 编排 SQL 查询和 YAML 定义的 Skill（预定义分析技能），输出结构化性能诊断结论。
 
 **技术栈：**
 - 后端：Express (Node.js >= 24) + TypeScript
@@ -469,5 +469,5 @@ Phase 3: Log 分析工具
 ---
 
 > **报告生成时间：** 2026-05-27
-> **代码基础：** SmartPerfetto (Gracker/SmartPerfetto)
+> **代码基础：** CameraPerf (Gracker/CameraPerf)
 > **分析范围：** backend/src + skills + strategies + docs

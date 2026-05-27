@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * McpToolRegistry — single source of truth for MCP tools registered
- * by SmartPerfetto.
+ * by CameraPerf.
  *
  * Plan 41 M0 (this file): extract the registry that
  * `claudeMcpServer.ts` already maintained as an inline
@@ -40,12 +40,12 @@ import {
   type McpPublicApiContract,
 } from '../types/sparkContracts';
 
-/** MCP tool name prefix — derived from the server name `'smartperfetto'`.
+/** MCP tool name prefix — derived from the server name `'camerapref'`.
  * `claudeMcpServer.ts` exports the same constant; both files agree
  * because both import from this module. The SDK consumes prefixed
  * names in its `allowedTools` array; the MCP protocol itself uses
  * short names. */
-export const MCP_NAME_PREFIX = 'mcp__smartperfetto__';
+export const MCP_NAME_PREFIX = 'mcp__camerapref__';
 
 /** One tool stored in the registry. The `tool` object is the
  * SDK-shaped descriptor returned by `tool(...)` from
@@ -85,7 +85,7 @@ export function filterByExposure(
 }
 
 /** Derive the SDK `allowedTools` array — short names with the
- * SmartPerfetto prefix. Order is preserved so callers that care
+ * CameraPerf prefix. Order is preserved so callers that care
  * about deterministic ordering get it. */
 export function buildAllowedTools(
   defs: readonly McpToolDefinition[],
@@ -132,11 +132,11 @@ export class McpToolRegistry {
   }
 
   /** Build the SDK's in-process MCP server. The SDK names the server
-   * `smartperfetto` to align with `MCP_NAME_PREFIX`; that linkage is
+   * `camerapref` to align with `MCP_NAME_PREFIX`; that linkage is
    * preserved here. */
   buildSdkServer(opts: {name?: string; version?: string} = {}) {
     return createSdkMcpServer({
-      name: opts.name ?? 'smartperfetto',
+      name: opts.name ?? 'camerapref',
       version: opts.version ?? '1.0.0',
       // The SDK accepts `unknown[]` here because tool() returns its own
       // opaque shape. Cast at the boundary; consumers do not get to

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * TraceProcessorService Unit Tests
@@ -156,7 +156,7 @@ describe('TraceProcessorService - Unit Tests (Mocked)', () => {
 
   beforeEach(() => {
     // Create a temporary upload directory for each test
-    uploadDir = path.join(os.tmpdir(), `smartperfetto-test-${uuidv4()}`);
+    uploadDir = path.join(os.tmpdir(), `camerapref-test-${uuidv4()}`);
     fs.mkdirSync(uploadDir, { recursive: true });
     service = new TraceProcessorService(uploadDir);
   });
@@ -642,7 +642,7 @@ describe('TraceProcessorService - Integration Tests', () => {
   });
 
   beforeEach(() => {
-    uploadDir = path.join(os.tmpdir(), `smartperfetto-integration-${uuidv4()}`);
+    uploadDir = path.join(os.tmpdir(), `camerapref-integration-${uuidv4()}`);
     fs.mkdirSync(uploadDir, { recursive: true });
     service = new TraceProcessorService(uploadDir);
     loadedTraceIds = [];

@@ -1,4 +1,4 @@
-# Contributing to SmartPerfetto
+# Contributing to CameraPerf
 
 Thanks for your interest in contributing! This guide covers development setup, testing, and the PR process.
 
@@ -18,8 +18,8 @@ Thanks for your interest in contributing! This guide covers development setup, t
 
 ```bash
 # 1. Clone with submodules
-git clone --recursive https://github.com/Gracker/SmartPerfetto.git
-cd SmartPerfetto
+git clone --recursive https://github.com/Gracker/CameraPerf.git
+cd CameraPerf
 
 # Optional but recommended if you use nvm/fnm.
 nvm install
@@ -59,7 +59,7 @@ backend/
 └── __tests__/            # Unit tests
 
 perfetto/                 # Forked Perfetto UI (submodule)
-└── ui/src/plugins/com.smartperfetto.AIAssistant/  # AI panel plugin
+└── ui/src/plugins/com.camerapref.AIAssistant/  # AI panel plugin
 ```
 
 ## Testing (Mandatory)
@@ -186,14 +186,14 @@ Scopes: skills, agentv3, frontend, strategies, ci
 
 ## Getting Help
 
-- Open an [Issue](https://github.com/Gracker/SmartPerfetto/issues) for bugs or feature requests
+- Open an [Issue](https://github.com/Gracker/CameraPerf/issues) for bugs or feature requests
 - Start from the [Documentation Center](docs/README.md)
 - Check [Technical Architecture](docs/architecture/technical-architecture.md) for deep dives
 - Check [MCP Tools Reference](docs/reference/mcp-tools.md) for tool documentation
 
 ## Versioning
 
-SmartPerfetto follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+CameraPerf follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 The **single source of truth for the project version** is the `version` field in
 [`backend/package.json`](backend/package.json). The root `package.json` exists as
 a workspace entry point; keep its `version` in sync but treat it as a mirror, not

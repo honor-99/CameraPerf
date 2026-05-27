@@ -1,4 +1,4 @@
-# SmartPerfetto MCP Tools Reference
+# CameraPerf MCP Tools Reference
 
 > 20 个 MCP 工具的完整参考文档。Claude 通过这些工具与 trace 数据交互。
 
@@ -6,7 +6,7 @@
 
 ## 概览
 
-SmartPerfetto 通过 MCP (Model Context Protocol) 向 Claude 暴露最多 20 个工具，分为四类：
+CameraPerf 通过 MCP (Model Context Protocol) 向 Claude 暴露最多 20 个工具，分为四类：
 
 | 类别 | 数量 | 说明 | Plan 门控 |
 |------|------|------|-----------|

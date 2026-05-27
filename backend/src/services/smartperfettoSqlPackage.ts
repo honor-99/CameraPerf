@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * SmartPerfetto PerfettoSQL Package Loader (Spark Plan 03)
+ * CameraPerf PerfettoSQL Package Loader (Spark Plan 03)
  *
- * Reads `backend/sql/smartperfetto/PACKAGE.json` plus the per-module
- * `.sql` files and returns a `SmartPerfettoSqlPackageContract` that the
+ * Reads `backend/sql/camerapref/PACKAGE.json` plus the per-module
+ * `.sql` files and returns a `CameraPerfSqlPackageContract` that the
  * runtime (workingTraceProcessor / claudeMcpServer) can boot via
- * `INCLUDE PERFETTO MODULE smartperfetto.*` once trace_processor_shell
+ * `INCLUDE PERFETTO MODULE camerapref.*` once trace_processor_shell
  * supports add-sql-package on the http path.
  *
  * Until the boot path lands, callers can still issue the SQL directly via
@@ -20,9 +20,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {
   makeSparkProvenance,
-  type SmartPerfettoSqlPackageContract,
-  type SmartPerfettoSqlSymbol,
-  type SmartPerfettoSqlSymbolKind,
+  type CameraPerfSqlPackageContract,
+  type CameraPerfSqlSymbol,
+  type CameraPerfSqlSymbolKind,
 } from '../types/sparkContracts';
 
 interface PackageManifest {
@@ -31,7 +31,7 @@ interface PackageManifest {
     name: string;
     /** Optional override; when missing, derived by replacing dots with underscores. */
     sqlName?: string;
-    kind: SmartPerfettoSqlSymbolKind;
+    kind: CameraPerfSqlSymbolKind;
     module: string;
     summary?: string;
     signature?: string;
@@ -50,20 +50,20 @@ function deriveSqlName(name: string): string {
   return name.replace(/\./g, '_');
 }
 
-/** Default location for the SmartPerfetto SQL package directory. */
-export function getDefaultSmartPerfettoSqlPackageDir(): string {
-  return path.resolve(__dirname, '../../sql/smartperfetto');
+/** Default location for the CameraPerf SQL package directory. */
+export function getDefaultCameraPerfSqlPackageDir(): string {
+  return path.resolve(__dirname, '../../sql/camerapref');
 }
 
 /** Read PACKAGE.json + verify all referenced .sql files exist. */
-export function loadSmartPerfettoSqlPackage(
-  packageDir: string = getDefaultSmartPerfettoSqlPackageDir(),
-): SmartPerfettoSqlPackageContract {
+export function loadCameraPerfSqlPackage(
+  packageDir: string = getDefaultCameraPerfSqlPackageDir(),
+): CameraPerfSqlPackageContract {
   const manifestPath = path.join(packageDir, 'PACKAGE.json');
   if (!fs.existsSync(manifestPath)) {
     return {
       ...makeSparkProvenance({
-        source: 'smartperfetto-sql-package',
+        source: 'camerapref-sql-package',
         unsupportedReason: `PACKAGE.json not found at ${manifestPath}`,
       }),
       packageVersion: '0.0.0',
@@ -81,7 +81,7 @@ export function loadSmartPerfettoSqlPackage(
   } catch (err: any) {
     return {
       ...makeSparkProvenance({
-        source: 'smartperfetto-sql-package',
+        source: 'camerapref-sql-package',
         unsupportedReason: `Failed to parse PACKAGE.json: ${err?.message ?? String(err)}`,
       }),
       packageVersion: '0.0.0',
@@ -90,8 +90,8 @@ export function loadSmartPerfettoSqlPackage(
     };
   }
 
-  const symbols: SmartPerfettoSqlSymbol[] = [];
-  const removed: SmartPerfettoSqlSymbol[] = [];
+  const symbols: CameraPerfSqlSymbol[] = [];
+  const removed: CameraPerfSqlSymbol[] = [];
   for (const declared of manifest.symbols ?? []) {
     const sqlName = declared.sqlName ?? deriveSqlName(declared.name);
     const sqlPath = path.join(packageDir, declared.module);
@@ -121,18 +121,18 @@ export function loadSmartPerfettoSqlPackage(
   }
 
   return {
-    ...makeSparkProvenance({source: 'smartperfetto-sql-package'}),
+    ...makeSparkProvenance({source: 'camerapref-sql-package'}),
     packageVersion: manifest.packageVersion,
     symbols,
     ...(removed.length > 0 ? {removed} : {}),
     bootSnippet:
-      'INCLUDE PERFETTO MODULE smartperfetto.*; -- pending trace_processor add-sql-package support',
+      'INCLUDE PERFETTO MODULE camerapref.*; -- pending trace_processor add-sql-package support',
     coverage: [
       {
         sparkId: 3,
         planId: '03',
         status: 'implemented',
-        note: `${symbols.length} SmartPerfetto SQL symbols available.`,
+        note: `${symbols.length} CameraPerf SQL symbols available.`,
       },
       {
         sparkId: 36,
@@ -145,11 +145,11 @@ export function loadSmartPerfettoSqlPackage(
 }
 
 /** Return the raw SQL source for a registered symbol, or null. */
-export function readSmartPerfettoSqlSymbol(
+export function readCameraPerfSqlSymbol(
   symbolName: string,
-  packageDir: string = getDefaultSmartPerfettoSqlPackageDir(),
+  packageDir: string = getDefaultCameraPerfSqlPackageDir(),
 ): {module: string; sql: string} | null {
-  const contract = loadSmartPerfettoSqlPackage(packageDir);
+  const contract = loadCameraPerfSqlPackage(packageDir);
   const symbol = contract.symbols.find(s => s.name === symbolName);
   if (!symbol) return null;
   const filePath = path.join(packageDir, symbol.module);

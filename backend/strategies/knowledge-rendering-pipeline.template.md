@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
-<!-- Copyright (C) 2024-2026 Gracker (Chris) | SmartPerfetto -->
+<!-- Copyright (C) 2024-2026 Gracker (Chris) | CameraPerf -->
 
 # Android 出图机制（Article-Grounded）
 
@@ -71,9 +71,9 @@
 
 ## 17+ 出图类型对照表
 
-每种类型在 SmartPerfetto 中有独立 pipeline yaml（`backend/skills/pipelines/`），yaml 的 `meta.s_article_ref` 指向对应文章。
+每种类型在 CameraPerf 中有独立 pipeline yaml（`backend/skills/pipelines/`），yaml 的 `meta.s_article_ref` 指向对应文章。
 
-| 类型族 | 子类型 | 文章 | SmartPerfetto pipeline_id |
+| 类型族 | 子类型 | 文章 | CameraPerf pipeline_id |
 |--------|-------|------|--------------------------|
 | **Standard** | AOSP HWUI（baseline） | S02 | ANDROID_VIEW_STANDARD_BLAST / ANDROID_VIEW_STANDARD_LEGACY |
 | | Compose（main thread 形态不同） | S02 | COMPOSE_STANDARD |
@@ -154,7 +154,7 @@ WHERE jank_type != 'None'
 GROUP BY source;
 ```
 
-## 与 SmartPerfetto skill 的对应
+## 与 CameraPerf skill 的对应
 
 每个 pipeline yaml 在 `meta` 中标注了：
 - `s_article_ref`: 对应文章（S02/S03/...）

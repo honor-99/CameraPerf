@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import {describe, it, expect} from '@jest/globals';
 import {
@@ -8,7 +8,7 @@ import {
   makeSparkProvenance,
   type StdlibSkillCoverageContract,
   type TraceSummaryV2Contract,
-  type SmartPerfettoSqlPackageContract,
+  type CameraPerfSqlPackageContract,
   type ArtifactSchemaContract,
   type TimelineBinningContract,
   type AnonymizationContract,
@@ -187,30 +187,30 @@ describe('Plan 02 — TraceSummaryV2Contract', () => {
   });
 });
 
-describe('Plan 03 — SmartPerfettoSqlPackageContract', () => {
+describe('Plan 03 — CameraPerfSqlPackageContract', () => {
   it('lists exported symbols with stability and dependency provenance', () => {
-    const contract: SmartPerfettoSqlPackageContract = {
-      ...makeSparkProvenance({source: 'smartperfetto-sql-package'}),
+    const contract: CameraPerfSqlPackageContract = {
+      ...makeSparkProvenance({source: 'camerapref-sql-package'}),
       packageVersion: '0.1.0',
       symbols: [
         {
-          name: 'smartperfetto.scrolling.jank_frames',
-          sqlName: 'smartperfetto_scrolling_jank_frames',
+          name: 'camerapref.scrolling.jank_frames',
+          sqlName: 'camerapref_scrolling_jank_frames',
           kind: 'view',
           module: 'scrolling/jank_frames.sql',
           dependencies: ['android.frames.timeline'],
           stability: 'experimental',
         },
         {
-          name: 'smartperfetto.binder.victim_to_server',
-          sqlName: 'smartperfetto_binder_victim_to_server',
+          name: 'camerapref.binder.victim_to_server',
+          sqlName: 'camerapref_binder_victim_to_server',
           kind: 'function',
           module: 'binder/victim_to_server.sql',
           dependencies: ['android.binder'],
           stability: 'experimental',
         },
       ],
-      bootSnippet: 'INCLUDE PERFETTO MODULE smartperfetto.*;',
+      bootSnippet: 'INCLUDE PERFETTO MODULE camerapref.*;',
       coverage: [
         {sparkId: 3, planId: '03', status: 'scaffolded'},
         {sparkId: 36, planId: '03', status: 'scaffolded'},
@@ -1516,20 +1516,20 @@ describe('Plan 41 — McpPublicApiContract', () => {
   it('public read-only tool ACI carries short name + qualified name', () => {
     const tool: McpToolAci = {
       toolName: 'invoke_skill',
-      qualifiedName: 'mcp__smartperfetto__invoke_skill',
+      qualifiedName: 'mcp__camerapref__invoke_skill',
       exposure: 'public',
-      summary: 'Invoke a SmartPerfetto skill on the active trace.',
+      summary: 'Invoke a CameraPerf skill on the active trace.',
       requires: ['traceProcessor'],
     };
     expect(tool.exposure).toBe('public');
-    expect(tool.qualifiedName).toContain('mcp__smartperfetto__');
+    expect(tool.qualifiedName).toContain('mcp__camerapref__');
     expect(tool.qualifiedName.endsWith(tool.toolName)).toBe(true);
   });
 
   it('internal session-protocol tool stays hidden from external hosts', () => {
     const tool: McpToolAci = {
       toolName: 'submit_plan',
-      qualifiedName: 'mcp__smartperfetto__submit_plan',
+      qualifiedName: 'mcp__camerapref__submit_plan',
       exposure: 'internal',
       summary:
         'Submit the agent analysis plan. Internal session protocol; calling from an external host would corrupt the live session.',
@@ -1539,8 +1539,8 @@ describe('Plan 41 — McpPublicApiContract', () => {
 
   it('A2aAgentCard partner trust level requires public key fingerprint', () => {
     const card: A2aAgentCard = {
-      cardId: 'smartperfetto-perf-analyst',
-      displayName: 'SmartPerfetto Performance Analyst',
+      cardId: 'camerapref-perf-analyst',
+      displayName: 'CameraPerf Performance Analyst',
       capabilities: ['skill-invocation', 'sql-query', 'baseline-lookup'],
       trustLevel: 'partner',
       tools: ['invoke_skill', 'execute_sql', 'lookup_baseline'],
@@ -1556,7 +1556,7 @@ describe('Plan 41 — McpPublicApiContract', () => {
       tools: [
         {
           toolName: 'execute_sql',
-          qualifiedName: 'mcp__smartperfetto__execute_sql',
+          qualifiedName: 'mcp__camerapref__execute_sql',
           exposure: 'public',
           summary: 'Run a SQL query against the active trace.',
         },

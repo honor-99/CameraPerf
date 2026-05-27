@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Coverage Command (Spark Plan 01)
  *
  * Surfaces the StdlibSkillCoverageContract on the CLI.
- *   smart-perfetto coverage                # human-readable summary
- *   smart-perfetto coverage --json         # full contract
- *   smart-perfetto coverage --snapshot     # also persist current stdlib catalog
- *   smart-perfetto coverage --uncovered    # only print uncovered modules
+ *   camera-perf coverage                # human-readable summary
+ *   camera-perf coverage --json         # full contract
+ *   camera-perf coverage --snapshot     # also persist current stdlib catalog
+ *   camera-perf coverage --uncovered    # only print uncovered modules
  */
 
 import {Command} from 'commander';

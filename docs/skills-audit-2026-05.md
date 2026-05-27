@@ -1,4 +1,4 @@
-# SmartPerfetto Skills 系统化审计报告
+# CameraPerf Skills 系统化审计报告
 
 > **生成时间**: 2026-05-03 · **作者**: Chris + Codex Review (Round 1) · **状态**: M0 Foundation
 >

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * SmartPerfetto Spark Contracts
+ * CameraPerf Spark Contracts
  *
  * Single source of truth for the contract shapes introduced by the Spark
  *施工计划包 (`docs/superpowers/spark/plans/*`). Each plan defines a minimal,
@@ -386,29 +386,29 @@ export interface TraceSummaryV2Contract extends SparkProvenance {
 }
 
 // =============================================================================
-// Plan 03 — SmartPerfetto PerfettoSQL Package (Spark #3, #36)
+// Plan 03 — CameraPerf PerfettoSQL Package (Spark #3, #36)
 // =============================================================================
 
-/** Kind of SmartPerfetto-owned PerfettoSQL symbol. */
-export type SmartPerfettoSqlSymbolKind =
+/** Kind of CameraPerf-owned PerfettoSQL symbol. */
+export type CameraPerfSqlSymbolKind =
   | 'function'
   | 'view'
   | 'table'
   | 'macro'
   | 'index';
 
-/** Single symbol exported by the `smartperfetto.*` SQL package. */
-export interface SmartPerfettoSqlSymbol {
-  /** Fully qualified docs path, e.g. `smartperfetto.scrolling.jank_frames`. */
+/** Single symbol exported by the `camerapref.*` SQL package. */
+export interface CameraPerfSqlSymbol {
+  /** Fully qualified docs path, e.g. `camerapref.scrolling.jank_frames`. */
   name: string;
   /**
    * The actual SQL identifier callers use in `SELECT ... FROM <sqlName>`,
-   * e.g. `smartperfetto_scrolling_jank_frames`. Codex review caught that
+   * e.g. `camerapref_scrolling_jank_frames`. Codex review caught that
    * `name` is a dotted docs path which is not a valid Perfetto SQL
    * identifier; consumers must always quote `sqlName` in generated SQL.
    */
   sqlName: string;
-  kind: SmartPerfettoSqlSymbolKind;
+  kind: CameraPerfSqlSymbolKind;
   /** Module file containing the definition (relative to package root). */
   module: string;
   /** Brief description for docs/agent prompt injection. */
@@ -422,21 +422,21 @@ export interface SmartPerfettoSqlSymbol {
 }
 
 /**
- * SmartPerfettoSqlPackageContract (Plan 03)
+ * CameraPerfSqlPackageContract (Plan 03)
  *
- * Output of `loadSmartPerfettoSqlPackage(...)`. Powers:
- *  - `--add-sql-package smartperfetto` boot path on `trace_processor_shell`.
+ * Output of `loadCameraPerfSqlPackage(...)`. Powers:
+ *  - `--add-sql-package camerapref` boot path on `trace_processor_shell`.
  *  - sqlKnowledgeBase enrichment so the agent can recall canonical symbols.
  *  - validate:strategies catalog so prompt templates can quote symbol names
  *    without drifting from the actual SQL implementation.
  */
-export interface SmartPerfettoSqlPackageContract extends SparkProvenance {
+export interface CameraPerfSqlPackageContract extends SparkProvenance {
   /** Package version (semver). */
   packageVersion: string;
   /** Symbols exported by the package. */
-  symbols: SmartPerfettoSqlSymbol[];
+  symbols: CameraPerfSqlSymbol[];
   /** Symbols intentionally omitted (e.g., legacy aliases). */
-  removed?: SmartPerfettoSqlSymbol[];
+  removed?: CameraPerfSqlSymbol[];
   /** Boot command snippet used to register the package, for docs/MCP. */
   bootSnippet?: string;
   coverage: SparkCoverageEntry[];
@@ -1734,7 +1734,7 @@ export type CaseEducationalLevel = 'novice' | 'intermediate' | 'advanced';
 
 /**
  * Severity of a finding linked to a case node. Mirrors the lightweight
- * severity vocabulary used across SmartPerfetto reports.
+ * severity vocabulary used across CameraPerf reports.
  */
 export type CaseFindingSeverity = 'info' | 'warning' | 'critical';
 
@@ -1843,12 +1843,12 @@ export interface CaseGraphLibraryContract extends SparkProvenance {
 }
 
 // =============================================================================
-// Plan 41 — Standalone SmartPerfetto MCP Server / A2A / Host API
+// Plan 41 — Standalone CameraPerf MCP Server / A2A / Host API
 //          (Spark #91, #92, #96, #133, #139, #173)
 //
 // Architecture note: the existing in-process MCP server uses
 // `createSdkMcpServer` from `@anthropic-ai/claude-agent-sdk` and registers
-// short tool names. The `MCP_NAME_PREFIX = 'mcp__smartperfetto__'`
+// short tool names. The `MCP_NAME_PREFIX = 'mcp__camerapref__'`
 // constant is purely an SDK `allowedTools` prefix — NOT a tool name.
 // Plan 41 introduces a `mcpToolRegistry` that holds short names, plus a
 // stdio adapter that exposes them as native MCP tools. The SDK adapter
@@ -1878,7 +1878,7 @@ export type McpToolExposure = 'public' | 'internal' | 'deprecated';
 export interface McpToolAci {
   /** Short name as registered in `mcpToolRegistry`, e.g. `invoke_skill`. */
   toolName: string;
-  /** Fully qualified name with SDK prefix, e.g. `mcp__smartperfetto__invoke_skill`. */
+  /** Fully qualified name with SDK prefix, e.g. `mcp__camerapref__invoke_skill`. */
   qualifiedName: string;
   exposure: McpToolExposure;
   /** Brief description for agent system prompts. */
@@ -1894,13 +1894,13 @@ export interface McpToolAci {
 /**
  * A2A AgentCard descriptor (Spark #92).
  *
- * Advertises the SmartPerfetto agent's capabilities to remote callers.
+ * Advertises the CameraPerf agent's capabilities to remote callers.
  * `trustLevel` controls the handshake required before tool calls are
  * accepted; `private` cards require a signed key exchange before any
  * exposed tool is callable from the remote peer.
  */
 export interface A2aAgentCard {
-  /** Stable card id, e.g. `smartperfetto-perf-analyst`. */
+  /** Stable card id, e.g. `camerapref-perf-analyst`. */
   cardId: string;
   /** Display name shown in remote agent UIs. */
   displayName: string;

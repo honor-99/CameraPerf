@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import type { ClaudeAnalysisContext, ComparisonContext, SelectionContext, SelectionTrackInfo, TraceCompleteness } from './types';
 import type { SceneType } from './sceneClassifier';
@@ -333,7 +333,7 @@ export function buildSystemPromptParts(
   const outputLanguage = context.outputLanguage ?? DEFAULT_OUTPUT_LANGUAGE;
 
   const roleContent = loadPromptTemplate('prompt-role');
-  push(1, 'role', roleContent ?? '# 角色\n\n你是 SmartPerfetto 的 Android 性能分析专家。');
+  push(1, 'role', roleContent ?? '# 角色\n\n你是 CameraPerf 的 Android 性能分析专家。');
 
   const outputLanguageSection = buildOutputLanguageSection(outputLanguage);
   if (outputLanguageSection) push(1, 'output_language', outputLanguageSection);

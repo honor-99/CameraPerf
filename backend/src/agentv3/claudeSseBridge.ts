@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import type { StreamingUpdate } from '../agent/types';
 import {
@@ -15,7 +15,7 @@ export type UpdateEmitter = (update: StreamingUpdate) => void;
 /** Map MCP tool names to user-friendly descriptions. */
 function getFriendlyToolMessage(toolName: string, args: any, language: OutputLanguage): string {
   switch (toolName) {
-    case 'mcp__smartperfetto__execute_sql': {
+    case 'mcp__camerapref__execute_sql': {
       const sql = String(args?.sql || '').toLowerCase();
       const tableMatch = sql.match(/from\s+(\w+)/i);
       const table = tableMatch?.[1] || '';
@@ -43,23 +43,23 @@ function getFriendlyToolMessage(toolName: string, args: any, language: OutputLan
         ? localize(language, `执行 SQL 查询: ${hint}`, `Run SQL query: ${hint}`)
         : localize(language, '执行 SQL 查询', 'Run SQL query');
     }
-    case 'mcp__smartperfetto__invoke_skill': {
+    case 'mcp__camerapref__invoke_skill': {
       const skillId = args?.skillId;
       return skillId
         ? localize(language, `调用分析技能: ${skillId}`, `Run analysis skill: ${skillId}`)
         : localize(language, '调用分析技能', 'Run analysis skill');
     }
-    case 'mcp__smartperfetto__list_skills':
+    case 'mcp__camerapref__list_skills':
       return localize(language, '查询可用技能列表', 'List available skills');
-    case 'mcp__smartperfetto__detect_architecture':
+    case 'mcp__camerapref__detect_architecture':
       return localize(language, '检测渲染架构', 'Detect rendering architecture');
-    case 'mcp__smartperfetto__lookup_sql_schema':
+    case 'mcp__camerapref__lookup_sql_schema':
       return localize(language, `查询 SQL 表结构: ${args?.keyword || ''}`, `Look up SQL schema: ${args?.keyword || ''}`);
-    case 'mcp__smartperfetto__write_analysis_note':
+    case 'mcp__camerapref__write_analysis_note':
       return localize(language, `记录分析笔记: ${args?.section || ''}`, `Write analysis note: ${args?.section || ''}`);
-    case 'mcp__smartperfetto__fetch_artifact':
+    case 'mcp__camerapref__fetch_artifact':
       return localize(language, `获取数据详情: ${args?.artifactId || ''}`, `Fetch artifact details: ${args?.artifactId || ''}`);
-    case 'mcp__smartperfetto__query_perfetto_source':
+    case 'mcp__camerapref__query_perfetto_source':
       return localize(language, `搜索 Perfetto 源码: ${args?.keyword || ''}`, `Search Perfetto source: ${args?.keyword || ''}`);
     default:
       return localize(language, `调用工具: ${toolName}`, `Call tool: ${toolName}`);
@@ -76,7 +76,7 @@ export interface SseBridge {
 
 /**
  * Creates a bridge function that translates Agent SDK messages into
- * SmartPerfetto StreamingUpdate events for SSE forwarding to the frontend.
+ * CameraPerf StreamingUpdate events for SSE forwarding to the frontend.
  */
 export function createSseBridge(
   emit: UpdateEmitter,

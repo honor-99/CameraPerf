@@ -2,7 +2,7 @@
 
 ## 推荐 trace 内容
 
-SmartPerfetto 最适合 Android 12+ trace，尤其是包含 FrameTimeline 数据的 trace。常用 atrace category：
+CameraPerf 最适合 Android 12+ trace，尤其是包含 FrameTimeline 数据的 trace。常用 atrace category：
 
 | 场景 | 最低 category | 建议额外添加 |
 |---|---|---|
@@ -15,7 +15,7 @@ SmartPerfetto 最适合 Android 12+ trace，尤其是包含 FrameTimeline 数据
 
 1. 打开 `http://localhost:10000`。
 2. 加载 `.pftrace` 或 `.perfetto-trace`。
-3. 打开 SmartPerfetto AI Assistant 面板。
+3. 打开 CameraPerf AI Assistant 面板。
 4. 选择分析模式：快速、完整或智能。
 5. 输入自然语言问题。
 6. 等待 SSE 流式输出、表格证据和最终结论。
@@ -54,7 +54,7 @@ fast 模式默认 10 turns。重型 Skill 可能返回较大的 JSON，仍可能
 
 ## 输出怎么看
 
-SmartPerfetto 的回答通常包含三类证据：
+CameraPerf 的回答通常包含三类证据：
 
 - SQL 结果：直接来自 `trace_processor_shell`。
 - Skill 结果：来自 `backend/skills/` 的 YAML 分析流水线，按 L1-L4 分层展示。

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import { spawnSync } from 'child_process';
 import * as crypto from 'crypto';
@@ -24,7 +24,7 @@ export async function installTraceProcessorPrebuilt(destination: string): Promis
   }
 
   const url = resolveDownloadUrl(pin, platform);
-  const tmp = path.join(os.tmpdir(), `smartperfetto-trace_processor_shell-${process.pid}-${Date.now()}`);
+  const tmp = path.join(os.tmpdir(), `camerapref-trace_processor_shell-${process.pid}-${Date.now()}`);
 
   try {
     await downloadFile(url, tmp);
@@ -133,7 +133,7 @@ function formatDownloadHelp(url: string): string {
     '  TRACE_PROCESSOR_DOWNLOAD_BASE=https://your-mirror/perfetto-luci-artifacts',
     '  TRACE_PROCESSOR_DOWNLOAD_URL=https://your-mirror/trace_processor_shell',
     '',
-    'Custom downloads are still SHA256-verified against the pinned SmartPerfetto binary.',
+    'Custom downloads are still SHA256-verified against the pinned CameraPerf binary.',
   ].join('\n');
 }
 

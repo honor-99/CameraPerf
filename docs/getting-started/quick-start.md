@@ -1,14 +1,14 @@
 # 快速开始
 
-本页用于把 SmartPerfetto 跑起来。更多模型和代理参数见 [配置指南](configuration.md)。
+本页用于把 CameraPerf 跑起来。更多模型和代理参数见 [配置指南](configuration.md)。
 
 ## 1. 克隆仓库
 
 普通使用不需要初始化 `perfetto/` submodule。仓库已经包含预构建 Perfetto UI。
 
 ```bash
-git clone https://github.com/Gracker/SmartPerfetto.git
-cd SmartPerfetto
+git clone https://github.com/Gracker/CameraPerf.git
+cd CameraPerf
 ```
 
 只有修改 AI Assistant 前端插件代码时，才需要初始化 submodule 并使用开发脚本。

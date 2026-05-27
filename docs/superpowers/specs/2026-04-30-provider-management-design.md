@@ -2,7 +2,7 @@
 
 ## Overview
 
-Centralized LLM provider management for SmartPerfetto. Users can add, configure, and switch providers through a UI instead of manually editing `.env` files.
+Centralized LLM provider management for CameraPerf. Users can add, configure, and switch providers through a UI instead of manually editing `.env` files.
 
 ## Key Decisions
 

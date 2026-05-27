@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * SmartPerfetto standalone MCP server (Plan 41 M1).
+ * CameraPerf standalone MCP server (Plan 41 M1).
  *
  * Reads JSON-RPC 2.0 requests from stdin, dispatches them against
  * a `McpToolRegistry` filtered to public-exposure tools, writes
  * responses to stdout. The protocol is line-delimited JSON.
  *
  * Usage:
- *   smartperfetto-mcp                # serve stdio
+ *   camerapref-mcp                # serve stdio
  *
  * The set of tools exposed here is the subset that does NOT need
  * a live agent session:
@@ -29,7 +29,7 @@
  *
  * Internal session-protocol tools (submit_plan,
  * write_analysis_note, etc.) stay hidden because writing to a
- * SmartPerfetto session from an external host would corrupt
+ * CameraPerf session from an external host would corrupt
  * agent state.
  */
 
@@ -407,7 +407,7 @@ main().catch(err => {
   // Last-resort error reporting — write to stderr so the host can
   // surface the failure instead of seeing a silently dead pipe.
   process.stderr.write(
-    `[smartperfetto-mcp] fatal: ${err instanceof Error ? err.message : String(err)}\n`,
+    `[camerapref-mcp] fatal: ${err instanceof Error ? err.message : String(err)}\n`,
   );
   process.exit(1);
 });

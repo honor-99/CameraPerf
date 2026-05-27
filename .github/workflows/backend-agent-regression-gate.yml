@@ -109,4 +109,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker runtime image
-        run: docker build -t smartperfetto-runtime-smoke .
+        run: docker build -t camerapref-runtime-smoke .

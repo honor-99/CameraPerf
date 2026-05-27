@@ -1,4 +1,4 @@
-# SmartPerfetto Development Guide
+# CameraPerf Development Guide
 
 AI-driven Perfetto analysis platform for Android performance data.
 
@@ -57,7 +57,7 @@ Tools used by `/health` for the code quality dashboard:
 - deadcode: `npm run deadcode`
 - shell: `npm run shellcheck` (requires `shellcheck` locally; CI installs it)
 
-`/health` composites these into a 0-10 score and appends a snapshot to `~/.gstack/projects/Gracker-SmartPerfetto/health-history.jsonl` for trend tracking.
+`/health` composites these into a 0-10 score and appends a snapshot to `~/.gstack/projects/Gracker-CameraPerf/health-history.jsonl` for trend tracking.
 
 ## Architecture Overview
 
@@ -167,7 +167,7 @@ CLAUDE_MODEL=claude-sonnet-4-6            # Optional, default (or provider model
 # CLAUDE_QUICK_PER_TURN_MS=40000          # Optional, quick-path per-turn budget (default 40s)
 # CLAUDE_VERIFIER_TIMEOUT_MS=60000        # Optional, verifier LLM single-turn timeout (default 60s)
 # CLAUDE_CLASSIFIER_TIMEOUT_MS=30000      # Optional, query complexity classifier timeout (default 30s)
-# SMARTPERFETTO_API_KEY=xxx               # Optional, bearer token auth
+# CAMERAPERF_API_KEY=xxx               # Optional, bearer token auth
 # AI_SERVICE=deepseek                     # Legacy agentv2 only
 
 # Agent safety limits (optional)
@@ -176,9 +176,9 @@ CLAUDE_MODEL=claude-sonnet-4-6            # Optional, default (or provider model
 # AGENT_TASK_TIMEOUT_MS=180000
 
 # Usage throttling (optional)
-# SMARTPERFETTO_USAGE_MAX_REQUESTS=200
-# SMARTPERFETTO_USAGE_MAX_TRACE_REQUESTS=100
-# SMARTPERFETTO_USAGE_WINDOW_MS=86400000
+# CAMERAPERF_USAGE_MAX_REQUESTS=200
+# CAMERAPERF_USAGE_MAX_TRACE_REQUESTS=100
+# CAMERAPERF_USAGE_WINDOW_MS=86400000
 ```
 
 ## Quick Start

@@ -1,6 +1,6 @@
 # 测试与验证
 
-SmartPerfetto 的默认团队协作标准是：提 PR 前跑同一个入口，CI 也跑同一个入口。
+CameraPerf 的默认团队协作标准是：提 PR 前跑同一个入口，CI 也跑同一个入口。
 
 ```bash
 # 仓库根目录。首次运行前先安装 root 和 backend 依赖：

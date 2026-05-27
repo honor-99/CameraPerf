@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Validate Command
@@ -790,12 +790,12 @@ export const validateCommand = new Command('validate')
   .action((skillId: string | undefined, options: { all?: boolean; contracts?: boolean; strategies?: boolean; verbose?: boolean }) => {
     // Strategy-only mode: just validate strategy → skill references
     if (options.strategies && !skillId && !options.contracts) {
-      console.log(colors.bold('\nSmartPerfetto Strategy Validator\n'));
+      console.log(colors.bold('\nCameraPerf Strategy Validator\n'));
       const missing = validateStrategySkillReferences();
       process.exit(missing > 0 ? 1 : 0);
     }
 
-    console.log(colors.bold('\nSmartPerfetto Skill Validator\n'));
+    console.log(colors.bold('\nCameraPerf Skill Validator\n'));
 
     let files: string[] = [];
 

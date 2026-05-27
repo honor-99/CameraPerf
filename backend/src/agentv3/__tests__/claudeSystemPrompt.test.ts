@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * claudeSystemPrompt unit tests
@@ -25,7 +25,7 @@ jest.mock('../strategyLoader', () => ({
     return '通用分析指引';
   }),
   loadPromptTemplate: jest.fn((name: string) => {
-    if (name === 'prompt-role') return '# 角色\n\n你是 SmartPerfetto Android 性能分析专家。';
+    if (name === 'prompt-role') return '# 角色\n\n你是 CameraPerf Android 性能分析专家。';
     if (name === 'prompt-language-zh') return '## 输出语言\n\n所有面向用户的回答必须使用简体中文。';
     if (name === 'prompt-language-en') return '## Output Language\n\nAll user-facing answers MUST be written in English.';
     if (name === 'prompt-quick') return '# 角色\n\n你是 Android 性能 trace 分析专家。\n\n{{outputLanguageSection}}\n\n{{architectureContext}}\n\n{{focusAppContext}}\n\n{{selectionSection}}';
@@ -70,7 +70,7 @@ describe('buildSystemPrompt', () => {
     it('should include role section', () => {
       const prompt = buildSystemPrompt(makeContext());
       expect(prompt).toContain('角色');
-      expect(prompt).toContain('SmartPerfetto');
+      expect(prompt).toContain('CameraPerf');
     });
 
     it('should include methodology section', () => {

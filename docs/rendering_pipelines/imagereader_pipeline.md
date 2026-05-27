@@ -39,7 +39,7 @@ sequenceDiagram
 - `Image.close()` 是否及时调用。
 - HardwareBuffer 是否真正零拷贝，还是落入额外 CPU copy。
 
-## SmartPerfetto 检测信号
+## CameraPerf 检测信号
 
 `pipeline_imagereader_pipeline` 主要依赖：
 

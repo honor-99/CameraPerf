@@ -1,17 +1,17 @@
 #!/bin/bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2024-2026 Gracker (Chris)
-# This file is part of SmartPerfetto. See LICENSE for details.
+# This file is part of CameraPerf. See LICENSE for details.
 
-# SmartPerfetto Development Stop Script
-# Stops all SmartPerfetto services and cleans up processes
+# CameraPerf Development Stop Script
+# Stops all CameraPerf services and cleans up processes
 
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 echo "=============================================="
-echo "Stopping SmartPerfetto Services"
+echo "Stopping CameraPerf Services"
 echo "=============================================="
 
 # Kill processes from PID files if they exist
@@ -55,5 +55,5 @@ pkill -f "trace_processor_shell.*httpd" 2>/dev/null || true
 
 echo ""
 echo "=============================================="
-echo "All SmartPerfetto services stopped."
+echo "All CameraPerf services stopped."
 echo "=============================================="

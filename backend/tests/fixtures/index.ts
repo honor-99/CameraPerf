@@ -1,5 +1,5 @@
 /**
- * Test Fixtures - Mock Factories for SmartPerfetto Backend Tests
+ * Test Fixtures - Mock Factories for CameraPerf Backend Tests
  *
  * Provides reusable mock factories for common test dependencies:
  * - ModelRouter

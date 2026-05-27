@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Build a one-line digest of an MCP tool's `input` object so plan-adherence
@@ -34,7 +34,7 @@ export interface ToolCallSummary {
 
 /**
  * Resolve a structured digest for an MCP tool call. `toolName` must be the
- * short form (without the `mcp__smartperfetto__` prefix).
+ * short form (without the `mcp__camerapref__` prefix).
  *
  * Tools with well-known input shapes (`execute_sql`, `invoke_skill`,
  * `fetch_artifact`) get hand-tuned summaries; everything else falls back

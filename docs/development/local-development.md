@@ -56,7 +56,7 @@ backend/
   strategies/        # Prompt strategy/template
   tests/             # Skill eval、回归和集成测试
 
-perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/
+perfetto/ui/src/plugins/com.camerapref.AIAssistant/
   ai_panel.ts
   assistant_api_v1.ts
   sse_event_handlers.ts
@@ -82,7 +82,7 @@ docs/
 
 不要手动编辑：
 
-- `perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/generated/*.ts`
+- `perfetto/ui/src/plugins/com.camerapref.AIAssistant/generated/*.ts`
 - `dist/`
 - 任何带 `Generated` 或 `Auto-generated` 标记的文件
 

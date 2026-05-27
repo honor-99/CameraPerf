@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * StandaloneMcpServer — Plan 41 M1 stdio server.
@@ -18,7 +18,7 @@
  *
  * The dispatcher is factored out from the actual stdio wiring so
  * unit tests can drive request/response pairs without spawning a
- * subprocess. `bin/smartperfetto-mcp.ts` is the thin entry that
+ * subprocess. `bin/camerapref-mcp.ts` is the thin entry that
  * pipes process.stdin/stdout into `runStdioLoop`.
  *
  * Out of scope:
@@ -37,7 +37,7 @@ import {
 } from './mcpToolRegistry';
 
 const PROTOCOL_VERSION = '2024-11-05';
-const SERVER_NAME = 'smartperfetto';
+const SERVER_NAME = 'camerapref';
 const SERVER_VERSION = '1.0.0';
 
 /** JSON-RPC 2.0 request shape. `id` is optional for notifications. */

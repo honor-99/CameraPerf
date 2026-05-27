@@ -117,7 +117,7 @@ app.get('/health', (req, res) => {
           type: activeProvider.type,
         },
       } : {}),
-      authRequired: !!process.env.SMARTPERFETTO_API_KEY,
+      authRequired: !!process.env.CAMERAPERF_API_KEY,
       diagnostics: useAgentV3
         ? claudeDiagnostics
         : {

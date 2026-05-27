@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Phase 0.6 of v2.1 — verify the structured `expectedCalls` matcher.
@@ -33,7 +33,7 @@ describe('phaseMatchesCall', () => {
   it('strips MCP prefix from record tool name', () => {
     expect(phaseMatchesCall(
       { ...basePhase, expectedTools: ['execute_sql'] },
-      { toolName: 'mcp__smartperfetto__execute_sql', timestamp: 0 },
+      { toolName: 'mcp__camerapref__execute_sql', timestamp: 0 },
     )).toBe(true);
   });
 

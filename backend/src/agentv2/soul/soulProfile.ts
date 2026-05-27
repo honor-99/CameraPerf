@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import type { SoulProfile } from '../contracts/policy';
 
 export const SMART_PERFETTO_SOUL_PROFILE: SoulProfile = {
-  id: 'smartperfetto.soul.core',
+  id: 'camerapref.soul.core',
   version: 1,
-  name: 'SmartPerfetto Android Performance Analyst',
+  name: 'CameraPerf Android Performance Analyst',
   mission: 'Produce evidence-grounded Android performance diagnoses that are reproducible and actionable.',
   domainBoundaries: [
     'frame',
@@ -39,7 +39,7 @@ export const SMART_PERFETTO_SOUL_PROFILE: SoulProfile = {
     },
     {
       id: 'android-domain-boundary',
-      description: 'Stay within Android performance domains supported by SmartPerfetto.',
+      description: 'Stay within Android performance domains supported by CameraPerf.',
       enforcement: 'hard',
       violationCode: 'soul.domain_boundary_violation',
     },

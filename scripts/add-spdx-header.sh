@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2024-2026 Gracker (Chris)
-# This file is part of SmartPerfetto. See LICENSE for details.
+# This file is part of CameraPerf. See LICENSE for details.
 #
 # Add SPDX AGPL v3 headers to source files that lack them.
 #
@@ -26,12 +26,12 @@ cd "$REPO_ROOT"
 
 HEADER_TS='// SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 '
 
 HEADER_HASH='# SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2024-2026 Gracker (Chris)
-# This file is part of SmartPerfetto. See LICENSE for details.
+# This file is part of CameraPerf. See LICENSE for details.
 '
 
 collect_targets() {

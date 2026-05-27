@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Report Routes
@@ -150,7 +150,7 @@ router.get('/:reportId/export', (req, res) => {
       });
     }
 
-    const filename = `smartperfetto-${reportId}.html`;
+    const filename = `camerapref-${reportId}.html`;
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -178,7 +178,7 @@ router.get('/:reportId', (req, res) => {
     // Try memory cache first, then disk
     let report = reportStore.get(reportId) || loadReportFromDisk(reportId);
     if (!report) {
-      const outputLanguage = parseOutputLanguage(process.env.SMARTPERFETTO_OUTPUT_LANGUAGE);
+      const outputLanguage = parseOutputLanguage(process.env.CAMERAPERF_OUTPUT_LANGUAGE);
       return res.status(404).send(`
         <!DOCTYPE html>
         <html lang="${outputLanguage === 'en' ? 'en' : 'zh-CN'}">

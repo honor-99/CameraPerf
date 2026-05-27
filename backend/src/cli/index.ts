@@ -2,10 +2,10 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * SmartPerfetto CLI
+ * CameraPerf CLI
  *
  * Command-line tools for managing and testing skills.
  */
@@ -20,8 +20,8 @@ import { coverageCommand } from './commands/coverage';
 const program = new Command();
 
 program
-  .name('smart-perfetto')
-  .description('SmartPerfetto CLI tools for skill management')
+  .name('camera-perf')
+  .description('CameraPerf CLI tools for skill management')
   .version('1.0.0');
 
 program.addCommand(validateCommand);

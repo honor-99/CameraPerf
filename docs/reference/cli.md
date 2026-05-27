@@ -1,10 +1,10 @@
 <!--
 SPDX-License-Identifier: AGPL-3.0-or-later
 Copyright (C) 2024-2026 Gracker (Chris)
-This file is part of SmartPerfetto. See LICENSE for details.
+This file is part of CameraPerf. See LICENSE for details.
 -->
 
-# SmartPerfetto CLI
+# CameraPerf CLI
 
 终端化的 agentv3 分析入口。不启动 Perfetto 前端、不启动 HTTP 服务器，
 直接通过本地进程跑 Claude Agent SDK 驱动的 trace 分析、生成 HTML 报告，
@@ -16,7 +16,7 @@ This file is part of SmartPerfetto. See LICENSE for details.
 
 ### 1.1 与主后端的关系
 
-CLI 是 `@gracker/smartperfetto` npm 包的终端入口，**复用 agentv3
+CLI 是 `@gracker/camerapref` npm 包的终端入口，**复用 agentv3
 的所有核心模块**（orchestrator、skill 引擎、HTML 报告生成器、SQLite
 持久化），但不共用 Express 路由层。
 
@@ -31,7 +31,7 @@ CLI 是 `@gracker/smartperfetto` npm 包的终端入口，**复用 agentv3
 │ └────────────┘   └────────────┘                ▲                │
 │                                                │                │
 │ ┌────────────┐                                 │                │
-│ │ smartperfetto CLI                            │                │
+│ │ camerapref CLI                            │                │
 │ │ backend/src/cli-user/                        │                │
 │ └──────────────────────────────────────────────┘                │
 │            直接 import，不走 HTTP                               │
@@ -80,7 +80,7 @@ backend/src/cli-user/
 │                                    report HTML / config / transcript / index
 │
 └── io/                          本地文件系统抽象
-    ├── paths.ts                 ~/.smartperfetto/ 路径解析
+    ├── paths.ts                 ~/.camerapref/ 路径解析
     ├── sessionStore.ts          读写 session 文件夹（config/conclusion/...）
     ├── indexJson.ts             全局 index.json 原子更新
     ├── transcriptWriter.ts      transcript.jsonl / stream.jsonl 追加写
@@ -100,7 +100,7 @@ backend/src/cli-user/
 ```
 smp -f <trace> -p "..."
 # 等价高级命令：
-smartperfetto analyze <trace> --query "..."
+camerapref analyze <trace> --query "..."
        │
        ▼
 commands/analyze.ts         bootstrap() + new CliAnalyzeService()
@@ -156,13 +156,13 @@ exit 0
 ### 1.4 数据流 —— resume（继续已有 session）
 
 ```
-smartperfetto resume <sessionId> --query "follow-up"
+camerapref resume <sessionId> --query "follow-up"
        │
        ▼
 commands/resume.ts + services/turnRunner.ts.continueSession()
        │
        ├──▶ loadSession(paths, sessionId)
-       │      → 读 ~/.smartperfetto/sessions/<id>/config.json
+       │      → 读 ~/.camerapref/sessions/<id>/config.json
        │      → 取出 traceId / tracePath / sdkSessionId / turnCount
        │
        ├──▶ CliAnalyzeService.reloadTraceById(oldTraceId)
@@ -214,7 +214,7 @@ commands/resume.ts + services/turnRunner.ts.continueSession()
 ### 1.5 持久化分工
 
 ```
-~/.smartperfetto/                  CLI 独占 — 可整体备份 / 迁移
+~/.camerapref/                  CLI 独占 — 可整体备份 / 迁移
 ├── index.json                     全局 session 目录（list 读这里）
 └── sessions/<id>/
     ├── config.json                sessionId ↔ traceId ↔ sdkSessionId 映射
@@ -229,13 +229,13 @@ backend/data/sessions/sessions.db  ← SQLite，后端主管
   └─ messages                      id, session_id, role, content, timestamp
 
 backend/logs/
-  ├─ claude_session_map.json       SmartPerfetto sessionId → SDK sessionId
+  ├─ claude_session_map.json       CameraPerf sessionId → SDK sessionId
   ├─ sessions/*.jsonl              agentv3 内部事件日志
   └─ reports/                      HTTP 路由生成的 report HTML
-     （CLI 不写这里，直接写到 ~/.smartperfetto/sessions/<id>/report.html）
+     （CLI 不写这里，直接写到 ~/.camerapref/sessions/<id>/report.html）
 ```
 
-CLI 的 `~/.smartperfetto/` 只存"用户视角指针"（sessionId + 三大便捷文件），
+CLI 的 `~/.camerapref/` 只存"用户视角指针"（sessionId + 三大便捷文件），
 **真身仍在后端 SQLite**。这就是为什么 resume 跨进程还能恢复 SDK context ——
 `sdkSessionId` 通过 `claude_session_map.json` + `sessions` 表两处共同落盘。
 
@@ -263,14 +263,14 @@ refactor 也把这个名单扩大了）：
 
 ```bash
 # 需要 Node.js 24 LTS
-npm install -g @gracker/smartperfetto
+npm install -g @gracker/camerapref
 smp --help
 smp -f trace.pftrace -p "分析启动性能"
 ```
 
-`smp` 是推荐短命令，`smartperfetto` 是同一个 CLI 的长命令名。第一次分析时，
+`smp` 是推荐短命令，`camerapref` 是同一个 CLI 的长命令名。第一次分析时，
 如果没有 `TRACE_PROCESSOR_PATH` 且本机缺少 binary，CLI 会自动下载固定版本的
-`trace_processor_shell` 到 `~/.smartperfetto/bin/trace_processor_shell`。
+`trace_processor_shell` 到 `~/.camerapref/bin/trace_processor_shell`。
 如果网络无法访问 Google artifact bucket，可以设置 `TRACE_PROCESSOR_PATH` 指向已有
 binary，或设置 `TRACE_PROCESSOR_DOWNLOAD_BASE` / `TRACE_PROCESSOR_DOWNLOAD_URL`
 指向可信镜像；下载内容仍会按固定 SHA256 校验。
@@ -291,10 +291,10 @@ smp --help
 cd backend
 npm install
 npm run build
-npm link          # 把 `smp` / `smartperfetto` 放到 PATH 上
+npm link          # 把 `smp` / `camerapref` 放到 PATH 上
 ```
 
-面向真实用户的正式入口应该始终是安装后的 `smp` / `smartperfetto` 可执行命令，
+面向真实用户的正式入口应该始终是安装后的 `smp` / `camerapref` 可执行命令，
 不是仓库里的 debug 脚本。debug 脚本只给维护者确认 CLI 编译产物或源码路径：
 
 ```bash
@@ -306,18 +306,18 @@ npm run cli:build-run -- analyze <trace> --query "分析滑动卡顿"
 
 # 直接用 tsx 跑源码，只用于快速迭代，不验证 dist 产物
 npm run cli:dev -- --help
-./backend/scripts/smartperfetto-dev analyze <trace>
+./backend/scripts/camerapref-dev analyze <trace>
 ```
 
 凭证来源，按优先级：
 
 1. `--env-file <path>` 命令行参数
 2. `backend/.env`（默认，自动向上找 5 层）
-3. `~/.smartperfetto/env`
+3. `~/.camerapref/env`
 
 需要 `ANTHROPIC_API_KEY` 或 `ANTHROPIC_BASE_URL`（API proxy 场景）。
 如果你用 proxy 并且 `.env` 里设了 `AI_SERVICE=deepseek`（agentv2 fallback），
-需要显式覆盖：`AI_SERVICE=claude-code smartperfetto ...`（agentv3 走
+需要显式覆盖：`AI_SERVICE=claude-code camerapref ...`（agentv3 走
 Claude Agent SDK；agentv2 路径 CLI 不支持会抛错）。
 
 ---
@@ -330,8 +330,8 @@ Claude Agent SDK；agentv2 路径 CLI 不支持会抛错）。
 ```bash
 smp
 smp --resume <sessionId>     # REPL 启动时预加载 session
-smartperfetto
-smartperfetto --resume <sessionId>     # REPL 启动时预加载 session
+camerapref
+camerapref --resume <sessionId>     # REPL 启动时预加载 session
 ```
 
 | 输入 | 说明 |
@@ -365,20 +365,20 @@ smp -f <trace> -p "question"
 smp -f <trace> --prompt "question"
 
 # 新建 session
-smartperfetto analyze <trace> [-q "question"]
+camerapref analyze <trace> [-q "question"]
 
 # 追问
-smartperfetto resume <sessionId> -q "follow-up question"
+camerapref resume <sessionId> -q "follow-up question"
 
 # 历史
-smartperfetto list [--json] [--limit N] [--since <date>]
+camerapref list [--json] [--limit N] [--since <date>]
 
 # 查看
-smartperfetto show <sessionId> [--open]
-smartperfetto report <sessionId> [--open]
+camerapref show <sessionId> [--open]
+camerapref report <sessionId> [--open]
 
 # 删除（本地文件夹 + index，不动后端 SQLite）
-smartperfetto rm <sessionId> [--yes]
+camerapref rm <sessionId> [--yes]
 ```
 
 ### 3.3 全局 flags
@@ -388,7 +388,7 @@ smartperfetto rm <sessionId> [--yes]
 | `-f, --file <trace>` | 无 | 顶层 one-shot 分析入口，等价于 `analyze <trace>` |
 | `-p, --prompt <question>` | 默认分析问题 | 顶层 one-shot prompt |
 | `-q, --query <question>` | 默认分析问题 | `--prompt` 的兼容别名 |
-| `--session-dir <path>` | `~/.smartperfetto` | 覆盖 session 存储根目录 |
+| `--session-dir <path>` | `~/.camerapref` | 覆盖 session 存储根目录 |
 | `--env-file <path>` | 自动搜 | 指定 `.env` 文件 |
 | `--verbose` | off | 显示 tool_dispatched / agent_response 明细 |
 | `--no-color` | off | 关闭 ANSI 颜色（或设 `NO_COLOR=1`） |
@@ -397,23 +397,23 @@ smartperfetto rm <sessionId> [--yes]
 
 ```bash
 # 第一次分析
-smartperfetto analyze test-traces/lacunh_heavy.pftrace \
+camerapref analyze test-traces/lacunh_heavy.pftrace \
   --query "分析启动慢的根因"
 # ✓ session agent-1776414160887-73z8z38c
-#   dir:    ~/.smartperfetto/sessions/agent-1776414160887-73z8z38c
-#   report: ~/.smartperfetto/sessions/.../report.html
+#   dir:    ~/.camerapref/sessions/agent-1776414160887-73z8z38c
+#   report: ~/.camerapref/sessions/.../report.html
 
 # 查看历史
-smartperfetto list
+camerapref list
 # SESSION                       LAST TURN  STATUS     TURNS  TRACE              QUERY
 # agent-1776414160887-73z8z38c  1m ago     completed  1      lacunh_heavy...    分析启动慢的根因
 
 # 多轮追问
-smartperfetto resume agent-1776414160887-73z8z38c \
+camerapref resume agent-1776414160887-73z8z38c \
   --query "Phase 2.6 的 JIT 热点函数是哪些？"
 
 # 把报告丢给浏览器
-smartperfetto report agent-1776414160887-73z8z38c --open
+camerapref report agent-1776414160887-73z8z38c --open
 ```
 
 ---
@@ -429,7 +429,7 @@ smartperfetto report agent-1776414160887-73z8z38c --open
 | **Level 3** Trace 被驱逐 | `uploads/traces/` 里找不到 `<traceId>.trace` | 从 `config.json` 里的原 `tracePath` 重新 load（得新 traceId），query 前缀注入上一轮 conclusion（截断到 ~1.5 KB），作为新 backend session 跑；CLI 文件夹仍用原 sessionId |
 
 如果 `tracePath` 本身也失效（比如被移走），resume 报错并要求
-`smartperfetto analyze <新路径>`。
+`camerapref analyze <新路径>`。
 
 ---
 
@@ -446,7 +446,7 @@ smartperfetto report agent-1776414160887-73z8z38c --open
 
 ## 6. Crash semantics
 
-CLI 写入跨三个存储位置（`~/.smartperfetto/sessions/<id>/` + `backend/data/sessions/sessions.db`
+CLI 写入跨三个存储位置（`~/.camerapref/sessions/<id>/` + `backend/data/sessions/sessions.db`
 + `backend/logs/claude_session_map.json`）。如果进程在写入中途 crash，下一次 `resume`
 能否正常继续取决于失败时机：
 
@@ -462,7 +462,7 @@ CLI 写入跨三个存储位置（`~/.smartperfetto/sessions/<id>/` + `backend/d
 `transcript.jsonl` 和 SQLite 里），crash 窗口内可能是空文件或半写。
 
 **实操建议**：如果一个 session 看起来"卡住"了（list 里能看到但 show 报错），先检查
-`~/.smartperfetto/sessions/<id>/config.json` 是否存在且是合法 JSON；不存在就 `rm <id>` 重来。
+`~/.camerapref/sessions/<id>/config.json` 是否存在且是合法 JSON；不存在就 `rm <id>` 重来。
 
 ---
 
@@ -471,7 +471,7 @@ CLI 写入跨三个存储位置（`~/.smartperfetto/sessions/<id>/` + `backend/d
 - **Windows 未支持**：`--open` 依赖 `open` (macOS) / `xdg-open` (Linux)。
 - **`report --rebuild` 未实现**：从 `stream.jsonl` 重放生成报告需要
   把事件流翻译回 `AnalyzeManagedSession` 的中间字段，非 trivial。目前
-  重新生成报告的方式是 `smartperfetto resume <id> -q <相同问题>`。
+  重新生成报告的方式是 `camerapref resume <id> -q <相同问题>`。
 - **强退孤儿进程**：双 Ctrl+C `process.exit(130)` 会跳过 finally 的
   `service.shutdown()`，Claude SDK 启动的子进程可能需要手动清理
   （`pkill -f trace_processor_shell`）。

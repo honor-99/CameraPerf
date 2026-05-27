@@ -1,4 +1,4 @@
-# SmartPerfetto 数据契约设计文档
+# CameraPerf 数据契约设计文档
 
 ## 问题陈述
 
@@ -62,7 +62,7 @@
 
 4. **点击跳转的依赖列不可误删**
    - 当 `clickAction: navigate_range` 且存在 `durationColumn` 依赖时，即便该列默认隐藏，前端也必须保留其值用于跳转。
-   - 位置：`perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/sse_event_handlers.ts`
+   - 位置：`perfetto/ui/src/plugins/com.camerapref.AIAssistant/sse_event_handlers.ts`
 
 ```text
 LayeredResult
@@ -621,7 +621,7 @@ backend/src/routes/agentRoutes.ts
 ### Phase 4: 更新前端
 
 ```
-perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/
+perfetto/ui/src/plugins/com.camerapref.AIAssistant/
 ├── types/dataContract.ts  # 从后端复制或共享
 ├── renderers/             # NEW: 通用渲染器
 │   ├── TableRenderer.ts
@@ -659,7 +659,7 @@ backend/src/services/htmlReportGenerator.ts
 ### 目录结构
 
 ```
-SmartPerfetto/
+CameraPerf/
 ├── shared/                          # NEW: 共享类型包
 │   ├── package.json
 │   ├── tsconfig.json
@@ -671,12 +671,12 @@ SmartPerfetto/
 │       └── validation.ts            # 运行时验证
 │
 ├── backend/
-│   ├── package.json                 # 依赖 @smartperfetto/shared
+│   ├── package.json                 # 依赖 @camerapref/shared
 │   └── src/
 │       └── ...
 │
-└── perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/
-    ├── package.json                 # 依赖 @smartperfetto/shared
+└── perfetto/ui/src/plugins/com.camerapref.AIAssistant/
+    ├── package.json                 # 依赖 @camerapref/shared
     └── types/
         └── index.ts                 # re-export from shared
 ```
@@ -692,7 +692,7 @@ cd shared && npm run build
 npm run generate:frontend-types
 
 # 4. 后端引用
-# backend/package.json: "@smartperfetto/shared": "file:../shared"
+# backend/package.json: "@camerapref/shared": "file:../shared"
 
 # 5. 前端引用（通过符号链接或构建时复制）
 ```
@@ -714,7 +714,7 @@ import * as path from 'path';
  */
 function generateFrontendTypes() {
   const sharedDir = path.join(__dirname, '../shared/src');
-  const outputDir = path.join(__dirname, '../perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/types/generated');
+  const outputDir = path.join(__dirname, '../perfetto/ui/src/plugins/com.camerapref.AIAssistant/types/generated');
 
   // 确保输出目录存在
   fs.mkdirSync(outputDir, { recursive: true });

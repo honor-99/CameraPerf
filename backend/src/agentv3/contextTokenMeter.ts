@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Pre-rot token meter for v2.1 Phase 3-1.
@@ -36,7 +36,7 @@ export const DEFAULT_CONTEXT_LIMIT = 200_000;
 /** Default fraction of context limit that trips the meter. Env-overridable. */
 export const DEFAULT_PRECOMPACT_FRACTION = 0.6;
 
-/** Bytes per token for SmartPerfetto-style mixed CN/EN tool payloads. */
+/** Bytes per token for CameraPerf-style mixed CN/EN tool payloads. */
 const BYTES_PER_TOKEN_ESTIMATE = 4;
 
 export interface CumulativeUsageSample {

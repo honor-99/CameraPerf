@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * `smartperfetto resume <sessionId> --query <...>` — continue a prior session.
+ * `camerapref resume <sessionId> --query <...>` — continue a prior session.
  *
  * Thin wrapper: shares `turnRunner.continueSession` with the REPL. The
  * three-level degradation (Level 1/2 trace reload, Level 3 fresh-load +

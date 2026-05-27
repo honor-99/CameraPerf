@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import { tool } from '@anthropic-ai/claude-agent-sdk';
 import { z } from 'zod';
@@ -106,7 +106,7 @@ function getCaseLibrary(): CaseLibrary {
   return cachedCaseLibrary;
 }
 
-/** MCP tool name prefix — derived from the server name 'smartperfetto'.
+/** MCP tool name prefix — derived from the server name 'camerapref'.
  * Re-exported from `mcpToolRegistry.ts` so consumers (claudeAgentDefinitions,
  * tests) keep their existing import path. */
 export const MCP_NAME_PREFIX = REGISTRY_MCP_NAME_PREFIX;
@@ -593,7 +593,7 @@ export function createClaudeMcpServer(options: ClaudeMcpServerOptions) {
 
   const invokeSkill = tool(
     'invoke_skill',
-    'Execute a named SmartPerfetto skill pipeline against the current trace. ' +
+    'Execute a named CameraPerf skill pipeline against the current trace. ' +
     'Skills are pre-built analysis routines that produce layered results (overview → list → diagnosis → deep). ' +
     'Use list_skills first to find the right skill ID.\n\n' +
     'Use when: a pre-built skill covers your analysis need — always prefer this over raw SQL for supported scenarios.\n' +
@@ -832,7 +832,7 @@ export function createClaudeMcpServer(options: ClaudeMcpServerOptions) {
 
   const listSkills = tool(
     'list_skills',
-    'List all available SmartPerfetto analysis skills. ' +
+    'List all available CameraPerf analysis skills. ' +
     'Use this to discover which skills exist before invoking one. ' +
     'Filter by category to narrow results (e.g. "scrolling", "startup", "cpu", "memory").',
     {

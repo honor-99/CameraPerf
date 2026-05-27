@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Pure builder for the post-compact recovery note that gets persisted
@@ -53,7 +53,7 @@ export interface RecoveryNote {
 }
 
 function summariseToolCall(call: ToolCallRecord): string {
-  const short = call.toolName.replace('mcp__smartperfetto__', '');
+  const short = call.toolName.replace('mcp__camerapref__', '');
   const skill = call.skillId ? `(${call.skillId})` : '';
   const input = call.inputSummary ? ` — ${call.inputSummary}` : '';
   const phase = call.matchedPhaseId ? ` [phase:${call.matchedPhaseId}]` : '';

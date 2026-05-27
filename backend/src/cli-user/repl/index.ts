@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * REPL main loop.
@@ -199,13 +199,13 @@ export async function runRepl(ctx: ReplContext, initialResumeId?: string): Promi
 
 /** What the user sees before each line of input. Short, honest about session state. */
 function promptString(cs: { sessionId: string } | null): string {
-  if (!cs) return 'smartperfetto › ';
+  if (!cs) return 'camerapref › ';
   // Show the short form — full id is available via /focus.
-  return `smartperfetto [${cs.sessionId.slice(-6)}] › `;
+  return `camerapref [${cs.sessionId.slice(-6)}] › `;
 }
 
 function printBanner(cs: { sessionId: string } | null): void {
-  console.log('SmartPerfetto REPL — type /help for commands, /exit (or Ctrl+C twice) to quit.');
+  console.log('CameraPerf REPL — type /help for commands, /exit (or Ctrl+C twice) to quit.');
   if (!cs) console.log('No session loaded yet. Use /load <trace-path> to begin.');
 }
 

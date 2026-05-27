@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 // Layer 3 of critical-task analysis: enrich raw thread_state segments with
 // structured semantic events from Perfetto stdlib tables (NOT regex on slice

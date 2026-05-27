@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import { HTMLReportGenerator } from '../htmlReportGenerator';
 import type { DataEnvelope } from '../../types/dataContract';
 
-const originalOutputLanguage = process.env.SMARTPERFETTO_OUTPUT_LANGUAGE;
+const originalOutputLanguage = process.env.CAMERAPERF_OUTPUT_LANGUAGE;
 
 function makeEnvelopeWithFrameId(frameId: number): DataEnvelope {
   return {
@@ -35,14 +35,14 @@ function makeEnvelopeWithFrameId(frameId: number): DataEnvelope {
 
 describe('HTMLReportGenerator', () => {
   beforeEach(() => {
-    delete process.env.SMARTPERFETTO_OUTPUT_LANGUAGE;
+    delete process.env.CAMERAPERF_OUTPUT_LANGUAGE;
   });
 
   afterAll(() => {
     if (originalOutputLanguage === undefined) {
-      delete process.env.SMARTPERFETTO_OUTPUT_LANGUAGE;
+      delete process.env.CAMERAPERF_OUTPUT_LANGUAGE;
     } else {
-      process.env.SMARTPERFETTO_OUTPUT_LANGUAGE = originalOutputLanguage;
+      process.env.CAMERAPERF_OUTPUT_LANGUAGE = originalOutputLanguage;
     }
   });
 
@@ -177,7 +177,7 @@ describe('HTMLReportGenerator', () => {
   });
 
   test('renders agent-driven report shell in English when configured', () => {
-    process.env.SMARTPERFETTO_OUTPUT_LANGUAGE = 'en';
+    process.env.CAMERAPERF_OUTPUT_LANGUAGE = 'en';
     const generator = new HTMLReportGenerator();
     const html = generator.generateAgentDrivenHTML({
       traceId: 'trace-en',
@@ -215,14 +215,14 @@ describe('HTMLReportGenerator', () => {
     });
 
     expect(html).toContain('<html lang="en">');
-    expect(html).toContain('SmartPerfetto Agent-Driven Analysis Report');
+    expect(html).toContain('CameraPerf Agent-Driven Analysis Report');
     expect(html).toContain('Execution Overview');
     expect(html).toContain('User Question');
     expect(html).toContain('Conversation Timeline');
     expect(html).toContain('Analysis Conclusion');
     expect(html).toContain('Causal Chain Flow');
     expect(html).toContain('View original Mermaid diagram');
-    expect(html).not.toContain('SmartPerfetto Agent-Driven 分析报告');
+    expect(html).not.toContain('CameraPerf Agent-Driven 分析报告');
     expect(html).not.toContain('用户问题');
     expect(html).not.toContain('对话时间线');
     expect(html).not.toContain('查看原始 Mermaid 图');

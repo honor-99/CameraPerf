@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import {describe, it, expect} from '@jest/globals';
 
@@ -69,7 +69,7 @@ describe('McpToolRegistry — allowedTools shape', () => {
   });
 
   it('MCP_NAME_PREFIX matches the SDK contract', () => {
-    expect(MCP_NAME_PREFIX).toBe('mcp__smartperfetto__');
+    expect(MCP_NAME_PREFIX).toBe('mcp__camerapref__');
   });
 
   it('buildAllowedTools (free function) matches registry method', () => {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 export const REPORT_CAUSAL_MAP_CSS = String.raw`
 .mermaid-wrapper {
@@ -889,7 +889,7 @@ if (typeof mermaid !== 'undefined') {
         svg.style.margin = '0 auto';
       });
     }).catch(function(err) {
-      console.error('[SmartPerfetto] Mermaid 渲染失败:', err);
+      console.error('[CameraPerf] Mermaid 渲染失败:', err);
     });
   }
 }

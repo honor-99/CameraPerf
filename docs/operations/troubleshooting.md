@@ -91,7 +91,7 @@ chmod +x /absolute/path/to/trace_processor_shell
 pkill -f trace_processor_shell
 ```
 
-如果 backend 端口被占用，先确认是否已有 SmartPerfetto 实例在跑，再决定是否停止旧进程。
+如果 backend 端口被占用，先确认是否已有 CameraPerf 实例在跑，再决定是否停止旧进程。
 
 ## LLM 调用慢或失败
 
@@ -116,7 +116,7 @@ CLAUDE_CLASSIFIER_TIMEOUT_MS=60000
 
 ## 401 或鉴权失败
 
-如果设置了 `SMARTPERFETTO_API_KEY`，请求需要：
+如果设置了 `CAMERAPERF_API_KEY`，请求需要：
 
 ```http
 Authorization: Bearer <token>

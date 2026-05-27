@@ -1,22 +1,22 @@
-# SmartPerfetto Self-Improving 设计 (v3.3)
+# CameraPerf Self-Improving 设计 (v3.3)
 
 **状态**：2026-04-26 经 4 轮 Codex review 全部 LGTM，已完整实施落地（12 个 commit）。
 **负责人**：Chris
 **最后更新**：2026-04-26
 
-本文档是 Self-Improving 功能的权威设计参考。设计灵感来自 Hermes Agent 的三子系统架构（Memory / Skill / Nudge Engine），但适配了 SmartPerfetto 的"数据管道"特性——SmartPerfetto 的 skill 是 SQL 查询（正确性敏感），而不是 Hermes 那种过程性 Markdown 指南。
+本文档是 Self-Improving 功能的权威设计参考。设计灵感来自 Hermes Agent 的三子系统架构（Memory / Skill / Nudge Engine），但适配了 CameraPerf 的"数据管道"特性——CameraPerf 的 skill 是 SQL 查询（正确性敏感），而不是 Hermes 那种过程性 Markdown 指南。
 
 ---
 
 ## 1. 设计哲学
 
-| Hermes 原则 | SmartPerfetto 适配 |
+| Hermes 原则 | CameraPerf 适配 |
 |---|---|
 | 后台 fork review agent | 采纳——独立 Claude SDK query，永不 resume 主 session |
 | 局部 patch + 安全扫描 + 回滚 | 采纳，但提高门槛：必须 regression test 通过才落盘 |
 | 容量上限倒逼压缩 | 采纳——`analysisPatternMemory` 用 bucket 配额 |
 | 改 SKILL.md（过程指南） | **拒绝**——永不修改 `.skill.yaml`，只用 `.notes.json` 侧车 |
-| User Memory（用户偏好） | 推迟——SmartPerfetto 是单租户分析平台，非 1-on-1 工具 |
+| User Memory（用户偏好） | 推迟——CameraPerf 是单租户分析平台，非 1-on-1 工具 |
 
 **核心原则**：按风险分层。低风险层闭合现有断链。高风险层必须先过 regression test + 人工 review。
 
@@ -467,7 +467,7 @@ interface Provenance {
 ### Round 1
 - 确认：`saveAnalysisPattern` 已经在 `claudeRuntime.ts:1089`（full path）调用
 - 确认：SQL error-fix pair 已注入（5 条）于 `claudeSystemPrompt.ts:434`
-- 洞察：SmartPerfetto 没有 `_MEMORY_THREAT_PATTERNS`（必须新建 contentScanner）
+- 洞察：CameraPerf 没有 `_MEMORY_THREAT_PATTERNS`（必须新建 contentScanner）
 
 ### Round 2
 - Outbox 必须用 SQLite（filesystem lease 有 race condition）
@@ -492,7 +492,7 @@ interface Provenance {
 
 - **L4 Skill SQL 自动 patch**：占位 stub 返回 `NOT_IMPLEMENTED_YET`。等 L1-L3 稳定后再考虑。
 - **多文件 phase_hints patch**：v1 仅单文件。
-- **跨租户 skill notes 共享**：SmartPerfetto 是单租户，不需要。
+- **跨租户 skill notes 共享**：CameraPerf 是单租户，不需要。
 - **用户偏好 Memory**（Hermes USER.md）：无限期推迟。
 - **L3 PR 自动 merge**：设计上禁止。永远人工 review。
 
@@ -790,7 +790,7 @@ SELF_IMPROVE_NOTES_INJECT_ENABLED=1 ./scripts/start-dev.sh
 **怎么用**
 
 ```bash
-curl -H "Authorization: Bearer $SMARTPERFETTO_API_KEY" \
+curl -H "Authorization: Bearer $CAMERAPERF_API_KEY" \
   http://localhost:3000/api/admin/self-improve/metrics
 ```
 

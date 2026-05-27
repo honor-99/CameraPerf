@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * Atomic read/write of ~/.smartperfetto/index.json — the global session
- * catalog used by `smartperfetto list`. Hand-maintained rather than
+ * Atomic read/write of ~/.camerapref/index.json — the global session
+ * catalog used by `camerapref list`. Hand-maintained rather than
  * reconstructed from the filesystem each time so `list` stays O(1).
  *
  * Atomicity is delegated to `atomicWriteFileSync` (tmp + rename with

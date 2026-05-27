@@ -1,7 +1,7 @@
 #!/bin/bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2024-2026 Gracker (Chris)
-# This file is part of SmartPerfetto. See LICENSE for details.
+# This file is part of CameraPerf. See LICENSE for details.
 
 # Quick backend-only restart (no frontend rebuild)
 # Use this when you need to force-restart the backend without touching the frontend.
@@ -16,7 +16,7 @@ NODE_ENV_HELPERS="$PROJECT_ROOT/scripts/node-env.sh"
 # shellcheck source=scripts/node-env.sh
 . "$NODE_ENV_HELPERS"
 
-smartperfetto_ensure_node "$PROJECT_ROOT"
+camerapref_ensure_node "$PROJECT_ROOT"
 
 # Kill only the backend process
 echo "Stopping backend..."
@@ -38,7 +38,7 @@ if [ -n "$PORT_PIDS" ]; then
 fi
 sleep 1
 
-smartperfetto_ensure_backend_deps "$PROJECT_ROOT"
+camerapref_ensure_backend_deps "$PROJECT_ROOT"
 
 # Start backend with tsx watch (hot-reload enabled)
 echo "Starting backend (tsx watch — auto-reloads on file changes)..."

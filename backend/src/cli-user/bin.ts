@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * `smartperfetto` CLI entry point.
+ * `camerapref` CLI entry point.
  *
  * PR1 surface: `analyze <trace>` only. Commands `resume`/`list`/`show`/
- * `report` land in PR2; REPL (`smartperfetto` with no sub-command) in PR3.
+ * `report` land in PR2; REPL (`camerapref` with no sub-command) in PR3.
  *
  * All async work routes through command handlers that return an exit code.
  * We call `process.exit(code)` explicitly to ensure the process terminates
@@ -83,12 +83,12 @@ function main(): void {
 
   program
     .name(programName())
-    .description('SmartPerfetto CLI — terminal-based Android Perfetto trace analysis')
+    .description('CameraPerf CLI — terminal-based Android Perfetto trace analysis')
     .version(readPackageVersion())
     .option('-f, --file <trace>', 'trace file to analyze (shortcut for `analyze <trace>`)')
     .option('-p, --prompt <question>', 'analysis prompt (shortcut for --query)')
     .option('-q, --query <question>', 'analysis question (alias for --prompt)')
-    .option('--session-dir <path>', 'override session storage root (default: ~/.smartperfetto)')
+    .option('--session-dir <path>', 'override session storage root (default: ~/.camerapref)')
     .option('--env-file <path>', 'path to .env file (default: backend/.env)')
     .option('--verbose', 'show verbose event stream', false)
     .option('--no-color', 'disable ANSI colors')

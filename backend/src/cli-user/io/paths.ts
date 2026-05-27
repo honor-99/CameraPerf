@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Path resolution for the CLI's user-local storage.
  *
  * Layout:
- *   $SMARTPERFETTO_HOME/                (default: ~/.smartperfetto)
+ *   $CAMERAPERF_HOME/                (default: ~/.camerapref)
  *   ├── index.json                      (global session catalog)
  *   └── sessions/
  *       └── <sessionId>/
@@ -17,7 +17,7 @@
  *           ├── report.html             (latest HTML report)
  *           └── turns/NNN.md            (per-turn full answer)
  *
- * Override with `--session-dir` flag or `SMARTPERFETTO_HOME` env var.
+ * Override with `--session-dir` flag or `CAMERAPERF_HOME` env var.
  */
 
 import * as fs from 'fs';
@@ -33,9 +33,9 @@ export interface CliPaths {
 /** Resolve a home override from argv/env. Does NOT create directories — that's ensureLayout's job. */
 export function resolveHome(overrideDir?: string): string {
   if (overrideDir && overrideDir.trim()) return path.resolve(overrideDir);
-  const envHome = process.env.SMARTPERFETTO_HOME;
+  const envHome = process.env.CAMERAPERF_HOME;
   if (envHome && envHome.trim()) return path.resolve(envHome);
-  return path.join(os.homedir(), '.smartperfetto');
+  return path.join(os.homedir(), '.camerapref');
 }
 
 /** Return the resolved layout without touching the filesystem. */

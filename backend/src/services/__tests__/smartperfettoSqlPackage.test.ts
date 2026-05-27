@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import {describe, it, expect} from '@jest/globals';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import {
-  loadSmartPerfettoSqlPackage,
-  readSmartPerfettoSqlSymbol,
-} from '../smartperfettoSqlPackage';
+  loadCameraPerfSqlPackage,
+  readCameraPerfSqlSymbol,
+} from '../cameraprefSqlPackage';
 import {isUnsupported} from '../../types/sparkContracts';
 
-describe('smartperfettoSqlPackage', () => {
+describe('cameraprefSqlPackage', () => {
   it('loads the real bundled package', () => {
-    const contract = loadSmartPerfettoSqlPackage();
+    const contract = loadCameraPerfSqlPackage();
     expect(isUnsupported(contract)).toBe(false);
     expect(contract.symbols.length).toBeGreaterThan(0);
     expect(contract.symbols[0].dependencies?.length).toBeGreaterThan(0);
@@ -23,7 +23,7 @@ describe('smartperfettoSqlPackage', () => {
   });
 
   it('reads raw SQL for a symbol', () => {
-    const result = readSmartPerfettoSqlSymbol('smartperfetto.scrolling.jank_frames');
+    const result = readCameraPerfSqlSymbol('camerapref.scrolling.jank_frames');
     expect(result).not.toBeNull();
     if (result) {
       expect(result.sql).toMatch(/CREATE PERFETTO VIEW/);
@@ -32,7 +32,7 @@ describe('smartperfettoSqlPackage', () => {
 
   it('marks the contract unsupported when PACKAGE.json is missing', () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'smp-sql-'));
-    const contract = loadSmartPerfettoSqlPackage(tmp);
+    const contract = loadCameraPerfSqlPackage(tmp);
     expect(isUnsupported(contract)).toBe(true);
     expect(contract.symbols).toHaveLength(0);
     fs.rmSync(tmp, {recursive: true, force: true});
@@ -44,7 +44,7 @@ describe('smartperfettoSqlPackage', () => {
       packageVersion: '0.0.1',
       symbols: [
         {
-          name: 'smartperfetto.test.never_built',
+          name: 'camerapref.test.never_built',
           kind: 'view',
           module: 'never/built.sql',
           stability: 'experimental',
@@ -52,10 +52,10 @@ describe('smartperfettoSqlPackage', () => {
       ],
     };
     fs.writeFileSync(path.join(tmp, 'PACKAGE.json'), JSON.stringify(manifest), 'utf-8');
-    const contract = loadSmartPerfettoSqlPackage(tmp);
+    const contract = loadCameraPerfSqlPackage(tmp);
     expect(contract.symbols).toHaveLength(0);
     expect(contract.removed && contract.removed[0].name).toBe(
-      'smartperfetto.test.never_built',
+      'camerapref.test.never_built',
     );
     fs.rmSync(tmp, {recursive: true, force: true});
   });

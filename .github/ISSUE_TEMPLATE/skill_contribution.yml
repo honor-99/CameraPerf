@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Skills are YAML-based analysis pipelines that power SmartPerfetto's trace analysis.
+        Skills are YAML-based analysis pipelines that power CameraPerf's trace analysis.
         Use this template to propose new skills or improvements to existing ones.
 
   - type: dropdown

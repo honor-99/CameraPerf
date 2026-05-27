@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Append-only JSONL writers for transcript + raw stream logs.
  *
  * Why JSONL: resilient to partial writes (each line stands alone), trivial
  * to grep/tail, and future tooling can aggregate across sessions with
- * a one-liner like `cat ~/.smartperfetto/sessions/<id>/transcript.jsonl | jq`.
+ * a one-liner like `cat ~/.camerapref/sessions/<id>/transcript.jsonl | jq`.
  */
 
 import * as fs from 'fs';

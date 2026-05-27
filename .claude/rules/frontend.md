@@ -2,7 +2,7 @@
 
 ## Plugin location
 
-`perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/`
+`perfetto/ui/src/plugins/com.camerapref.AIAssistant/`
 
 Key files:
 - `ai_panel.ts` — Main UI panel

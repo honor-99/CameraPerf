@@ -1,9 +1,9 @@
-# SmartPerfetto
+# CameraPerf
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-[![License: AGPL-3.0-or-later](https://img.shields.io/github/license/Gracker/SmartPerfetto)](LICENSE)
-[![Backend Regression Gate](https://github.com/Gracker/SmartPerfetto/actions/workflows/backend-agent-regression-gate.yml/badge.svg)](https://github.com/Gracker/SmartPerfetto/actions/workflows/backend-agent-regression-gate.yml)
+[![License: AGPL-3.0-or-later](https://img.shields.io/github/license/Gracker/CameraPerf)](LICENSE)
+[![Backend Regression Gate](https://github.com/Gracker/CameraPerf/actions/workflows/backend-agent-regression-gate.yml/badge.svg)](https://github.com/Gracker/CameraPerf/actions/workflows/backend-agent-regression-gate.yml)
 [![Node.js 24 LTS](https://img.shields.io/badge/Node.js-24%20LTS-brightgreen)](package.json)
 [![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178c6)](backend/tsconfig.json)
 [![Docker Compose](https://img.shields.io/badge/Docker-Compose-2496ed)](docker-compose.yml)
@@ -12,13 +12,13 @@
 
 > 基于 [Perfetto](https://perfetto.dev/) 的 AI 驱动 Android 性能分析平台。
 
-SmartPerfetto 在 Perfetto trace 之上增加了一层 AI 分析能力。你可以加载 trace，用自然语言提问，然后得到带 SQL 证据、Skill 结果、根因推理和优化建议的分析结论。
+CameraPerf 在 Perfetto trace 之上增加了一层 AI 分析能力。你可以加载 trace，用自然语言提问，然后得到带 SQL 证据、Skill 结果、根因推理和优化建议的分析结论。
 
 项目已经开源，当前处于活跃开发阶段。UI、后端运行时和 Skill 系统已经可用，但公开 API 和内部合约仍可能继续调整。
 
 ## 先配置 AI Provider
 
-SmartPerfetto 使用 Claude Agent SDK。如果你是在 Claude Code 已经能正常工作的本机上运行，SDK 可以复用 Claude Code 的本地认证/配置，不需要在 `.env` 里写 API key。这既包括 Claude Code 官方订阅登录，也包括 Claude Code 已经配置好的第三方模型 base URL + API key。
+CameraPerf 使用 Claude Agent SDK。如果你是在 Claude Code 已经能正常工作的本机上运行，SDK 可以复用 Claude Code 的本地认证/配置，不需要在 `.env` 里写 API key。这既包括 Claude Code 官方订阅登录，也包括 Claude Code 已经配置好的第三方模型 base URL + API key。
 
 其他情况按运行方式选择配置位置：
 
@@ -29,7 +29,7 @@ SmartPerfetto 使用 Claude Agent SDK。如果你是在 Claude Code 已经能正
 | Docker Hub 镜像 | 仓库根目录的 `.env` | 用 `cp backend/.env.example .env` 创建；Docker 容器看不到宿主机的 Claude Code 登录态 |
 | 从源码构建 Docker 镜像 | `backend/.env` | `docker-compose.yml` 会读取这个文件 |
 
-Perfetto UI 的 AI Assistant 设置面板里有一个 `Backend API Key` 字段。它只对应 `SMARTPERFETTO_API_KEY`，用于保护 SmartPerfetto 后端接口，不是填写 Anthropic、OpenAI、DeepSeek、Kimi、MiMo、Qwen、GLM、Ollama 或其他模型厂商 key 的地方。
+Perfetto UI 的 AI Assistant 设置面板里有一个 `Backend API Key` 字段。它只对应 `CAMERAPERF_API_KEY`，用于保护 CameraPerf 后端接口，不是填写 Anthropic、OpenAI、DeepSeek、Kimi、MiMo、Qwen、GLM、Ollama 或其他模型厂商 key 的地方。
 
 如果直连 Anthropic API，最小配置是：
 
@@ -46,13 +46,13 @@ CLAUDE_MODEL=your-main-model
 CLAUDE_LIGHT_MODEL=your-light-model
 ```
 
-SmartPerfetto 默认用简体中文输出 AI 回答、流式进度和生成的报告。如果主要使用者是英文用户，可以配置：
+CameraPerf 默认用简体中文输出 AI 回答、流式进度和生成的报告。如果主要使用者是英文用户，可以配置：
 
 ```env
-SMARTPERFETTO_OUTPUT_LANGUAGE=en
+CAMERAPERF_OUTPUT_LANGUAGE=en
 ```
 
-改完 env 文件后需要启动或重启后端。Docker 运行用 `docker compose -f docker-compose.hub.yml up -d` 或 `docker compose -f docker-compose.hub.yml restart`；本地源码运行用 `./start.sh`，如果后端已经在跑则用 `./scripts/restart-backend.sh`。显式 SmartPerfetto env/proxy 凭证可以打开 [http://localhost:3000/health](http://localhost:3000/health) 确认 provider 是否生效；本地 Claude Code 路径则以同一终端里 `claude` 能正常请求为准，第一次 AI 分析会走 SDK 的 Claude Code auth/config 路径。
+改完 env 文件后需要启动或重启后端。Docker 运行用 `docker compose -f docker-compose.hub.yml up -d` 或 `docker compose -f docker-compose.hub.yml restart`；本地源码运行用 `./start.sh`，如果后端已经在跑则用 `./scripts/restart-backend.sh`。显式 CameraPerf env/proxy 凭证可以打开 [http://localhost:3000/health](http://localhost:3000/health) 确认 provider 是否生效；本地 Claude Code 路径则以同一终端里 `claude` 能正常请求为准，第一次 AI 分析会走 SDK 的 Claude Code auth/config 路径。
 
 ## Perfetto 参考资源
 
@@ -73,7 +73,7 @@ SMARTPERFETTO_OUTPUT_LANGUAGE=en
 
 | 模块 | 技术 |
 |------|------|
-| 前端 | Fork 后的 Perfetto UI，内置 `com.smartperfetto.AIAssistant` 插件 |
+| 前端 | Fork 后的 Perfetto UI，内置 `com.camerapref.AIAssistant` 插件 |
 | 后端 | Node.js 24 LTS、TypeScript strict mode、Express |
 | Agent 运行时 | Claude Agent SDK、MCP 工具、场景策略、Verifier、SSE 流式输出 |
 | Trace 引擎 | Perfetto `trace_processor_shell`，通过 HTTP RPC 调用 |
@@ -86,15 +86,15 @@ SMARTPERFETTO_OUTPUT_LANGUAGE=en
 
 ### Docker 运行（推荐）
 
-只想把 SmartPerfetto 跑起来时，推荐使用这个方式。你只需要 Docker Desktop/Engine，并在 `.env` 里配置大模型凭证；不需要安装 Node.js，不需要 C++ 工具链，也不需要初始化 `perfetto/` submodule。Docker Hub 镜像每天从 `main` 自动发布，镜像内已经包含后端、预构建 Perfetto UI 和固定版本的 `trace_processor_shell`，也能避开本地首次启动时访问 Google artifact bucket 失败的问题。
+只想把 CameraPerf 跑起来时，推荐使用这个方式。你只需要 Docker Desktop/Engine，并在 `.env` 里配置大模型凭证；不需要安装 Node.js，不需要 C++ 工具链，也不需要初始化 `perfetto/` submodule。Docker Hub 镜像每天从 `main` 自动发布，镜像内已经包含后端、预构建 Perfetto UI 和固定版本的 `trace_processor_shell`，也能避开本地首次启动时访问 Google artifact bucket 失败的问题。
 
 容器在没有本地 `.env` 文件时也能启动，用于 health/UI smoke check；真正执行 AI 分析需要配置 `ANTHROPIC_API_KEY`，或配置 `ANTHROPIC_BASE_URL` 加 `ANTHROPIC_API_KEY`。
 
 Windows 用户使用 Docker Desktop，并启用 WSL2 backend。发布的是 Linux container 镜像，由 Docker Desktop 承载运行；不需要单独编译 Windows 版镜像。
 
 ```bash
-git clone https://github.com/Gracker/SmartPerfetto.git
-cd SmartPerfetto
+git clone https://github.com/Gracker/CameraPerf.git
+cd CameraPerf
 cp backend/.env.example .env
 # 编辑 .env，设置 ANTHROPIC_API_KEY，或为代理设置 ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY
 docker compose -f docker-compose.hub.yml pull
@@ -126,8 +126,8 @@ chmod +x /absolute/path/to/trace_processor_shell
 ```
 
 ```bash
-git clone https://github.com/Gracker/SmartPerfetto.git
-cd SmartPerfetto
+git clone https://github.com/Gracker/CameraPerf.git
+cd CameraPerf
 
 # 方式 A：如果这个终端里的 Claude Code 已经能用，不需要 .env。
 claude
@@ -184,7 +184,7 @@ git commit -m "chore(frontend): update prebuilt"
 
 ## 进阶 Provider 配置
 
-前面的快速配置已经说明凭证写在哪里。本地 Claude Code 已经能用的用户通常可以完全跳过 SmartPerfetto env 文件，即使 Claude Code 自己接的是第三方模型。直连 Anthropic API 只需要：
+前面的快速配置已经说明凭证写在哪里。本地 Claude Code 已经能用的用户通常可以完全跳过 CameraPerf env 文件，即使 Claude Code 自己接的是第三方模型。直连 Anthropic API 只需要：
 
 ```bash
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
@@ -201,11 +201,11 @@ CLAUDE_LIGHT_MODEL=your-light-model
 
 常见代理包括 [one-api](https://github.com/songquanpeng/one-api)、[new-api](https://github.com/Calcium-Ion/new-api) 和 [LiteLLM](https://github.com/BerriAI/litellm)。选择的模型需要稳定支持流式输出和 tool/function calling。对于小米 MiMo，如果你拿到的是 OpenAI 兼容接口，推荐先在代理里接入 MiMo，再把 `ANTHROPIC_BASE_URL` 指向代理暴露出来的 Anthropic 兼容地址，并把 `CLAUDE_MODEL` 设成代理映射后的 MiMo 模型名；如果你使用的 MiMo 网关本身已经兼容 Anthropic Messages API，也可以直接把 `ANTHROPIC_BASE_URL` 指向那个地址。完整厂商示例和调优参数见 [backend/.env.example](backend/.env.example)。
 
-> 注意：Claude Code 自己的本地认证/配置是 Claude Agent SDK 的原生认证路径，不管它背后是 Anthropic 订阅，还是 Claude Code 里已经配置好的第三方 endpoint。Codex CLI、Gemini CLI、OpenCode 等其他工具管理的是各自独立的配置和登录态；SmartPerfetto 不会自动读取这些凭证。只有当目标 provider 不能通过本机 Claude Code 直接使用，或你希望 SmartPerfetto 显式接管代理配置时，才需要在 `.env` 里配置 `ANTHROPIC_BASE_URL`。
+> 注意：Claude Code 自己的本地认证/配置是 Claude Agent SDK 的原生认证路径，不管它背后是 Anthropic 订阅，还是 Claude Code 里已经配置好的第三方 endpoint。Codex CLI、Gemini CLI、OpenCode 等其他工具管理的是各自独立的配置和登录态；CameraPerf 不会自动读取这些凭证。只有当目标 provider 不能通过本机 Claude Code 直接使用，或你希望 CameraPerf 显式接管代理配置时，才需要在 `.env` 里配置 `ANTHROPIC_BASE_URL`。
 
-前端设置弹窗只保存后端地址和可选的 `SMARTPERFETTO_API_KEY` 后端鉴权 token。大模型 provider 凭证要么来自 Claude Code 本地认证/配置，要么来自上面说明的后端或 Docker env 文件。
+前端设置弹窗只保存后端地址和可选的 `CAMERAPERF_API_KEY` 后端鉴权 token。大模型 provider 凭证要么来自 Claude Code 本地认证/配置，要么来自上面说明的后端或 Docker env 文件。
 
-如果本地 Claude Code 路径不可用、额度用尽，或你希望 SmartPerfetto 使用一个不同于 Claude Code 的 provider，可以显式使用代理方式：
+如果本地 Claude Code 路径不可用、额度用尽，或你希望 CameraPerf 使用一个不同于 Claude Code 的 provider，可以显式使用代理方式：
 
 ```bash
 ANTHROPIC_BASE_URL=http://localhost:3000
@@ -221,14 +221,14 @@ CLAUDE_LIGHT_MODEL=your-provider-light-model
 面向用户的输出默认是简体中文。如果希望 AI 回答、流式进度文案和生成的 Agent-Driven 报告都使用英文，配置：
 
 ```bash
-SMARTPERFETTO_OUTPUT_LANGUAGE=en
+CAMERAPERF_OUTPUT_LANGUAGE=en
 ```
 
 可用值包括 `zh-CN` 和 `en`。修改 `.env` 后需要重启 backend。
 
 ### 轮次预算
 
-SmartPerfetto 区分 fast 和 full 两套轮次预算：
+CameraPerf 区分 fast 和 full 两套轮次预算：
 
 ```bash
 CLAUDE_QUICK_MAX_TURNS=10  # fast 模式默认值
@@ -248,7 +248,7 @@ CLAUDE_MAX_TURNS=60        # full 模式默认值
    - `CPU 调度有没有问题？`
    - `帮我看看这个 ANR`
 
-SmartPerfetto 最适合分析包含 FrameTimeline 数据的 Android 12+ trace。建议采集的 atrace category：
+CameraPerf 最适合分析包含 FrameTimeline 数据的 Android 12+ trace。建议采集的 atrace category：
 
 | 场景 | 最低 category | 建议额外添加 |
 |------|---------------|--------------|
@@ -258,11 +258,11 @@ SmartPerfetto 最适合分析包含 FrameTimeline 数据的 Android 12+ trace。
 
 ## CLI 用法
 
-SmartPerfetto 同时提供终端 CLI，可以不打开浏览器 UI 直接分析 trace。CLI 复用和 Web 端相同的 agentv3 运行时，并把本地 session、transcript 和报告写到 `~/.smartperfetto/`。
+CameraPerf 同时提供终端 CLI，可以不打开浏览器 UI 直接分析 trace。CLI 复用和 Web 端相同的 agentv3 运行时，并把本地 session、transcript 和报告写到 `~/.camerapref/`。
 
 ```bash
 # 需要 Node.js 24 LTS
-npm install -g @gracker/smartperfetto
+npm install -g @gracker/camerapref
 
 # 分析 trace，并继续追问或打开报告。
 smp -f trace.pftrace -p "分析滑动卡顿"
@@ -274,7 +274,7 @@ smp report <sessionId> --open
 smp
 ```
 
-第一次分析时，如果本机还没有 `trace_processor_shell`，CLI 会自动下载固定版本。若网络无法访问 Google artifact bucket，可以设置 `TRACE_PROCESSOR_PATH=/path/to/trace_processor_shell` 使用本机已有 binary，或设置 `TRACE_PROCESSOR_DOWNLOAD_BASE` / `TRACE_PROCESSOR_DOWNLOAD_URL` 指向可信镜像；下载内容仍会按固定 SHA256 校验。`smartperfetto` 仍保留为长命令名；源码 checkout 里的脚本只用于维护者调试 CLI。完整命令、REPL slash 命令、存储布局和 resume 语义见 [CLI 参考](docs/reference/cli.md)。
+第一次分析时，如果本机还没有 `trace_processor_shell`，CLI 会自动下载固定版本。若网络无法访问 Google artifact bucket，可以设置 `TRACE_PROCESSOR_PATH=/path/to/trace_processor_shell` 使用本机已有 binary，或设置 `TRACE_PROCESSOR_DOWNLOAD_BASE` / `TRACE_PROCESSOR_DOWNLOAD_URL` 指向可信镜像；下载内容仍会按固定 SHA256 校验。`camerapref` 仍保留为长命令名；源码 checkout 里的脚本只用于维护者调试 CLI。完整命令、REPL slash 命令、存储布局和 resume 语义见 [CLI 参考](docs/reference/cli.md)。
 
 ## API 接入
 
@@ -290,13 +290,13 @@ smp
 | `POST` | `/api/agent/v1/scene-reconstruct` | 启动场景重建 |
 | `GET` | `/api/agent/v1/:sessionId/report` | 获取生成的分析报告 |
 
-如果后端不只在本机使用，建议在 `backend/.env` 设置 `SMARTPERFETTO_API_KEY`。开启后，受保护接口需要带上 `Authorization: Bearer <token>`。
+如果后端不只在本机使用，建议在 `backend/.env` 设置 `CAMERAPERF_API_KEY`。开启后，受保护接口需要带上 `Authorization: Bearer <token>`。
 
 ## 架构
 
 ```text
 Frontend (Perfetto UI @ :10000)
-  └─ SmartPerfetto AI Assistant plugin
+  └─ CameraPerf AI Assistant plugin
        └─ SSE / HTTP
 Backend (Express @ :3000)
   ├─ agentv3 runtime: 场景路由、Prompt、MCP 工具、Verifier
@@ -308,7 +308,7 @@ Backend (Express @ :3000)
 目录结构：
 
 ```text
-SmartPerfetto/
+CameraPerf/
 ├── backend/
 │   ├── src/agentv3/        # 主 AI 运行时
 │   ├── src/services/       # Trace processor、Skill、Report、Session 服务
@@ -387,19 +387,19 @@ npm run test:core
 
 ## 联系
 
-- Bug 和功能建议：[GitHub Issues](https://github.com/Gracker/SmartPerfetto/issues)
-- 安全问题：[GitHub private advisory](https://github.com/Gracker/SmartPerfetto/security/advisories/new) 或 `smartperfetto@gracker.dev`
+- Bug 和功能建议：[GitHub Issues](https://github.com/Gracker/CameraPerf/issues)
+- 安全问题：[GitHub private advisory](https://github.com/Gracker/CameraPerf/security/advisories/new) 或 `camerapref@gracker.dev`
 - 合作、商业支持、赞助：微信 `553000664`
 
 ## 赞助
 
 开源项目常见的赞助方式包括 GitHub Sponsors、OpenCollective、Buy Me a Coffee、爱发电、微信/支付宝收款码，以及企业商业支持或商业授权。
 
-SmartPerfetto 目前还没有公开支付页面。如果你想赞助、捐赠、试用企业支持或咨询商业授权，请通过微信联系维护者：`553000664`。
+CameraPerf 目前还没有公开支付页面。如果你想赞助、捐赠、试用企业支持或咨询商业授权，请通过微信联系维护者：`553000664`。
 
 ## 许可证
 
-SmartPerfetto 核心代码使用 [AGPL-3.0-or-later](LICENSE)。
+CameraPerf 核心代码使用 [AGPL-3.0-or-later](LICENSE)。
 
 `perfetto/` submodule 是 [Google Perfetto](https://github.com/google/perfetto) 的 fork，继续使用 [Apache-2.0](perfetto/LICENSE)。
 

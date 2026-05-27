@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Active-phase reminder — a one-line restatement of the *current*
@@ -8,7 +8,7 @@
  * agent doesn't drift off-plan when it's busy parsing a large payload.
  *
  * Codex review A.5 of the v2.1 plan called out that injecting a phase
- * reminder into every data tool is noise for SmartPerfetto's typical
+ * reminder into every data tool is noise for CameraPerf's typical
  * 20-25 turn sessions. Phase 3-4 narrows the injection to **high-risk
  * paths only** — `fetch_artifact(level=full|rows)` is the canonical
  * case because its payload is large and the agent often forgets the

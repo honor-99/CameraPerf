@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * 分析报告生成器
@@ -298,7 +298,7 @@ export class ReportGenerator {
     // 页脚
     lines.push('---');
     lines.push('');
-    lines.push('*本报告由 SmartPerfetto AI 自动生成*');
+    lines.push('*本报告由 CameraPerf AI 自动生成*');
 
     return lines.join('\n');
   }

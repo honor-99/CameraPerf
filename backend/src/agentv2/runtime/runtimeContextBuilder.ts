@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import { ModelRouter } from '../../agent/core/modelRouter';
 import type { AnalysisOptions, ProgressEmitter } from '../../agent/core/orchestratorTypes';
@@ -235,7 +235,7 @@ export function buildNativeClarifyPrompt(
   recentFindings: Finding[]
 ): string {
   const parts: string[] = [];
-  parts.push('你是 SmartPerfetto 的 Android 性能分析助手。请回答用户的澄清问题。');
+  parts.push('你是 CameraPerf 的 Android 性能分析助手。请回答用户的澄清问题。');
   parts.push('要求：只基于给定上下文，不编造数据；若信息不足，明确说明不足。');
   parts.push('');
   parts.push(`用户问题: ${query}`);

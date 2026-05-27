@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import type { ArchitectureInfo } from '../agent/detectors/types';
 import type { Finding } from '../agent/types';
@@ -159,7 +159,7 @@ export interface TraceCompleteness {
 
 // =============================================================================
 // User Selection Context (from Perfetto UI)
-// Mirror types exist in perfetto/ui/.../com.smartperfetto.AIAssistant/types.ts.
+// Mirror types exist in perfetto/ui/.../com.camerapref.AIAssistant/types.ts.
 // Keep both in sync when modifying.
 // =============================================================================
 
@@ -298,7 +298,7 @@ export interface PlanRevision {
  * names are normalised by stripping the MCP prefix on both sides.
  */
 export function phaseMatchesCall(phase: PlanPhase, record: ToolCallRecord): boolean {
-  const MCP_PREFIX = 'mcp__smartperfetto__';
+  const MCP_PREFIX = 'mcp__camerapref__';
   const shortTool = record.toolName.startsWith(MCP_PREFIX)
     ? record.toolName.slice(MCP_PREFIX.length)
     : record.toolName;

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import type { SceneType } from './sceneClassifier';
 import { getRegisteredScenes } from './strategyLoader';
@@ -39,7 +39,7 @@ export interface ClaudeAgentConfig {
   /** Timeout (ms) for the single-turn query complexity classifier. Default: 30_000.
    *  Override via CLAUDE_CLASSIFIER_TIMEOUT_MS. */
   classifierTimeoutMs: number;
-  /** User-facing output language. Default: zh-CN. Override via SMARTPERFETTO_OUTPUT_LANGUAGE=en. */
+  /** User-facing output language. Default: zh-CN. Override via CAMERAPERF_OUTPUT_LANGUAGE=en. */
   outputLanguage: OutputLanguage;
 }
 
@@ -83,7 +83,7 @@ export function loadClaudeConfig(overrides?: Partial<ClaudeAgentConfig>): Claude
     classifierTimeoutMs: overrides?.classifierTimeoutMs
       ?? (process.env.CLAUDE_CLASSIFIER_TIMEOUT_MS ? parseInt(process.env.CLAUDE_CLASSIFIER_TIMEOUT_MS, 10) : 30_000),
     outputLanguage: overrides?.outputLanguage
-      ?? parseOutputLanguage(process.env.SMARTPERFETTO_OUTPUT_LANGUAGE),
+      ?? parseOutputLanguage(process.env.CAMERAPERF_OUTPUT_LANGUAGE),
   };
 }
 
@@ -189,9 +189,9 @@ export function getClaudeRuntimeDiagnostics() {
     model: process.env.CLAUDE_MODEL || DEFAULT_MODEL,
     lightModel: process.env.CLAUDE_LIGHT_MODEL || DEFAULT_LIGHT_MODEL,
     outputLanguage: {
-      value: parseOutputLanguage(process.env.SMARTPERFETTO_OUTPUT_LANGUAGE),
-      displayName: outputLanguageDisplayName(parseOutputLanguage(process.env.SMARTPERFETTO_OUTPUT_LANGUAGE)),
-      env: 'SMARTPERFETTO_OUTPUT_LANGUAGE',
+      value: parseOutputLanguage(process.env.CAMERAPERF_OUTPUT_LANGUAGE),
+      displayName: outputLanguageDisplayName(parseOutputLanguage(process.env.CAMERAPERF_OUTPUT_LANGUAGE)),
+      env: 'CAMERAPERF_OUTPUT_LANGUAGE',
       default: DEFAULT_OUTPUT_LANGUAGE,
     },
     configured: hasClaudeCredentials(),
@@ -224,10 +224,10 @@ export function explainClaudeRuntimeError(message: string): string {
   if (!quotaOrAuth) return message;
 
   return `${message}\n\n` +
-    'SmartPerfetto is currently using the Claude Agent SDK runtime. ' +
+    'CameraPerf is currently using the Claude Agent SDK runtime. ' +
     'If your Claude subscription/API quota is unavailable, configure an Anthropic-compatible proxy instead: ' +
     'set ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY, CLAUDE_MODEL, and CLAUDE_LIGHT_MODEL in backend/.env, then restart the backend. ' +
-    'Provider switchers such as CC Switch manage Claude Code/Codex/Gemini CLI configs, but SmartPerfetto does not automatically read Codex CLI or Gemini CLI credentials.';
+    'Provider switchers such as CC Switch manage Claude Code/Codex/Gemini CLI configs, but CameraPerf does not automatically read Codex CLI or Gemini CLI credentials.';
 }
 
 /**

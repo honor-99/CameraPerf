@@ -9,7 +9,7 @@
 
 ## 核心问题
 
-SmartPerfetto 的 agentv3 在"给 LLM 什么信息"上做得很好（策略系统、skill 体系、4 层验证），但在"什么时候给"和"放在哪里"上有提升空间：
+CameraPerf 的 agentv3 在"给 LLM 什么信息"上做得很好（策略系统、skill 体系、4 层验证），但在"什么时候给"和"放在哪里"上有提升空间：
 
 1. **策略内容一次性注入**: system prompt 中注入场景策略后，随着 8-15 turn 的 tool result 堆积，策略内容离上下文末尾越来越远，注意力权重下降
 2. **Plan 缺失阶段只在事后发现**: `submit_plan` 接受任何计划，`verifyPlanAdherence` 要到结论后才检查——所有 token 已经花完

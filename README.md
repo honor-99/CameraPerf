@@ -2,12 +2,12 @@
 
 > AI-powered Camera performance analysis — specialized trace analysis for Android Camera preview, recording, and multi-output scenarios.
 
-[![License: AGPL-3.0-or-later](https://img.shields.io/github/license/Gracker/SmartPerfetto)](LICENSE)
+[![License: AGPL-3.0-or-later](https://img.shields.io/github/license/Gracker/CameraPerf)](LICENSE)
 [![Node.js 24 LTS](https://img.shields.io/badge/Node.js-24%20LTS-brightgreen)](package.json)
 [![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178c6)](backend/tsconfig.json)
 [![Docker Compose](https://img.shields.io/badge/Docker-Compose-2496ed)](docker-compose.yml)
 
-CameraPerf is a streamlined derivative of [SmartPerfetto](https://github.com/Gracker/SmartPerfetto), focused exclusively on Android Camera performance analysis. It retains SmartPerfetto's Skill engine, trace_processor shell communication, and AI analysis runtime while stripping away all non-Camera analysis domains.
+CameraPerf is a streamlined derivative of [CameraPerf](https://github.com/Gracker/CameraPerf), focused exclusively on Android Camera performance analysis. It retains CameraPerf's Skill engine, trace_processor shell communication, and AI analysis runtime while stripping away all non-Camera analysis domains.
 
 ## What CameraPerf Analyzes
 
@@ -56,7 +56,7 @@ Skill Engine (YAML DSL)
 Claude Agent SDK  ──  Analysis + report generation
 ```
 
-## Retained Assets (from SmartPerfetto)
+## Retained Assets (from CameraPerf)
 
 - **43 Skills**: camera_pipeline + 11 atomic (frame/vsync/fence) + 17 composite (cpu/gpu/thermal/binder) + 10 modules + 2 deep
 - **22 Strategies**: general, pipeline, arch-standard + knowledge templates + prompt templates

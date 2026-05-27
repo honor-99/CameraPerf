@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
-<!-- Copyright (C) 2024-2026 Gracker (Chris) | SmartPerfetto -->
+<!-- Copyright (C) 2024-2026 Gracker (Chris) | CameraPerf -->
 
 # Changelog
 
-All notable changes to SmartPerfetto are documented here.
+All notable changes to CameraPerf are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -45,7 +45,7 @@ Detailed commit-level history is available via `git log`.
 ### Added
 - Initial public repository structure.
 - Perfetto fork submodule (`perfetto/`) with custom UI plugin
-  `com.smartperfetto.AIAssistant`.
+  `com.camerapref.AIAssistant`.
 - Backend Express service with SSE streaming, in-memory session management,
   and trace_processor_shell integration.
 - YAML skill system (`backend/skills/`) with L1–L4 layered results and
@@ -58,5 +58,5 @@ Detailed commit-level history is available via `git log`.
 - HTML report generation and CSV / JSON export.
 - AGPL v3.0 licensing throughout.
 
-[Unreleased]: https://github.com/Gracker/SmartPerfetto/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/Gracker/SmartPerfetto/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Gracker/CameraPerf/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Gracker/CameraPerf/releases/tag/v0.1.0

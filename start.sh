@@ -1,9 +1,9 @@
 #!/bin/bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2024-2026 Gracker (Chris)
-# This file is part of SmartPerfetto. See LICENSE for details.
+# This file is part of CameraPerf. See LICENSE for details.
 
-# SmartPerfetto Quick Start
+# CameraPerf Quick Start
 # Uses pre-built frontend (no Perfetto submodule required) + backend with tsx watch.
 #
 # This is the recommended script for most users.
@@ -261,7 +261,7 @@ done
 
 # ── Pre-flight checks ─────────────────────────────────────────────────────────
 
-smartperfetto_ensure_node "$PROJECT_ROOT"
+camerapref_ensure_node "$PROJECT_ROOT"
 
 require_command node
 require_command npm
@@ -301,7 +301,7 @@ BACKEND_LOG="$LOGS_DIR/backend_${TIMESTAMP}.log"
 FRONTEND_LOG="$LOGS_DIR/frontend_${TIMESTAMP}.log"
 
 echo "=============================================="
-echo "SmartPerfetto"
+echo "CameraPerf"
 echo "=============================================="
 echo "Timestamp: $TIMESTAMP"
 echo "Backend log:  $BACKEND_LOG"
@@ -348,7 +348,7 @@ fi
 
 # ── Install backend deps if needed ────────────────────────────────────────────
 
-smartperfetto_ensure_backend_deps "$PROJECT_ROOT"
+camerapref_ensure_backend_deps "$PROJECT_ROOT"
 
 # ── Start backend ─────────────────────────────────────────────────────────────
 
@@ -385,7 +385,7 @@ done
 
 echo ""
 echo "=============================================="
-echo "SmartPerfetto is running!"
+echo "CameraPerf is running!"
 echo "=============================================="
 echo "  Frontend:  http://localhost:10000"
 echo "  Backend:   http://localhost:3000"

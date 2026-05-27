@@ -38,7 +38,7 @@ an individual is officially representing the community in public spaces.
 ## Enforcement
 
 Instances of unacceptable behavior may be reported to the project maintainer at
-**smartperfetto@gracker.dev**. All complaints will be reviewed and investigated
+**camerapref@gracker.dev**. All complaints will be reviewed and investigated
 promptly and fairly.
 
 ## Attribution

@@ -1,6 +1,6 @@
 (function () {
   const API_BASE_PATH = '/api/agent/v1';
-  const LS_KEY = 'smartperfetto_assistant_web_shell_state_v1';
+  const LS_KEY = 'camerapref_assistant_web_shell_state_v1';
   const MAX_LOG_LINES = 300;
   const MAX_TIMELINE_LINES = 300;
   const MAX_ENVELOPES = 120;

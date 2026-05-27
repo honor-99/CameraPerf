@@ -1,6 +1,6 @@
 # API 参考
 
-默认后端地址是 `http://localhost:3000`。如果设置了 `SMARTPERFETTO_API_KEY`，受保护接口需要：
+默认后端地址是 `http://localhost:3000`。如果设置了 `CAMERAPERF_API_KEY`，受保护接口需要：
 
 ```http
 Authorization: Bearer <token>

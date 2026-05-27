@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Phase 3-2 of v2.1 — recovery-note builder unit tests.
@@ -35,7 +35,7 @@ const finding = (severity: Finding['severity'], title: string, confidence = 0.7)
 } as Finding);
 
 const toolCall = (overrides: Partial<ToolCallRecord> = {}): ToolCallRecord => ({
-  toolName: 'mcp__smartperfetto__execute_sql',
+  toolName: 'mcp__camerapref__execute_sql',
   timestamp: Date.now(),
   ...overrides,
 });
@@ -63,8 +63,8 @@ describe('buildRecoveryNote', () => {
 
   it('preserves recent tool calls as structured digests (Phase 3-2)', () => {
     const calls: ToolCallRecord[] = [
-      toolCall({ toolName: 'mcp__smartperfetto__execute_sql', inputSummary: 'SELECT * FROM frame', matchedPhaseId: 'p1' }),
-      toolCall({ toolName: 'mcp__smartperfetto__invoke_skill', skillId: 'jank_frame_detail', inputSummary: 'jank_frame_detail(traceId,frameId)', matchedPhaseId: 'p2' }),
+      toolCall({ toolName: 'mcp__camerapref__execute_sql', inputSummary: 'SELECT * FROM frame', matchedPhaseId: 'p1' }),
+      toolCall({ toolName: 'mcp__camerapref__invoke_skill', skillId: 'jank_frame_detail', inputSummary: 'jank_frame_detail(traceId,frameId)', matchedPhaseId: 'p2' }),
     ];
     const note = buildRecoveryNote({ recentToolCalls: calls });
     expect(note.sectionsIncluded).toContain('recent_tool_calls');
@@ -76,7 +76,7 @@ describe('buildRecoveryNote', () => {
 
   it('keeps only the last N tool calls when more are supplied', () => {
     const calls: ToolCallRecord[] = Array.from({ length: 10 }, (_, i) =>
-      toolCall({ toolName: 'mcp__smartperfetto__execute_sql', inputSummary: `query #${i}` }),
+      toolCall({ toolName: 'mcp__camerapref__execute_sql', inputSummary: `query #${i}` }),
     );
     const note = buildRecoveryNote({ recentToolCalls: calls, rawToolPreserve: 3 });
     expect(note.text).toMatch(/query #9/);

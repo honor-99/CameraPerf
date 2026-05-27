@@ -1,9 +1,9 @@
 #!/bin/bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2024-2026 Gracker (Chris)
-# This file is part of SmartPerfetto. See LICENSE for details.
+# This file is part of CameraPerf. See LICENSE for details.
 
-# SmartPerfetto Frontend Development Script
+# CameraPerf Frontend Development Script
 # Builds Perfetto UI from source (requires perfetto submodule) + starts backend with watch.
 # Use this when modifying the AI Assistant plugin code (ai_panel.ts, styles.scss, etc.)
 #
@@ -178,7 +178,7 @@ if [ "$BUILD_FROM_SOURCE" = true ] && [ "$PREBUILT_ONLY" = true ]; then
   exit 1
 fi
 
-smartperfetto_ensure_node "$PROJECT_ROOT"
+camerapref_ensure_node "$PROJECT_ROOT"
 
 # Create logs directory
 mkdir -p "$LOGS_DIR"
@@ -202,7 +202,7 @@ FRONTEND_LOG="$LOGS_DIR/frontend_${TIMESTAMP}.log"
 COMBINED_LOG="$LOGS_DIR/combined_${TIMESTAMP}.log"
 
 echo "=============================================="
-echo "SmartPerfetto Development Server"
+echo "CameraPerf Development Server"
 echo "=============================================="
 echo "Timestamp: $TIMESTAMP"
 echo "Mode: $([ "$SKIP_BUILD" = true ] && echo "Quick Start (skip build)" || echo "Full Build")"
@@ -676,7 +676,7 @@ sleep 1
 # Check/install backend dependencies after old watchers have been stopped.
 # Native modules are tied to Node's ABI, so this also repairs node_modules
 # after switching between Node 20/24/25.
-smartperfetto_ensure_backend_deps "$PROJECT_ROOT"
+camerapref_ensure_backend_deps "$PROJECT_ROOT"
 
 # Acquire trace_processor_shell. Default = download version-pinned prebuilt
 # from Perfetto's LUCI artifacts (SHA256-verified, ~5s); fall back to source

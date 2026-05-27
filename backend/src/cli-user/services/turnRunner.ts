@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Turn runner — the shared per-turn flow used by `analyze`, `resume`,
@@ -52,7 +52,7 @@ export interface TurnResult {
 
 /**
  * Fresh analyze — loads the trace, creates a new session, runs turn 1.
- * Equivalent to what `smartperfetto analyze <trace>` does, minus the
+ * Equivalent to what `camerapref analyze <trace>` does, minus the
  * bootstrap / service-lifecycle work around it.
  */
 export async function startSession(

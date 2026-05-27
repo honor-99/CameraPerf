@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import { EventEmitter } from 'events';
 import { spawn, ChildProcess, execSync } from 'child_process';
@@ -28,9 +28,9 @@ export function getBundledTraceProcessorPath(): string {
 }
 
 export function getUserTraceProcessorPath(): string {
-  const home = process.env.SMARTPERFETTO_HOME && process.env.SMARTPERFETTO_HOME.trim()
-    ? path.resolve(process.env.SMARTPERFETTO_HOME)
-    : path.join(os.homedir(), '.smartperfetto');
+  const home = process.env.CAMERAPERF_HOME && process.env.CAMERAPERF_HOME.trim()
+    ? path.resolve(process.env.CAMERAPERF_HOME)
+    : path.join(os.homedir(), '.camerapref');
   return path.join(home, 'bin', 'trace_processor_shell');
 }
 

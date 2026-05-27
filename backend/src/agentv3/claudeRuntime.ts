@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import { EventEmitter } from 'events';
 import * as fs from 'fs';
@@ -155,7 +155,7 @@ function savePersistedSessionMapSync(map: Map<string, SessionMapEntry>): void {
 
 /**
  * Format pre-queried trace datasets as Markdown tables to prepend to the AI prompt.
- * Mirrors smartperfetto's approach: data is ready upfront so the AI skips basic SQL turns.
+ * Mirrors camerapref's approach: data is ready upfront so the AI skips basic SQL turns.
  */
 function formatTraceContext(
   datasets: import('../agent/core/orchestratorTypes').TraceDataset[],
@@ -290,7 +290,7 @@ function sdkQueryWithRetry(
 }
 
 /**
- * Claude Agent SDK runtime for SmartPerfetto.
+ * Claude Agent SDK runtime for CameraPerf.
  * Replaces the agentv2 governance pipeline with Claude-as-orchestrator.
  * Implements the same EventEmitter + analyze() interface as AgentRuntime.
  */
@@ -500,7 +500,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
           model: runtimeConfig.model,
           maxTurns: runtimeConfig.maxTurns,
           systemPrompt: ctx.systemPrompt,
-          mcpServers: { smartperfetto: ctx.mcpServer },
+          mcpServers: { camerapref: ctx.mcpServer },
           includePartialMessages: true,
           permissionMode: 'bypassPermissions' as const,
           allowDangerouslySkipPermissions: true,
@@ -1109,7 +1109,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
                   model: runtimeConfig.model,
                   maxTurns: correctionTurns,
                   systemPrompt: correctionSystemPrompt,
-                  mcpServers: { smartperfetto: ctx.mcpServer },
+                  mcpServers: { camerapref: ctx.mcpServer },
                   includePartialMessages: true,
                   permissionMode: 'bypassPermissions' as const,
                   allowDangerouslySkipPermissions: true,
@@ -1571,7 +1571,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
           model: quickConfig.model,
           maxTurns: quickConfig.maxTurns,
           systemPrompt,
-          mcpServers: { smartperfetto: mcpServer },
+          mcpServers: { camerapref: mcpServer },
           includePartialMessages: true,
           permissionMode: 'bypassPermissions' as const,
           allowDangerouslySkipPermissions: true,
@@ -1843,7 +1843,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
    * flags, artifacts, architectureCache, sessionMap) and merges with
    * session-level arrays provided by the route layer.
    *
-   * @param sessionId - The SmartPerfetto session ID
+   * @param sessionId - The CameraPerf session ID
    * @param traceId - The trace ID
    * @param sessionFields - Session-level arrays from AnalysisSession (route layer)
    */
@@ -1891,7 +1891,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
    * Called during session resume to repopulate the 7 internal Maps
    * that are normally built up during analysis.
    *
-   * @param sessionId - The SmartPerfetto session ID
+   * @param sessionId - The CameraPerf session ID
    * @param traceId - The trace ID (for architectureCache key)
    * @param snapshot - The persisted snapshot to restore from
    */

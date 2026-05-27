@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * `smartperfetto rm <sessionId>` — delete the local session folder.
+ * `camerapref rm <sessionId>` — delete the local session folder.
  *
- * Scope note: this ONLY touches `~/.smartperfetto/sessions/<id>/` and the
+ * Scope note: this ONLY touches `~/.camerapref/sessions/<id>/` and the
  * global index. The backend-side persisted state (`backend/data/sessions/
  * sessions.db`) is intentionally untouched — users may still want to see
  * the session in the web UI, and removing it from SQLite is the backend's

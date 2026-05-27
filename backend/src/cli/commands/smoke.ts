@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * Smoke Command
@@ -75,7 +75,7 @@ export const smokeCommand = new Command('smoke')
     showSql?: boolean;
     verbose?: boolean;
   }) => {
-    console.log(colors.bold('\nSmartPerfetto Skill SQL Smoke Test\n'));
+    console.log(colors.bold('\nCameraPerf Skill SQL Smoke Test\n'));
 
     const tracePath = path.resolve(options.trace);
     const filter = parsePattern(options.pattern);

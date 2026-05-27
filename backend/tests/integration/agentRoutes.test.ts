@@ -77,7 +77,7 @@ describe('Agent Routes - Input Validation', () => {
   });
 
   describe('Authentication', () => {
-    const API_KEY_ENV = 'SMARTPERFETTO_API_KEY';
+    const API_KEY_ENV = 'CAMERAPERF_API_KEY';
 
     const restoreApiKey = (value: string | undefined) => {
       if (value === undefined) {
@@ -122,7 +122,7 @@ describe('Agent Routes - Input Validation', () => {
       const response = await request(app).get('/assistant-shell');
 
       expect(response.status).toBe(200);
-      expect(response.text).toContain('SmartPerfetto Assistant Web Shell');
+      expect(response.text).toContain('CameraPerf Assistant Web Shell');
       expect(response.text).toContain('/api/agent/v1');
     });
   });

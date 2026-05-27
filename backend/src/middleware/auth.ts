@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
@@ -14,10 +14,10 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
-const API_KEY_ENV = 'SMARTPERFETTO_API_KEY';
-const USAGE_WINDOW_MS = Number.parseInt(process.env.SMARTPERFETTO_USAGE_WINDOW_MS || '', 10) || 24 * 60 * 60 * 1000;
-const MAX_REQUESTS = Number.parseInt(process.env.SMARTPERFETTO_USAGE_MAX_REQUESTS || '', 10);
-const MAX_TRACE_REQUESTS = Number.parseInt(process.env.SMARTPERFETTO_USAGE_MAX_TRACE_REQUESTS || '', 10);
+const API_KEY_ENV = 'CAMERAPERF_API_KEY';
+const USAGE_WINDOW_MS = Number.parseInt(process.env.CAMERAPERF_USAGE_WINDOW_MS || '', 10) || 24 * 60 * 60 * 1000;
+const MAX_REQUESTS = Number.parseInt(process.env.CAMERAPERF_USAGE_MAX_REQUESTS || '', 10);
+const MAX_TRACE_REQUESTS = Number.parseInt(process.env.CAMERAPERF_USAGE_MAX_TRACE_REQUESTS || '', 10);
 
 const usageTracker = new Map<string, { resetAt: number; total: number; trace: number }>();
 

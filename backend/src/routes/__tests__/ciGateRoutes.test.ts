@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import * as fs from 'fs';
 import * as os from 'os';
@@ -71,7 +71,7 @@ let app: express.Express;
 let baselineStore: BaselineStore;
 let runStore: CiGateRunStore;
 const baselineId = `${ANON_KEY.appId}/${ANON_KEY.deviceId}/${ANON_KEY.buildId}/${ANON_KEY.cuj}`;
-const originalApiKey = process.env.SMARTPERFETTO_API_KEY;
+const originalApiKey = process.env.CAMERAPERF_API_KEY;
 
 beforeEach(() => {
   tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ci-gate-route-test-'));
@@ -92,9 +92,9 @@ afterEach(() => {
     fs.rmSync(tmpDir, {recursive: true, force: true});
   }
   if (originalApiKey === undefined) {
-    delete process.env.SMARTPERFETTO_API_KEY;
+    delete process.env.CAMERAPERF_API_KEY;
   } else {
-    process.env.SMARTPERFETTO_API_KEY = originalApiKey;
+    process.env.CAMERAPERF_API_KEY = originalApiKey;
   }
   jest.restoreAllMocks();
 });
@@ -122,15 +122,15 @@ const validBody = () => ({
 });
 
 describe('POST /api/ci/gate-eval — auth', () => {
-  it('returns 401 when SMARTPERFETTO_API_KEY is set and the request lacks a bearer', async () => {
-    process.env.SMARTPERFETTO_API_KEY = 'test-secret';
+  it('returns 401 when CAMERAPERF_API_KEY is set and the request lacks a bearer', async () => {
+    process.env.CAMERAPERF_API_KEY = 'test-secret';
     baselineStore.addBaseline(makeBaseline());
     const res = await request(app).post('/api/ci/gate-eval').send(validBody());
     expect(res.status).toBe(401);
   });
 
   it('returns 401 when the bearer token does not match', async () => {
-    process.env.SMARTPERFETTO_API_KEY = 'test-secret';
+    process.env.CAMERAPERF_API_KEY = 'test-secret';
     baselineStore.addBaseline(makeBaseline());
     const res = await request(app)
       .post('/api/ci/gate-eval')
@@ -140,7 +140,7 @@ describe('POST /api/ci/gate-eval — auth', () => {
   });
 
   it('passes when the bearer matches the configured key', async () => {
-    process.env.SMARTPERFETTO_API_KEY = 'test-secret';
+    process.env.CAMERAPERF_API_KEY = 'test-secret';
     baselineStore.addBaseline(makeBaseline());
     const res = await request(app)
       .post('/api/ci/gate-eval')
@@ -151,7 +151,7 @@ describe('POST /api/ci/gate-eval — auth', () => {
   });
 
   it('passes in dev fallback (no env configured) so local development is unblocked', async () => {
-    delete process.env.SMARTPERFETTO_API_KEY;
+    delete process.env.CAMERAPERF_API_KEY;
     baselineStore.addBaseline(makeBaseline());
     const res = await request(app).post('/api/ci/gate-eval').send(validBody());
     expect(res.status).toBe(200);
@@ -160,7 +160,7 @@ describe('POST /api/ci/gate-eval — auth', () => {
 
 describe('POST /api/ci/gate-eval — body validation', () => {
   beforeEach(() => {
-    delete process.env.SMARTPERFETTO_API_KEY;
+    delete process.env.CAMERAPERF_API_KEY;
     baselineStore.addBaseline(makeBaseline());
   });
 
@@ -204,7 +204,7 @@ describe('POST /api/ci/gate-eval — body validation', () => {
 
 describe('POST /api/ci/gate-eval — skipped runs are still persisted with runId', () => {
   beforeEach(() => {
-    delete process.env.SMARTPERFETTO_API_KEY;
+    delete process.env.CAMERAPERF_API_KEY;
   });
 
   it('records a skipped run when the baseline is missing', async () => {
@@ -229,7 +229,7 @@ describe('POST /api/ci/gate-eval — skipped runs are still persisted with runId
 
 describe('POST /api/ci/gate-eval — gate evaluation', () => {
   beforeEach(() => {
-    delete process.env.SMARTPERFETTO_API_KEY;
+    delete process.env.CAMERAPERF_API_KEY;
     baselineStore.addBaseline(makeBaseline());
   });
 
@@ -287,7 +287,7 @@ describe('POST /api/ci/gate-eval — gate evaluation', () => {
 
 describe('GET /api/ci/gate-runs/:runId', () => {
   beforeEach(() => {
-    delete process.env.SMARTPERFETTO_API_KEY;
+    delete process.env.CAMERAPERF_API_KEY;
     baselineStore.addBaseline(makeBaseline());
   });
 
@@ -308,7 +308,7 @@ describe('GET /api/ci/gate-runs/:runId', () => {
 
 describe('GET /api/ci/gate-runs (list with filters)', () => {
   beforeEach(() => {
-    delete process.env.SMARTPERFETTO_API_KEY;
+    delete process.env.CAMERAPERF_API_KEY;
     baselineStore.addBaseline(makeBaseline());
   });
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
  * HTML Report Generator
@@ -148,7 +148,7 @@ export class HTMLReportGenerator {
   private domIdSeq = 0;
 
   private getOutputLanguage(): OutputLanguage {
-    return parseOutputLanguage(process.env.SMARTPERFETTO_OUTPUT_LANGUAGE);
+    return parseOutputLanguage(process.env.CAMERAPERF_OUTPUT_LANGUAGE);
   }
 
   private getReportLocale(language: OutputLanguage): string {
@@ -312,7 +312,7 @@ export class HTMLReportGenerator {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartPerfetto 分析报告 - ${new Date(data.timestamp).toLocaleString('zh-CN')}</title>
+  <title>CameraPerf 分析报告 - ${new Date(data.timestamp).toLocaleString('zh-CN')}</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -747,7 +747,7 @@ export class HTMLReportGenerator {
     <!-- Header -->
     <div class="report-card">
         <div class="header">
-        <h1>📊 SmartPerfetto 性能分析报告</h1>
+        <h1>📊 CameraPerf 性能分析报告</h1>
         <div class="meta">
             <span>📅 生成时间: ${new Date(data.timestamp).toLocaleString('zh-CN')}</span>
             <span>🆔 会话ID: ${data.sessionId}</span>
@@ -826,7 +826,7 @@ export class HTMLReportGenerator {
 
     <!-- Footer -->
     <div class="footer" style="text-align: center; padding: 24px; color: var(--text-light);">
-      <p>由 SmartPerfetto AI 分析引擎生成</p>
+      <p>由 CameraPerf AI 分析引擎生成</p>
       <p style="margin-top: 4px; font-size: 12px;">Powered by Perfetto + DeepSeek</p>
     </div>
   </div>
@@ -2795,7 +2795,7 @@ export class HTMLReportGenerator {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartPerfetto Agent 分析报告 - ${new Date(timestamp).toLocaleString('zh-CN')}</title>
+  <title>CameraPerf Agent 分析报告 - ${new Date(timestamp).toLocaleString('zh-CN')}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -2899,7 +2899,7 @@ export class HTMLReportGenerator {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🤖 SmartPerfetto Agent 分析报告</h1>
+      <h1>🤖 CameraPerf Agent 分析报告</h1>
       <div class="meta">
         <span class="badge badge-agent">Agent Mode</span>
         <span>📅 ${new Date(timestamp).toLocaleString('zh-CN')}</span>
@@ -2987,7 +2987,7 @@ export class HTMLReportGenerator {
     </div>
 
     <div class="footer">
-      <p>由 SmartPerfetto Agent 架构生成</p>
+      <p>由 CameraPerf Agent 架构生成</p>
       <p style="margin-top: 5px; font-size: 12px;">Powered by Expert Agents + LLM Orchestration</p>
     </div>
   </div>
@@ -3084,7 +3084,7 @@ export class HTMLReportGenerator {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartPerfetto Agent 分析报告 - ${new Date(timestamp).toLocaleString('zh-CN')}</title>
+  <title>CameraPerf Agent 分析报告 - ${new Date(timestamp).toLocaleString('zh-CN')}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -3153,7 +3153,7 @@ export class HTMLReportGenerator {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🤖 SmartPerfetto Agent 分析报告</h1>
+      <h1>🤖 CameraPerf Agent 分析报告</h1>
       <div class="meta">
         <span>📁 Trace ID: ${this.escapeHtml(traceId)}</span>
         <span>⏱️ ${new Date(timestamp).toLocaleString('zh-CN')}</span>
@@ -3264,7 +3264,7 @@ export class HTMLReportGenerator {
     ` : ''}
 
     <div class="footer">
-      <p>由 SmartPerfetto Master Orchestrator 生成</p>
+      <p>由 CameraPerf Master Orchestrator 生成</p>
       <p style="margin-top: 5px; font-size: 12px;">Powered by Pipeline + Evaluator Architecture</p>
     </div>
   </div>
@@ -4058,7 +4058,7 @@ export class HTMLReportGenerator {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${localize(outputLanguage, 'SmartPerfetto Agent-Driven 分析报告', 'SmartPerfetto Agent-Driven Analysis Report')} - ${new Date(timestamp).toLocaleString(locale)}</title>
+  <title>${localize(outputLanguage, 'CameraPerf Agent-Driven 分析报告', 'CameraPerf Agent-Driven Analysis Report')} - ${new Date(timestamp).toLocaleString(locale)}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -4289,14 +4289,14 @@ export class HTMLReportGenerator {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🤖 ${localize(outputLanguage, 'SmartPerfetto Agent-Driven 分析报告', 'SmartPerfetto Agent-Driven Analysis Report')}</h1>
+      <h1>🤖 ${localize(outputLanguage, 'CameraPerf Agent-Driven 分析报告', 'CameraPerf Agent-Driven Analysis Report')}</h1>
 	      <div class="meta">
 	        <span>📁 Trace ID: ${this.escapeHtml(traceId)}</span>
 	        <span>⏱️ ${new Date(timestamp).toLocaleString(locale)}</span>
 	        <span class="badge badge-agent">Agent-Driven Architecture</span>
 	      </div>
 	      <div class="report-actions">
-	        <button class="report-action-btn" type="button" onclick="saveSmartPerfettoReport()">💾 ${localize(outputLanguage, '保存网页文件', 'Save HTML Report')}</button>
+	        <button class="report-action-btn" type="button" onclick="saveCameraPerfReport()">💾 ${localize(outputLanguage, '保存网页文件', 'Save HTML Report')}</button>
 	        <span class="report-save-status" id="report-save-status"></span>
 	      </div>
 	    </div>
@@ -4376,19 +4376,19 @@ export class HTMLReportGenerator {
     </div>
 
     <div class="footer">
-      <p>${localize(outputLanguage, '由 SmartPerfetto Agent-Driven Orchestrator 生成', 'Generated by SmartPerfetto Agent-Driven Orchestrator')}</p>
+      <p>${localize(outputLanguage, '由 CameraPerf Agent-Driven Orchestrator 生成', 'Generated by CameraPerf Agent-Driven Orchestrator')}</p>
       <p style="margin-top: 5px; font-size: 12px;">Powered by Claude Agent SDK + MCP Tools</p>
     </div>
 	  </div>
 	  <script>
-	    async function saveSmartPerfettoReport() {
+	    async function saveCameraPerfReport() {
 	      var statusEl = document.getElementById('report-save-status');
 	      function setStatus(text) {
 	        if (statusEl) statusEl.textContent = text || '';
 	      }
 	      var url = new URL(window.location.href);
-	      var reportId = decodeURIComponent(url.pathname.split('/').filter(Boolean).pop() || 'smartperfetto-report');
-	      var suggestedName = 'smartperfetto-' + reportId + '.html';
+	      var reportId = decodeURIComponent(url.pathname.split('/').filter(Boolean).pop() || 'camerapref-report');
+	      var suggestedName = 'camerapref-' + reportId + '.html';
 	      var exportUrl = url.pathname.replace(/\\/$/, '') + '/export';
 
 	      try {
@@ -4427,7 +4427,7 @@ export class HTMLReportGenerator {
 	          setTimeout(function() { setStatus(''); }, 2000);
 	          return;
 	        }
-	        console.error('[SmartPerfetto] ${localize(outputLanguage, '保存报告失败', 'Failed to save report')}:', err);
+	        console.error('[CameraPerf] ${localize(outputLanguage, '保存报告失败', 'Failed to save report')}:', err);
 	        setStatus((err && err.message) ? err.message : '${localize(outputLanguage, '保存失败', 'Save failed')}');
 	      }
 	    }

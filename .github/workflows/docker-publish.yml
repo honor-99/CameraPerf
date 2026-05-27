@@ -11,7 +11,7 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
-  IMAGE_NAME: w553000664/smartperfetto
+  IMAGE_NAME: w553000664/camerapref
 
 jobs:
   quality-gate:
@@ -51,10 +51,10 @@ jobs:
         run: cd backend && npm run verify:pr
 
       - name: Build Docker runtime image
-        run: docker build -t smartperfetto-runtime-smoke .
+        run: docker build -t camerapref-runtime-smoke .
 
       - name: Build Docker Hub compose config
-        run: docker compose -f docker-compose.hub.yml config >/tmp/smartperfetto-compose.yml
+        run: docker compose -f docker-compose.hub.yml config >/tmp/camerapref-compose.yml
 
   build:
     needs: quality-gate

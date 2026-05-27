@@ -21,7 +21,7 @@ const backendContractPath = path.join(projectRoot, 'backend/src/types/dataContra
 const conclusionContractPath = path.join(projectRoot, 'backend/src/agent/core/conclusionContract.ts');
 const frontendOutputPath = path.join(
   projectRoot,
-  'perfetto/ui/src/plugins/com.smartperfetto.AIAssistant/generated/data_contract.types.ts'
+  'perfetto/ui/src/plugins/com.camerapref.AIAssistant/generated/data_contract.types.ts'
 );
 
 function writeFileIfChanged(filePath: string, content: string): boolean {
@@ -90,7 +90,7 @@ const parts: string[] = [];
 
 // Header
 parts.push(`/**
- * SmartPerfetto Data Contract Types (Frontend)
+ * CameraPerf Data Contract Types (Frontend)
  *
  * AUTO-GENERATED from backend/src/types/dataContract.ts
  * DO NOT EDIT MANUALLY - Changes will be overwritten

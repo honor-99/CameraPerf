@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * SmartPerfetto Configurable Thresholds
+ * CameraPerf Configurable Thresholds
  *
  * This module defines configurable thresholds for performance analysis.
  * These values were previously hardcoded throughout the codebase but are

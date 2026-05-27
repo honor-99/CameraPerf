@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import express from 'express';
 import OpenAI from 'openai';
@@ -36,11 +36,11 @@ function resolveModel(providedModel?: string): string {
 }
 
 function ensureApiKeyConfigured(_req: express.Request, res: express.Response, next: express.NextFunction): void {
-  if (!process.env.SMARTPERFETTO_API_KEY) {
+  if (!process.env.CAMERAPERF_API_KEY) {
     res.status(503).json({
       success: false,
       error: 'Chat proxy authentication is not configured',
-      details: 'Set SMARTPERFETTO_API_KEY to enable /api/agent/v1/llm routes safely',
+      details: 'Set CAMERAPERF_API_KEY to enable /api/agent/v1/llm routes safely',
     });
     return;
   }

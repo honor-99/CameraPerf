@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import os from 'os';
 import { getAdbService } from './adbService';
@@ -26,9 +26,9 @@ function resolveConfig(input?: AdbCollaborationConfig): {
   serial?: string;
   requireTraceMatch: boolean;
 } {
-  const envMode = process.env.SMARTPERFETTO_ADB_MODE;
-  const envSerial = process.env.SMARTPERFETTO_ADB_SERIAL;
-  const envRequireMatch = process.env.SMARTPERFETTO_ADB_REQUIRE_TRACE_MATCH;
+  const envMode = process.env.CAMERAPERF_ADB_MODE;
+  const envSerial = process.env.CAMERAPERF_ADB_SERIAL;
+  const envRequireMatch = process.env.CAMERAPERF_ADB_REQUIRE_TRACE_MATCH;
 
   const mode = normalizeMode(input?.mode || envMode);
   const serial = (input?.serial || envSerial || '').trim() || undefined;

@@ -1,4 +1,4 @@
-# SmartPerfetto State Machine Diagrams
+# CameraPerf State Machine Diagrams
 
 This document describes the state machines for the DataEnvelope architecture introduced in the data contract refactoring.
 
@@ -1697,7 +1697,7 @@ This state machine describes how skill execution errors are collected and displa
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                    SmartPerfetto AI Agents 架构 (目标)                       │
+│                    CameraPerf AI Agents 架构 (目标)                       │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │                              用户查询                                        │

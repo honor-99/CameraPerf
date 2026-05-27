@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2024-2026 Gracker (Chris)
-// This file is part of SmartPerfetto. See LICENSE for details.
+// This file is part of CameraPerf. See LICENSE for details.
 
 import {
   type AgentRuntimeAnalysisResult,
@@ -211,7 +211,7 @@ export class AgentAnalyzeSessionService<TSession extends AnalyzeManagedSession> 
           // uncertaintyFlags, claudeHypotheses, artifacts, architecture,
           // sdkSessionId) from the unified snapshot. Mirrors what
           // agentResumeRoutes.ts does for the explicit /resume endpoint so
-          // that both paths (HTTP multi-turn analyze, CLI `smartperfetto resume`)
+          // that both paths (HTTP multi-turn analyze, CLI `camerapref resume`)
           // restore the full agent state, not just SessionContext. Without
           // this step the next turn runs with empty internal Maps and Claude
           // forgets its prior notes / plan across process boundaries.
