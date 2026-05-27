@@ -11,15 +11,13 @@ import type { TraceProcessorService } from '../services/traceProcessorService';
 import type { SkillExecutor } from '../services/skillEngine/skillExecutor';
 import { getSkillAnalysisAdapter } from '../services/skillEngine/skillAnalysisAdapter';
 import { skillRegistry } from '../services/skillEngine/skillLoader';
-import { createArchitectureDetector } from '../agent/detectors/architectureDetector';
 import { displayResultToEnvelope } from '../types/dataContract';
 import type { DisplayResult as SkillDisplayResult } from '../services/skillEngine/types';
-import type { StreamingUpdate } from '../agent/types';
+// CameraPerf: removed import from deleted agent/types
 import type { SqlSchemaIndex, AnalysisNote, AnalysisPlanV3, PlanRevision, Hypothesis, UncertaintyFlag } from './types';
 import type { SceneType } from './sceneClassifier';
 import { summarizeSqlResult } from './sqlSummarizer';
 import { matchPatterns, matchNegativePatterns, extractTraceFeatures } from './analysisPatternMemory';
-import { loadSkillNotes } from './selfImprove/skillNotesInjector';
 import {
   getPerfettoStdlibModules,
   getPerfettoStdlibPath,
@@ -31,7 +29,6 @@ import { buildActivePhaseReminder } from './activePhaseReminder';
 import { validatePlanAgainstSceneTemplate, MIN_WAIVER_REASON_CHARS } from './scenePlanTemplates';
 import type { ArtifactStore } from './artifactStore';
 import { DEFAULT_OUTPUT_LANGUAGE, localize, type OutputLanguage } from './outputLanguage';
-import { RagStore } from '../services/ragStore';
 import {
   BaselineStore,
   deriveBaselineId,
@@ -42,7 +39,6 @@ import {
   type RegressionRule,
 } from '../services/baselineDiffer';
 import {ProjectMemory} from './projectMemory';
-import {CaseLibrary} from '../services/caseLibrary';
 import {
   McpToolRegistry,
   MCP_NAME_PREFIX as REGISTRY_MCP_NAME_PREFIX,

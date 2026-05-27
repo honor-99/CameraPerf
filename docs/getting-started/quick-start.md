@@ -7,7 +7,7 @@
 普通使用不需要初始化 `perfetto/` submodule。仓库已经包含预构建 Perfetto UI。
 
 ```bash
-git clone https://github.com/Gracker/CameraPerf.git
+git clone https://github.com/honor-99/CameraPerf.git
 cd CameraPerf
 ```
 

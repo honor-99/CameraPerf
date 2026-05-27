@@ -12,9 +12,9 @@ events). We take security and privacy seriously.
 If you discover a vulnerability, please **do not** file a public GitHub
 issue. Instead:
 
-**Preferred**: Use GitHub's private [security advisory](https://github.com/Gracker/CameraPerf/security/advisories/new) reporting.
+**Preferred**: Use GitHub's private [security advisory](https://github.com/honor-99/CameraPerf/security/advisories/new) reporting.
 
-**Alternative**: Email **camerapref@gracker.dev** with:
+**Alternative**: Email **qwerhyc@163.com** with:
 - A description of the vulnerability and its impact
 - Steps to reproduce (a minimal proof of concept helps)
 - Your name / handle for attribution (optional)

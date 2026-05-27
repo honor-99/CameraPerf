@@ -1,5 +1,5 @@
 {
-  "name": "@gracker/camerapref",
+  "name": "@camerapref/server",
   "version": "1.0.0",
   "description": "CameraPerf CLI and backend runtime",
   "main": "dist/index.js",

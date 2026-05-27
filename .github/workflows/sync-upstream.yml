@@ -9,7 +9,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     # 如果当前仓库本身就是原始上游，则不执行同步（防止自己同步自己）
-    if: github.repository != 'Gracker/CameraPerf'
+    if: github.repository != 'honor-99/CameraPerf'
     permissions:
       contents: write
     steps:
@@ -27,7 +27,7 @@ jobs:
           target_sync_branch: main
           # REQUIRED 'target_repo_token' exactly like this!
           target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          upstream_sync_repo: Gracker/CameraPerf
+          upstream_sync_repo: honor-99/CameraPerf
           upstream_sync_branch: main
 
       - name: New commits found

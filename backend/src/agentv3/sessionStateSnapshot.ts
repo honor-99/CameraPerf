@@ -22,7 +22,7 @@
 
 import type { AnalysisNote, AnalysisPlanV3, Hypothesis, UncertaintyFlag } from './types';
 import type { StoredArtifact } from './artifactStore';
-import type { ArchitectureInfo } from '../agent/detectors/types';
+import type { ArchitectureInfo } from './claudeAgentDefinitions';
 import type { DataEnvelope } from '../types/dataContract';
 
 // =============================================================================

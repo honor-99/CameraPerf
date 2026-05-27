@@ -17,7 +17,6 @@
 
 import OpenAI from 'openai';
 import { TraceProcessorService } from './traceProcessorService';
-import PromptTemplateService from './promptTemplateService';
 import { redactTextForLLM } from '../utils/llmPrivacy';
 
 const TRACE_ANALYSIS_REQUIRED_ENVS = ['DEEPSEEK_API_KEY'] as const;

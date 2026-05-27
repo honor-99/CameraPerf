@@ -3,7 +3,7 @@
 ## Perfetto submodule
 
 - `perfetto/` is a submodule forked from Google's official `google/perfetto`
-- Remotes: `origin` = Google upstream, `fork` = Gracker's fork (`git@github.com:Gracker/perfetto.git`)
+- Remotes: `origin` = Google upstream, `fork` = maintainer's fork (`git@github.com:honor-99/perfetto.git`)
 - **ALWAYS push to `fork` remote**, NEVER to `origin` (Google upstream)
 - `.git` file inside `perfetto/` points to `.git/modules/perfetto`
 

@@ -20,7 +20,7 @@
  *   - insufficient_or_scene_absent: sparse data, ambiguous cause
  */
 
-import type { RenderingArchitectureType } from '../agent/detectors/types';
+import type { ArchitectureInfo } from './claudeAgentDefinitions';
 import type { TraceProcessorService } from '../services/traceProcessorService';
 import type { CapabilityProbeResult, CapabilityStatus, TraceCompleteness } from './types';
 

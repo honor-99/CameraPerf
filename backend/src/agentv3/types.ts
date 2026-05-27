@@ -2,7 +2,7 @@
 // Copyright (C) 2024-2026 Gracker (Chris)
 // This file is part of CameraPerf. See LICENSE for details.
 
-import type { ArchitectureInfo } from '../agent/detectors/types';
+import type { ArchitectureInfo } from './claudeAgentDefinitions';
 import type { Finding } from '../agent/types';
 import type { DetectedFocusApp } from './focusAppDetector';
 import type { SceneType } from './sceneClassifier';

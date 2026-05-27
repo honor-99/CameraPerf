@@ -469,5 +469,5 @@ Phase 3: Log 分析工具
 ---
 
 > **报告生成时间：** 2026-05-27
-> **代码基础：** CameraPerf (Gracker/CameraPerf)
+> **代码基础：** CameraPerf (honor-99/CameraPerf, originally Gracker/SmartPerfetto)
 > **分析范围：** backend/src + skills + strategies + docs

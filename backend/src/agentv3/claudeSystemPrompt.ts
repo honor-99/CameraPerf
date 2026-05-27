@@ -4,7 +4,7 @@
 
 import type { ClaudeAnalysisContext, ComparisonContext, SelectionContext, SelectionTrackInfo, TraceCompleteness } from './types';
 import type { SceneType } from './sceneClassifier';
-import type { ArchitectureInfo } from '../agent/detectors/types';
+import type { ArchitectureInfo } from './claudeAgentDefinitions';
 import type { DetectedFocusApp } from './focusAppDetector';
 import { formatDurationNs } from './focusAppDetector';
 import { getStrategyContent, loadPromptTemplate, loadSelectionTemplate, renderTemplate } from './strategyLoader';

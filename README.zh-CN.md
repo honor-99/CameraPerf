@@ -2,8 +2,8 @@
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-[![License: AGPL-3.0-or-later](https://img.shields.io/github/license/Gracker/CameraPerf)](LICENSE)
-[![Backend Regression Gate](https://github.com/Gracker/CameraPerf/actions/workflows/backend-agent-regression-gate.yml/badge.svg)](https://github.com/Gracker/CameraPerf/actions/workflows/backend-agent-regression-gate.yml)
+[![License: AGPL-3.0-or-later](https://img.shields.io/github/license/honor-99/CameraPerf)](LICENSE)
+[![Backend Regression Gate](https://github.com/honor-99/CameraPerf/actions/workflows/backend-agent-regression-gate.yml/badge.svg)](https://github.com/honor-99/CameraPerf/actions/workflows/backend-agent-regression-gate.yml)
 [![Node.js 24 LTS](https://img.shields.io/badge/Node.js-24%20LTS-brightgreen)](package.json)
 [![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178c6)](backend/tsconfig.json)
 [![Docker Compose](https://img.shields.io/badge/Docker-Compose-2496ed)](docker-compose.yml)
@@ -93,7 +93,7 @@ CAMERAPERF_OUTPUT_LANGUAGE=en
 Windows 用户使用 Docker Desktop，并启用 WSL2 backend。发布的是 Linux container 镜像，由 Docker Desktop 承载运行；不需要单独编译 Windows 版镜像。
 
 ```bash
-git clone https://github.com/Gracker/CameraPerf.git
+git clone https://github.com/honor-99/CameraPerf.git
 cd CameraPerf
 cp backend/.env.example .env
 # 编辑 .env，设置 ANTHROPIC_API_KEY，或为代理设置 ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY
@@ -126,7 +126,7 @@ chmod +x /absolute/path/to/trace_processor_shell
 ```
 
 ```bash
-git clone https://github.com/Gracker/CameraPerf.git
+git clone https://github.com/honor-99/CameraPerf.git
 cd CameraPerf
 
 # 方式 A：如果这个终端里的 Claude Code 已经能用，不需要 .env。
@@ -262,7 +262,7 @@ CameraPerf 同时提供终端 CLI，可以不打开浏览器 UI 直接分析 tra
 
 ```bash
 # 需要 Node.js 24 LTS
-npm install -g @gracker/camerapref
+npm install -g @camerapref/cli
 
 # 分析 trace，并继续追问或打开报告。
 smp -f trace.pftrace -p "分析滑动卡顿"
@@ -387,8 +387,8 @@ npm run test:core
 
 ## 联系
 
-- Bug 和功能建议：[GitHub Issues](https://github.com/Gracker/CameraPerf/issues)
-- 安全问题：[GitHub private advisory](https://github.com/Gracker/CameraPerf/security/advisories/new) 或 `camerapref@gracker.dev`
+- Bug 和功能建议：[GitHub Issues](https://github.com/honor-99/CameraPerf/issues)
+- 安全问题：[GitHub private advisory](https://github.com/honor-99/CameraPerf/security/advisories/new) 或 `qwerhyc@163.com`
 - 合作、商业支持、赞助：微信 `553000664`
 
 ## 赞助

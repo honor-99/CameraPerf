@@ -2,7 +2,9 @@
 // Copyright (C) 2024-2026 Gracker (Chris)
 // This file is part of CameraPerf. See LICENSE for details.
 
-import type { AnalysisTerminationReason } from '../agent/core/orchestratorTypes';
+// CameraPerf: AnalysisTerminationReason inlined (agent/core/orchestratorTypes removed)
+type AnalysisTerminationReason = 'max_turns' | 'budget_exceeded' | 'user_cancelled' | 'timeout';
+
 import { DEFAULT_OUTPUT_LANGUAGE, localize, type OutputLanguage } from './outputLanguage';
 
 export const SDK_MAX_TURNS_SUBTYPE = 'error_max_turns';

@@ -3,16 +3,10 @@
 // This file is part of CameraPerf. See LICENSE for details.
 
 import { Request, Response } from 'express';
-import AIService from '../services/aiService';
 import { GenerateSqlRequest, GenerateSqlResponse, ErrorResponse } from '../types';
+import { getTraceProcessorService } from '../services/traceProcessorService';
 
 class SqlController {
-  private aiService: AIService;
-
-  constructor() {
-    this.aiService = new AIService();
-  }
-
   generateSql = async (req: Request, res: Response) => {
     try {
       const { query, context }: GenerateSqlRequest = req.body;
@@ -25,7 +19,6 @@ class SqlController {
         return res.status(400).json(error);
       }
 
-      // Limit query length
       if (query.length > 1000) {
         const error: ErrorResponse = {
           error: 'Query too long',
@@ -34,14 +27,12 @@ class SqlController {
         return res.status(400).json(error);
       }
 
-      const result: GenerateSqlResponse = await this.aiService.generatePerfettoSQL({
-        query,
-        context,
-      });
-
-      res.json(result);
+      // Execute SQL directly via trace processor
+      const tp = getTraceProcessorService();
+      const result = await tp.query(query);
+      res.json({ success: true, data: result });
     } catch (error) {
-      console.error('Error generating SQL:', error);
+      console.error('Error executing SQL:', error);
       const errorResponse: ErrorResponse = {
         error: 'Internal server error',
         details: error instanceof Error ? error.message : 'Unknown error',
@@ -50,8 +41,7 @@ class SqlController {
     }
   };
 
-  // Endpoint to get available Perfetto tables and their schema
-  getTablesSchema = async (req: Request, res: Response) => {
+  getTablesSchema = async (_req: Request, res: Response) => {
     try {
       const tables = [
         {

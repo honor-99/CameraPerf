@@ -3,7 +3,6 @@
 // This file is part of CameraPerf. See LICENSE for details.
 
 import type { NextFunction, Request, Response } from 'express';
-import { recordLegacyApiUsage } from '../services/legacyApiTelemetry';
 
 export const AGENT_API_V1_BASE = '/api/agent/v1';
 export const AGENT_API_V1_LLM_BASE = '/api/agent/v1/llm';
@@ -11,8 +10,7 @@ export const LEGACY_AGENT_API_BASE = '/api/agent';
 export const LEGACY_AGENT_API_LLM_BASE = '/api/agent/llm';
 export const LEGACY_AGENT_API_SUNSET = 'Wed, 30 Jun 2027 00:00:00 GMT';
 
-export function markLegacyAgentApi(req: Request, res: Response, next: NextFunction): void {
-  recordLegacyApiUsage(req);
+export function markLegacyAgentApi(_req: Request, res: Response, next: NextFunction): void {
   res.setHeader('Deprecation', 'true');
   res.setHeader('Sunset', LEGACY_AGENT_API_SUNSET);
   res.setHeader('Link', `<${AGENT_API_V1_BASE}>; rel="successor-version"`);
@@ -39,8 +37,6 @@ export function rejectLegacyAgentApi(req: Request, res: Response, next: NextFunc
     next();
     return;
   }
-
-  recordLegacyApiUsage(req);
 
   const successorPath = mapLegacyPathToSuccessor(req);
   res.setHeader('Deprecation', 'true');

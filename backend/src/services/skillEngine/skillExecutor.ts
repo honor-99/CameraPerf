@@ -39,12 +39,20 @@ import { validateSkillInputs } from './skillValidator';
 import logger from '../../utils/logger';
 import { parseLlmJson } from '../../utils/llmJson';
 import { redactObjectForLLM, redactTextForLLM } from '../../utils/llmPrivacy';
-import { getPipelineDocService } from '../pipelineDocService';
-import {
-  ensurePipelineSkillsInitialized,
-  pipelineSkillLoader,
-  PinInstruction,
-} from '../pipelineSkillLoader';
+
+// CameraPerf: pipelineSkillLoader and pipelineDocService removed (rendering pipeline detection not needed).
+// Inline stubs to keep the teaching/learning code path compiling.
+type PinInstruction = Record<string, unknown>;
+const pipelineSkillLoader = {
+  getTeachingContent(_id: string): string | undefined { return undefined; },
+  getPipelineMeta(_id: string): { doc_path?: string } | undefined { return undefined; },
+  getAutoPinInstructions(_id: string): PinInstruction[] { return []; },
+  getSmartFilterConfigs(_id: string): unknown[] { return []; },
+};
+async function ensurePipelineSkillsInitialized(): Promise<void> {}
+const getPipelineDocService = () => ({
+  getTeachingContent(_id: string): string | undefined { return undefined; },
+});
 import { TEACHING_DEFAULTS, TEACHING_LIMITS } from '../../config/teaching.config';
 import {
   parseCandidates,

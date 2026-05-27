@@ -12,7 +12,6 @@
  */
 
 import { TraceProcessorService } from './traceProcessorService';
-import { SqlKnowledgeBase, createKnowledgeBase, getExtendedKnowledgeBase, ExtendedSqlKnowledgeBase } from './sqlKnowledgeBase';
 import { EnhancedSQLTemplateEngine, getEnhancedSQLTemplateEngine } from './sqlTemplateEngine';
 import {
   PerfettoSkillType,

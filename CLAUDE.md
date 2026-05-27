@@ -57,7 +57,7 @@ Tools used by `/health` for the code quality dashboard:
 - deadcode: `npm run deadcode`
 - shell: `npm run shellcheck` (requires `shellcheck` locally; CI installs it)
 
-`/health` composites these into a 0-10 score and appends a snapshot to `~/.gstack/projects/Gracker-CameraPerf/health-history.jsonl` for trend tracking.
+`/health` composites these into a 0-10 score and appends a snapshot to `~/.camerapref/health/health-history.jsonl` for trend tracking.
 
 ## Architecture Overview
 

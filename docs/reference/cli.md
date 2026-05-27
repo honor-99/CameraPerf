@@ -16,7 +16,7 @@ This file is part of CameraPerf. See LICENSE for details.
 
 ### 1.1 与主后端的关系
 
-CLI 是 `@gracker/camerapref` npm 包的终端入口，**复用 agentv3
+CLI 是 `@camerapref/cli` npm 包的终端入口，**复用 agentv3
 的所有核心模块**（orchestrator、skill 引擎、HTML 报告生成器、SQLite
 持久化），但不共用 Express 路由层。
 
@@ -263,7 +263,7 @@ refactor 也把这个名单扩大了）：
 
 ```bash
 # 需要 Node.js 24 LTS
-npm install -g @gracker/camerapref
+npm install -g @camerapref/cli
 smp --help
 smp -f trace.pftrace -p "分析启动性能"
 ```

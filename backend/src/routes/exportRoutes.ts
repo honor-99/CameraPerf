@@ -3,152 +3,63 @@
 // This file is part of CameraPerf. See LICENSE for details.
 
 /**
- * Export Routes
- * Handle result export requests
+ * Export Routes — simple JSON/CSV export (no external service dependency)
  */
 
 import { Router } from 'express';
-import { ResultExportService, AnalysisSessionExport } from '../services/resultExportService';
 
 const router = Router();
 
+// Simple CSV encoder
+function toCSV(rows: any[], columns: string[]): string {
+  const header = columns.map(c => `"${c}"`).join(',');
+  const body = rows.map(row => columns.map(c => {
+    const v = row[c];
+    if (v === null || v === undefined) return 'NULL';
+    return `"${String(v).replace(/"/g, '""')}"`;
+  }).join(','));
+  return [header, ...body].join('\n');
+}
+
 /**
  * POST /api/export/result
- * Export a single SQL query result
  */
 router.post('/result', async (req, res) => {
   try {
-    const { result, format = 'json', options = {} } = req.body;
-
-    // Validate format
-    if (format !== 'csv' && format !== 'json') {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid format. Must be "csv" or "json"'
-      });
-    }
-
-    // Validate delimiter for CSV format
-    if (format === 'csv' && options.delimiter) {
-      if (typeof options.delimiter !== 'string' || options.delimiter.length !== 1) {
-        return res.status(400).json({
-          success: false,
-          error: 'Delimiter must be a single character'
-        });
-      }
-    }
-
-    // Validate result structure
-    if (!result || !Array.isArray(result.columns) || !Array.isArray(result.rows)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid result data. Must include columns (array) and rows (array).'
-      });
-    }
-
-    const exportService = ResultExportService.getInstance();
-    const exportResult = exportService.exportResult(result, { format, ...options });
-
-    res.setHeader('Content-Type', exportResult.mimeType);
-    res.setHeader('Content-Disposition', `attachment; filename="${exportResult.filename}"`);
-    res.send(exportResult.data);
-  } catch (error: any) {
-    res.status(500).json({ success: false, error: error.message || 'An unknown error occurred' });
-  }
-});
-
-/**
- * POST /api/export/session
- * Export all results from a session
- */
-router.post('/session', async (req, res) => {
-  try {
-    const { results, format = 'json', options = {} } = req.body;
-
-    // Validate format
-    if (format !== 'csv' && format !== 'json') {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid format. Must be "csv" or "json"'
-      });
-    }
-
-    // Validate delimiter for CSV format
-    if (format === 'csv' && options.delimiter) {
-      if (typeof options.delimiter !== 'string' || options.delimiter.length !== 1) {
-        return res.status(400).json({
-          success: false,
-          error: 'Delimiter must be a single character'
-        });
-      }
-    }
-
-    if (!Array.isArray(results)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid results data. Must be an array.',
-      });
-    }
-
-    const exportService = ResultExportService.getInstance();
-    const exportResult = exportService.exportSession(results, { format, ...options });
-
-    res.setHeader('Content-Type', exportResult.mimeType);
-    res.setHeader('Content-Disposition', `attachment; filename="${exportResult.filename}"`);
-    res.send(exportResult.data);
-  } catch (error: any) {
-    res.status(500).json({ success: false, error: error.message || 'An unknown error occurred' });
-  }
-});
-
-/**
- * POST /api/export/analysis
- * Export agentv3 analysis session (findings, plan, hypotheses, notes, conclusion)
- */
-router.post('/analysis', async (req, res) => {
-  try {
-    const { sessionId, format = 'json', options = {}, ...analysisData } = req.body;
+    const { result, format = 'json' } = req.body;
 
     if (format !== 'csv' && format !== 'json') {
       return res.status(400).json({ success: false, error: 'Invalid format. Must be "csv" or "json"' });
     }
-    if (!sessionId) {
-      return res.status(400).json({ success: false, error: 'sessionId is required' });
+    if (!result || !Array.isArray(result.columns) || !Array.isArray(result.rows)) {
+      return res.status(400).json({ success: false, error: 'Invalid result data.' });
     }
 
-    const exportData: AnalysisSessionExport = { sessionId, ...analysisData };
-    const exportService = ResultExportService.getInstance();
-    const exportResult = exportService.exportAnalysisSession(exportData, { format, ...options });
-
-    res.setHeader('Content-Type', exportResult.mimeType);
-    res.setHeader('Content-Disposition', `attachment; filename="${exportResult.filename}"`);
-    res.send(exportResult.data);
+    if (format === 'csv') {
+      const csv = toCSV(result.rows, result.columns);
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="export.csv"');
+      res.send(csv);
+    } else {
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', 'attachment; filename="export.json"');
+      res.send(JSON.stringify(result, null, 2));
+    }
   } catch (error: any) {
-    res.status(500).json({ success: false, error: error.message || 'An unknown error occurred' });
+    res.status(500).json({ success: false, error: error.message || 'Export failed' });
   }
 });
 
 /**
  * GET /api/export/formats
- * Get available export formats
  */
-router.get('/formats', (req, res) => {
+router.get('/formats', (_req, res) => {
   res.json({
     success: true,
     formats: [
-      { name: 'json', mimeType: 'application/json', description: 'JSON format with metadata' },
+      { name: 'json', mimeType: 'application/json', description: 'JSON format' },
       { name: 'csv', mimeType: 'text/csv', description: 'CSV format (RFC 4180)' },
     ],
-    options: {
-      json: {
-        prettyPrint: { type: 'boolean', default: true, description: 'Pretty print JSON output' },
-      },
-      csv: {
-        includeHeaders: { type: 'boolean', default: true, description: 'Include column headers' },
-        delimiter: { type: 'string', default: ',', description: 'Field delimiter' },
-        nullValue: { type: 'string', default: 'NULL', description: 'Representation of null values' },
-      },
-    },
   });
 });
 

@@ -18,7 +18,7 @@ Thanks for your interest in contributing! This guide covers development setup, t
 
 ```bash
 # 1. Clone with submodules
-git clone --recursive https://github.com/Gracker/CameraPerf.git
+git clone --recursive https://github.com/honor-99/CameraPerf.git
 cd CameraPerf
 
 # Optional but recommended if you use nvm/fnm.
@@ -186,7 +186,7 @@ Scopes: skills, agentv3, frontend, strategies, ci
 
 ## Getting Help
 
-- Open an [Issue](https://github.com/Gracker/CameraPerf/issues) for bugs or feature requests
+- Open an [Issue](https://github.com/honor-99/CameraPerf/issues) for bugs or feature requests
 - Start from the [Documentation Center](docs/README.md)
 - Check [Technical Architecture](docs/architecture/technical-architecture.md) for deep dives
 - Check [MCP Tools Reference](docs/reference/mcp-tools.md) for tool documentation
