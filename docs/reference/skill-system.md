@@ -51,12 +51,12 @@ Skill Engine 自动执行:
 
 | 类型 | 数量 | 位置 | 说明 |
 |------|------|------|------|
-| **Atomic** | 87 | `skills/atomic/` | 单步 SQL 查询 (有些含多个 steps) |
-| **Composite** | 29 | `skills/composite/` | 多步编排 (iterator/parallel/conditional) |
-| **Deep** | 2 | `skills/deep/` | 深度分析 (CPU profiling, callstack) |
-| **Pipeline** | 28 | `skills/pipelines/` | 渲染管线检测 + 教学内容 |
-| **Module** | 18 | `skills/modules/` | 模块化分析 (app/framework/hardware/kernel) |
-| **总计** | **164** | | |
+|| **Atomic** | 11 | `skills/atomic/` | 单步 SQL 查询 (有些含多个 steps) |
+|| **Composite** | 17 | `skills/composite/` | 多步编排 (iterator/parallel/conditional) |
+|| **Deep** | 2 | `skills/deep/` | 深度分析 (CPU profiling, callstack) |
+|| **Pipeline** | 1 | `skills/pipelines/` | Camera 渲染管线检测 + 教学内容 |
+|| **Module** | 10 | `skills/modules/` | 模块化分析 (framework/hardware/kernel) |
+|| **总计** | **41** | | |
 
 ### 按场景分类
 

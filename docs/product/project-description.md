@@ -43,8 +43,8 @@ Frontend (Perfetto UI @ :10000) ◄─SSE/HTTP─► Backend (Express @ :3000)
 |-----------|---------|
 | **ClaudeRuntime** | Main orchestrator: scene classification → dynamic system prompt → Claude Agent SDK → verification |
 | **MCP Server** | 20 tools bridging Claude to trace data (SQL, Skills, schema lookup, planning, hypothesis, comparison) |
-| **Skill Engine** | 164 YAML-defined analysis pipelines producing layered results (L1 overview → L4 deep root cause) |
-| **Scene Classifier** | Keyword-based routing (<1ms) to 12 scene-specific strategies |
+| **Skill Engine** | 41 YAML-defined analysis pipelines producing layered results (L1 overview → L4 deep root cause) |
+| **Scene Classifier** | Keyword-based routing to Camera-specific strategies |
 | **Verifier** | 4-layer quality check (heuristic + plan + hypothesis + LLM) with reflection retry |
 | **Artifact Store** | Caches skill results as compact references (~3000 tokens saved per invocation) |
 | **SQL Summarizer** | Compresses SQL results to stats + samples (~85% token savings) |
@@ -71,14 +71,14 @@ User Query: "分析滑动卡顿"
         └─ SSE streaming → Frontend real-time display
 ```
 
-### Skill Categories (164 total)
+### Skill Categories (41 total)
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| **Atomic** | 87 | Single SQL query (VSync detection, CPU topology, GPU metrics, ...) |
-| **Composite** | 29 | Multi-step analysis (scrolling, startup, ANR, memory, ...) |
-| **Pipeline** | 28 | Rendering pipeline detection + teaching (28 Android render architectures) |
-| **Module** | 18 | Module analysis (app/framework/hardware/kernel) |
+| **Atomic** | 11 | Single SQL query (VSync detection, CPU topology, GPU metrics, ...) |
+| **Composite** | 17 | Multi-step analysis (CPU, GPU, memory, thermal, binder, ...) |
+| **Pipeline** | 1 | Camera rendering pipeline detection + teaching |
+| **Module** | 10 | Module analysis (framework/hardware/kernel) |
 | **Deep** | 2 | CPU profiling, callstack analysis |
 
 ### MCP Tools (20)
@@ -107,7 +107,7 @@ execute_sql_on, compare_skill, get_comparison_context
 2. **Claude as autonomous orchestrator** — Claude decides which tools to call, not hardcoded pipelines
 3. **Evidence-first verification** — 4-layer check ensures every CRITICAL finding has data backing
 4. **Layered results (L1-L4)** — Progressive detail from overview to per-frame root cause
-5. **DataEnvelope v2.0** — Schema-driven rendering; frontend auto-renders 164 skills without per-skill UI code
+5. **DataEnvelope v2.0** — Schema-driven rendering; frontend auto-renders 41 skills without per-skill UI code
 6. **Token engineering** — Artifact store + SQL summarizer + progressive prompt dropping keeps context efficient
 
 ## Getting Started
