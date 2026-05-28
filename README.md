@@ -1,6 +1,6 @@
 # CameraPerf
 
-> AI-powered Camera performance analysis — specialized trace analysis for Android Camera preview, recording, and multi-output scenarios.
+[English](README.md) | [中文](README.zh-CN.md)
 
 [![License: AGPL-3.0-or-later](https://img.shields.io/github/license/honor-99/CameraPerf)](LICENSE)
 [![Node.js 24 LTS](https://img.shields.io/badge/Node.js-24%20LTS-brightgreen)](backend/package.json)
@@ -73,8 +73,10 @@ Claude Agent SDK  ──  Analysis + report generation
 
 ## API
 
-Coming soon — trace upload, camera analysis, and report generation endpoints.
+The backend exposes REST + SSE endpoints for analysis. See [API Reference](docs/reference/api.md) for full details.
 
 ## License
 
 AGPL-3.0-or-later. Original Gracker copyright retained — see [LICENSE](LICENSE).
+
+For commercial licensing inquiries, contact [qwerhyc@163.com](mailto:qwerhyc@163.com).

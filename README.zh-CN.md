@@ -255,8 +255,8 @@ npm run verify:pr
 
 - Bug 和功能建议：[GitHub Issues](https://github.com/honor-99/CameraPerf/issues)
 - 安全问题：[GitHub private advisory](https://github.com/honor-99/CameraPerf/security/advisories/new) 或 `qwerhyc@163.com`
-- 合作、商业支持、赞助：微信 `553000664`
+- 合作、商业支持、赞助：[qwerhyc@163.com](mailto:qwerhyc@163.com)
 
 ## 许可证
 
-CameraPerf 核心代码使用 [AGPL-3.0-or-later](LICENSE)。如需不受 AGPL 义务约束的商业授权，请通过微信 `553000664` 联系维护者。
+CameraPerf 核心代码使用 [AGPL-3.0-or-later](LICENSE)。如需不受 AGPL 义务约束的商业授权，请通过 [qwerhyc@163.com](mailto:qwerhyc@163.com) 联系维护者。
