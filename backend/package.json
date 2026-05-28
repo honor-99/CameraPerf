@@ -41,7 +41,7 @@
     "prepack": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "test:core": "jest --runInBand --forceExit src/agent/communication/__tests__/agentMessageBus.test.ts src/agent/core/executors/__tests__/strategyExecutor.test.ts src/agent/core/executors/__tests__/hypothesisExecutor.test.ts src/agent/context/__tests__/enhancedSessionContext.test.ts src/tests/adbTools.test.ts src/services/__tests__/sessionLogger.test.ts src/services/__tests__/traceAnalysisSkillConfig.test.ts src/agent/agents/domain/__tests__/registry.test.ts src/agentv3/__tests__/sqlIncludeInjector.test.ts",
+    "test:core": "jest --runInBand --forceExit tests/skill-eval/scene_trace_regression.ts",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:unit": "jest --testPathPatterns=src/tests",
@@ -64,9 +64,6 @@
     "skill:test": "tsx src/cli/index.ts test",
     "skill:smoke": "tsx src/cli/index.ts smoke",
     "skill:list": "tsx src/cli/index.ts list",
-    "test:scrolling": "tsx src/scripts/runScrollingTest.ts",
-    "test:scrolling:real": "tsx src/scripts/runScrollingTestRealData.ts",
-    "verify:agent-sse-scrolling": "tsx src/scripts/verifyAgentSseScrolling.ts",
     "generate:frontend-types": "tsx scripts/generateFrontendTypes.ts",
     "check:types": "tsx scripts/checkTypesSync.ts",
     "types": "npm run generate:frontend-types"
