@@ -3,7 +3,7 @@ services:
     image: w553000664/camerapref:latest
     ports:
       - "3000:3000"    # Backend API
-      - "10000:10000"  # Perfetto UI
+      - "10000:10000"  # Perfetto trace viewer
     environment:
       - PORT=3000
       - NODE_ENV=production
