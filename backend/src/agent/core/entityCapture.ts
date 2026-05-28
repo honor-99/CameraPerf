@@ -4,7 +4,7 @@
 
 /**
  * Entity Capture Stub
- * Reduced from the full SmartPerfetto entityCapture module after agent v1/v2 removal.
+ * Reduced from the full CameraPerf entityCapture module after agent v1/v2 removal.
  * The full module had complex dependency chains into agent context/strategies/types systems
  * that no longer exist in CameraPerf. This stub preserves the two entry points still used
  * by claudeRuntime.ts for entity context building.

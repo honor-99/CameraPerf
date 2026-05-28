@@ -4,7 +4,7 @@
 
 /**
  * Orchestrator Types Stub
- * Reduced from the full SmartPerfetto orchestratorTypes module after agent v1/v2 removal.
+ * Reduced from the full CameraPerf orchestratorTypes module after agent v1/v2 removal.
  */
 
 import type { SelectionContext } from '../../agentv3/types';
