@@ -159,8 +159,8 @@ export interface TraceCompleteness {
 
 // =============================================================================
 // User Selection Context (from Perfetto UI)
-// Mirror types exist in perfetto/ui/.../com.camerapref.AIAssistant/types.ts.
-// Keep both in sync when modifying.
+// These types were originally mirrored from the Perfetto UI plugin;
+// the frontend plugin has been removed in the CameraPerf fork.
 // =============================================================================
 
 /** Area selection — user pressed M key to mark a time range. */

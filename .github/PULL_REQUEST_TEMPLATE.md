@@ -30,7 +30,6 @@
 - [ ] `backend/src/agentv3/` (primary runtime: ClaudeRuntime, MCP server, verifier)
 - [ ] `backend/skills/` (YAML skills)
 - [ ] `backend/strategies/` (`*.strategy.md`, `*.template.md`, `knowledge-*`)
-- [ ] `perfetto/ui/src/plugins/com.camerapref.AIAssistant/` (frontend)
 - [ ] `scripts/` / `backend/scripts/` (tooling, generators)
 - [ ] `.github/workflows/` (CI)
 - [ ] Tests only
