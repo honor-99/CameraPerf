@@ -13,6 +13,7 @@
 
 import { TraceProcessorService } from './traceProcessorService';
 import { EnhancedSQLTemplateEngine, getEnhancedSQLTemplateEngine } from './sqlTemplateEngine';
+import { createKnowledgeBase, type SqlKnowledgeBase } from './sqlKnowledgeBase';
 import {
   PerfettoSkillType,
   type DetectedIntent,

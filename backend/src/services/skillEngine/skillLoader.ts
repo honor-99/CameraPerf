@@ -18,6 +18,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 import { SkillDefinition, ModuleLayer, DialogueCapability, SkillStep } from './types';
 import logger from '../../utils/logger';
+import { generateRenderingPipelineDetectionSkill } from './renderingDetectionSkill';
 import { validateSkillConditions, validateFragmentReferences } from './skillValidator';
 import {
   VALID_DISPLAY_LAYERS,

@@ -39,6 +39,7 @@ import {
 
 // Import cleanup utilities
 import { TraceProcessorFactory, killOrphanProcessors } from './services/workingTraceProcessor';
+import { getProviderService } from './services/providerService';
 
 const app = express();
 const PORT = serverConfig.port;

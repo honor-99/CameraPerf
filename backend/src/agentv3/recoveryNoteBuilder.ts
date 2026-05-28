@@ -28,7 +28,7 @@
  */
 
 import type { AnalysisPlanV3, ToolCallRecord } from './types';
-import type { Finding } from '../agent/types';
+import type { Finding } from './types';
 
 export const DEFAULT_MAX_NOTE_CHARS = 800;
 export const DEFAULT_RAW_TOOL_PRESERVE = 5;

@@ -21,6 +21,7 @@
  */
 
 import type { ArchitectureInfo } from './claudeAgentDefinitions';
+import type { RenderingArchitectureType } from './renderingArchitectureType';
 import type { TraceProcessorService } from '../services/traceProcessorService';
 import type { CapabilityProbeResult, CapabilityStatus, TraceCompleteness } from './types';
 

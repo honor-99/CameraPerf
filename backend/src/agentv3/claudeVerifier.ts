@@ -19,7 +19,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { query as sdkQuery } from '@anthropic-ai/claude-agent-sdk';
 import { createSdkEnv } from './claudeConfig';
-import type { Finding, StreamingUpdate } from '../agent/types';
+import type { Finding, StreamingUpdate } from './types';
 import type { VerificationResult, VerificationIssue, AnalysisPlanV3, Hypothesis } from './types';
 import { expectedToolNames } from './types';
 import type { SceneType } from './sceneClassifier';

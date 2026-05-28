@@ -2,7 +2,7 @@
 // Copyright (C) 2024-2026 Gracker (Chris)
 // This file is part of CameraPerf. See LICENSE for details.
 
-import type { StreamingUpdate } from '../agent/types';
+import type { StreamingUpdate } from './types';
 import {
   isSdkMaxTurnsSubtype,
   MAX_TURNS_TERMINATION_REASON,

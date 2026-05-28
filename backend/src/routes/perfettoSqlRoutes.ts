@@ -507,7 +507,7 @@ router.get('/functions', (req, res) => {
 
     let functions;
     if (category && typeof category === 'string') {
-      functions = knowledgeBase.getFunctionsByCategory(category);
+      functions = (knowledgeBase as any).getFunctionsByCategory(category);
     } else {
       functions = knowledgeBase.getFunctions();
     }

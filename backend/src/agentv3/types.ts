@@ -3,10 +3,59 @@
 // This file is part of CameraPerf. See LICENSE for details.
 
 import type { ArchitectureInfo } from './claudeAgentDefinitions';
-import type { Finding } from '../agent/types';
 import type { DetectedFocusApp } from './focusAppDetector';
 import type { SceneType } from './sceneClassifier';
 import type { OutputLanguage } from './outputLanguage';
+
+// =============================================================================
+// Core types formerly in agent/types.ts — preserved locally after agent v1/v2 removal.
+// =============================================================================
+
+/** A diagnostic finding discovered during trace analysis. */
+export interface Finding {
+  id: string;
+  /** Finding category (e.g., scrolling, startup, memory) */
+  category?: string;
+  /** Finding type (e.g., root_cause, performance, issue) */
+  type?: string;
+  /** Severity level */
+  severity: 'info' | 'warning' | 'critical' | 'low' | 'medium' | 'high';
+  title: string;
+  description: string;
+  evidence?: any[];
+  relatedTimestamps?: string[];
+  timestampsNs?: number[];
+  /** Source (e.g., decision_tree, skill, analysis) */
+  source?: string;
+  /** Confidence (0-1) */
+  confidence?: number;
+  /** Additional detail fields */
+  details?: Record<string, any>;
+  /** Optimization recommendations */
+  recommendations?: Array<{
+    id: string;
+    text: string;
+    priority: number;
+  }>;
+}
+
+/** A streaming update emitted during analysis for real-time progress display. */
+export interface StreamingUpdate {
+  type: 'data' | 'thought' | 'tool_call' | 'finding' | 'progress' | 'answer_token'
+    | 'conclusion' | 'error' | 'scene_detected' | 'track_data'
+    | 'skill_layered_result' | 'worker_thought' | 'architecture_detected'
+    | 'hypothesis_generated' | 'agent_task_dispatched' | 'agent_dialogue'
+    | 'conversation_step' | 'degraded' | 'sub_agent_started' | 'sub_agent_completed'
+    | 'plan_submitted' | 'plan_phase_updated' | 'plan_revised' | 'agent_response';
+  [key: string]: any;
+}
+
+/** Reference to a finding across turns, for persistence linking. */
+export interface FindingReference {
+  findingId: string;
+  turnId: string;
+  refType: 'continuation' | 'clarification' | 'contrast' | 'expansion';
+}
 
 // =============================================================================
 // Query Complexity Classification

@@ -14,10 +14,15 @@ import { skillRegistry } from '../services/skillEngine/skillLoader';
 import { displayResultToEnvelope } from '../types/dataContract';
 import type { DisplayResult as SkillDisplayResult } from '../services/skillEngine/types';
 // CameraPerf: removed import from deleted agent/types
-import type { SqlSchemaIndex, AnalysisNote, AnalysisPlanV3, PlanRevision, Hypothesis, UncertaintyFlag } from './types';
+import type { SqlSchemaIndex, AnalysisNote, AnalysisPlanV3, PlanRevision, Hypothesis, UncertaintyFlag, StreamingUpdate } from './types';
 import type { SceneType } from './sceneClassifier';
+import { createArchitectureDetector } from './archDetector';
 import { summarizeSqlResult } from './sqlSummarizer';
 import { matchPatterns, matchNegativePatterns, extractTraceFeatures } from './analysisPatternMemory';
+import { loadSkillNotes } from './selfImprove/skillNotesInjector';
+import type { ArchitectureInfo } from './claudeAgentDefinitions';
+import { RagStore } from '../services/ragStore';
+import { CaseLibrary } from '../services/caseLibrary';
 import {
   getPerfettoStdlibModules,
   getPerfettoStdlibPath,
@@ -312,7 +317,7 @@ export interface ClaudeMcpServerOptions {
   /** Optional artifact store for token-efficient skill result references */
   artifactStore?: ArtifactStore;
   /** Cached architecture detection result — avoids redundant re-detection */
-  cachedArchitecture?: import('../agent/detectors/types').ArchitectureInfo;
+  cachedArchitecture?: ArchitectureInfo;
   /** Per-session SQL error-fix pairs for in-context learning */
   recentSqlErrors?: SqlErrorFixPair[];
   /** Mutable analysis plan — passed by reference from analyze() scope */
@@ -887,24 +892,24 @@ export function createClaudeMcpServer(options: ClaudeMcpServerOptions) {
               text: JSON.stringify({
                 type: info.type,
                 confidence: info.confidence,
-                evidence: info.evidence.map(e => ({ source: e.source, type: e.type, weight: e.weight })),
+                evidence: info.evidence?.map(e => ({ source: e.source, type: e.type, weight: e.weight })),
                 flutter: info.flutter,
                 compose: info.compose,
                 webview: info.webview,
                 cached: true,
-              }),
-            }],
-          };
-        }
-        const detector = createArchitectureDetector();
-        const info = await detector.detect({ traceId, traceProcessorService, packageName });
-        return {
-          content: [{
-            type: 'text' as const,
-            text: JSON.stringify({
-              type: info.type,
-              confidence: info.confidence,
-              evidence: info.evidence.map(e => ({ source: e.source, type: e.type, weight: e.weight })),
+                }),
+                }],
+                };
+                }
+                const detector = createArchitectureDetector();
+                const info = await detector.detect({ traceId, traceProcessorService, packageName });
+                return {
+                content: [{
+                type: 'text' as const,
+                text: JSON.stringify({
+                type: info.type,
+                confidence: info.confidence,
+                evidence: info.evidence?.map(e => ({ source: e.source, type: e.type, weight: e.weight })),
               flutter: info.flutter,
               compose: info.compose,
               webview: info.webview,

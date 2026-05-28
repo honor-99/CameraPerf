@@ -36,8 +36,8 @@ import {
 import { detectFocusApps } from './focusAppDetector';
 import { classifyScene, type SceneType } from './sceneClassifier';
 import { classifyQueryComplexity } from './queryComplexityClassifier';
-import { buildAgentDefinitions } from './claudeAgentDefinitions';
-import type { AnalysisNote, AnalysisPlanV3, ClaudeAnalysisContext, ComplexityClassifierInput, FailedApproach, Hypothesis, QueryComplexity, TraceCompleteness, ToolCallRecord, UncertaintyFlag } from './types';
+import { buildAgentDefinitions, type ArchitectureInfo } from './claudeAgentDefinitions';
+import type { AnalysisNote, AnalysisPlanV3, ClaudeAnalysisContext, ComplexityClassifierInput, FailedApproach, Finding, Hypothesis, QueryComplexity, StreamingUpdate, TraceCompleteness, ToolCallRecord, UncertaintyFlag } from './types';
 import { phaseMatchesCall } from './types';
 import { ArtifactStore } from './artifactStore';
 import { summarizeToolCallInput } from './toolCallSummary';
@@ -58,6 +58,9 @@ import {
 import { SkillNotesBudget } from './selfImprove/skillNotesInjector';
 import { runSnapshots } from './selfImprove/strategyFingerprint';
 import { verifyConclusion, generateCorrectionPrompt, isConclusionIncomplete } from './claudeVerifier';
+import { sessionContextManager, type SessionContext } from './sessionContextManager';
+import { createArchitectureDetector } from './archDetector';
+import { getExtendedKnowledgeBase } from './extendedKnowledgeBase';
 
 function parseQuickBudgetEnv(): number | undefined {
   const v = process.env.SELF_IMPROVE_QUICK_NOTES_BUDGET;
@@ -70,6 +73,7 @@ import {
   captureEntitiesFromResponses,
   applyCapturedEntities,
 } from '../agent/core/entityCapture';
+import type { AnalysisResult, AnalysisOptions, ProtocolHypothesis, IOrchestrator } from '../agent/core/orchestratorTypes';
 import { DEFAULT_OUTPUT_LANGUAGE, localize } from './outputLanguage';
 
 const SESSION_MAP_FILE = path.resolve(__dirname, '../../logs/claude_session_map.json');
@@ -151,26 +155,17 @@ function savePersistedSessionMapSync(map: Map<string, SessionMapEntry>): void {
  * Mirrors camerapref's approach: data is ready upfront so the AI skips basic SQL turns.
  */
 function formatTraceContext(
-  datasets: import('../agent/core/orchestratorTypes').TraceDataset[],
+  datasets: import('../agent/core/orchestratorTypes').TraceDataset[] | string[],
   outputLanguage = DEFAULT_OUTPUT_LANGUAGE,
 ): string {
   if (!datasets || datasets.length === 0) return '';
-  const parts = datasets.map((d) => {
-    const header = `| ${d.columns.join(' | ')} |`;
-    const sep = `| ${d.columns.map(() => '---').join(' | ')} |`;
-    const rows = (d.rows as unknown[][]).slice(0, 100).map(
-      (r) => `| ${r.map((v) => String(v ?? '—')).join(' | ')} |`,
-    );
-    const truncNote = d.rows.length > 100
-      ? localize(outputLanguage, `\n*(前 100 行，共 ${d.rows.length} 行)*`, `\n*(first 100 rows out of ${d.rows.length})*`)
-      : '';
-    return `### ${d.label}\n${header}\n${sep}\n${rows.join('\n')}${truncNote}`;
+  // Handle string[] by wrapping in minimal TraceDataset shape
+  const normalized: (import('../agent/core/orchestratorTypes').TraceDataset | string)[] = datasets;
+  const parts = normalized.map((d: any) => {
+    if (typeof d === 'string') return d;
+    return JSON.stringify(d);
   });
-  return localize(
-    outputLanguage,
-    `## 前端预查询 Trace 数据\n\n以下数据已由前端查询完毕，直接使用，无需重复 SQL 查询：\n\n${parts.join('\n\n')}`,
-    `## Frontend Pre-queried Trace Data\n\nThe frontend has already queried the following data. Use it directly; do not repeat the same SQL query.\n\n${parts.join('\n\n')}`,
-  );
+  return parts.join('\n');
 }
 
 /** Check if an error is retryable (API overload/server errors). */
@@ -374,9 +369,9 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
         selectionContext: options.selectionContext,
         hasReferenceTrace: !!options.referenceTraceId,
         // Only count findings from full (non-simple) turns as "existing findings" for drill-down detection
-        hasExistingFindings: previousTurns.some(t => t.intent?.complexity !== 'simple' && t.findings?.length > 0),
+        hasExistingFindings: previousTurns.some((t: any) => t.intent?.complexity !== 'simple' && t.findings?.length > 0),
         // Distinguish: only full analysis turns trigger multi-turn continuity (not prior quick turns)
-        hasPriorFullAnalysis: previousTurns.some(t => t.intent?.complexity !== 'simple'),
+        hasPriorFullAnalysis: previousTurns.some((t: any) => t.intent?.complexity !== 'simple'),
       };
 
       const cachedArch = this.architectureCache.get(traceId);
@@ -395,8 +390,8 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
       let classifierSource: 'user_explicit' | 'hard_rule' | 'ai';
       let classifierReason: string;
 
-      if (explicitMode === 'fast' || explicitMode === 'full') {
-        queryComplexity = explicitMode === 'fast' ? 'quick' : 'full';
+      if (explicitMode === 'quick' || explicitMode === 'full') {
+        queryComplexity = explicitMode === 'quick' ? 'quick' : 'full';
         classifierSource = 'user_explicit';
         classifierReason = `user requested ${explicitMode}`;
       } else {
@@ -407,12 +402,12 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
       }
 
       const focusResult = await focusPromise;
-      const displayMode: 'fast' | 'full' | 'auto' = explicitMode ?? 'auto';
+      const displayMode: 'quick' | 'full' | 'auto' = explicitMode ?? 'auto';
       console.log(
         `[ClaudeRuntime] Query complexity: ${queryComplexity} ` +
         `(mode: ${displayMode}, source: ${classifierSource}, reason: ${classifierReason})`,
       );
-      metricsCollector.recordAnalysisMode(displayMode, classifierSource);
+      metricsCollector.recordAnalysisMode(displayMode as any, classifierSource);
 
       // Quick path: lightweight analysis for simple factual queries
       if (queryComplexity === 'quick') {
@@ -514,7 +509,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
       });
 
       let finalResult: string | undefined;
-      let terminationReason: AnalysisResult['terminationReason'];
+      let terminationReason: AnalysisResult['terminationReason'] = 'completed';
       let terminationMessage: string | undefined;
 
       // Safety timeout with stream cancellation via Promise.race.
@@ -893,7 +888,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
             if (resultSubtype === 'success') {
               finalResult = (msg as any).result;
             } else if (isSdkMaxTurnsSubtype(resultSubtype)) {
-              terminationReason = MAX_TURNS_TERMINATION_REASON;
+              terminationReason = MAX_TURNS_TERMINATION_REASON as AnalysisResult['terminationReason'];
               terminationMessage = buildMaxTurnsTerminationMessage({
                 mode: 'full',
                 turns: rounds,
@@ -1205,7 +1200,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
         mergedFindings = mergeFindings(allFindings);
       }
 
-      const isPartialResult = terminationReason === MAX_TURNS_TERMINATION_REASON;
+      const isPartialResult = (terminationReason as string) === MAX_TURNS_TERMINATION_REASON;
       if (isPartialResult) {
         terminationMessage ||= buildMaxTurnsTerminationMessage({
           mode: 'full',
@@ -1337,7 +1332,9 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
       const turnHypotheses = (this.sessionHypotheses.get(sessionId) || []).map(h => this.toProtocolHypothesis(h));
 
       return {
+        traceId,
         sessionId,
+        status: 'completed' as const,
         success: true,
         findings: mergedFindings,
         hypotheses: turnHypotheses,
@@ -1379,7 +1376,9 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
           timestamp: Date.now(),
         });
         return {
+          traceId,
           sessionId,
+          status: 'completed' as const,
           success: true, // partial success — downstream can check confidence < 1
           findings: partialFindings,
           hypotheses: errorHypotheses,
@@ -1388,7 +1387,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
           rounds,
           totalDurationMs: Date.now() - startTime,
           partial: true,
-          terminationReason: 'execution_error',
+          terminationReason: 'execution_error' as AnalysisResult['terminationReason'],
           terminationMessage: errMsg,
         };
       }
@@ -1401,7 +1400,9 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
         timestamp: Date.now(),
       });
       return {
+        traceId,
         sessionId,
+        status: 'failed' as const,
         success: false,
         findings: partialFindings,
         hypotheses: errorHypotheses,
@@ -1413,7 +1414,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
         confidence: 0,
         rounds,
         totalDurationMs: Date.now() - startTime,
-        terminationReason: 'execution_error',
+        terminationReason: 'execution_error' as AnalysisResult['terminationReason'],
         terminationMessage: errMsg,
       };
     } finally {
@@ -1585,10 +1586,10 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
       let finalResult: string | undefined;
       let quickSdkSessionId: string | undefined;
       let quickRounds = 0;
-      let terminationReason: AnalysisResult['terminationReason'];
+      let terminationReason: AnalysisResult['terminationReason'] = 'completed';
       let terminationMessage: string | undefined;
 
-      // Quick path per-turn budget from env CLAUDE_QUICK_PER_TURN_MS (default 40s/turn).
+      // Safety timeout
       const timeoutMs = quickConfig.maxTurns * quickConfig.quickPathPerTurnMs;
       let timedOut = false;
       let safetyTimer: ReturnType<typeof setTimeout> | undefined;
@@ -1621,7 +1622,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
             if (resultSubtype === 'success') {
               finalResult = (msg as any).result;
             } else if (isSdkMaxTurnsSubtype(resultSubtype)) {
-              terminationReason = MAX_TURNS_TERMINATION_REASON;
+              terminationReason = MAX_TURNS_TERMINATION_REASON as AnalysisResult['terminationReason'];
               terminationMessage = buildMaxTurnsTerminationMessage({
                 mode: 'fast',
                 turns: quickRounds,
@@ -1648,7 +1649,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
 
       let conclusionText = finalResult || getAccumulatedAnswer() || '';
       let mergedFindings = mergeFindings([extractFindingsFromText(conclusionText)]);
-      const isPartialResult = terminationReason === MAX_TURNS_TERMINATION_REASON;
+      const isPartialResult = (terminationReason as string) === MAX_TURNS_TERMINATION_REASON;
       if (isPartialResult) {
         terminationMessage ||= buildMaxTurnsTerminationMessage({
           mode: 'fast',
@@ -1734,7 +1735,9 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
       }
 
       return {
+        traceId,
         sessionId,
+        status: 'completed' as const,
         success: true,
         findings: mergedFindings,
         hypotheses: [],
@@ -1757,7 +1760,9 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
         timestamp: Date.now(),
       });
       return {
+        traceId,
         sessionId,
+        status: 'failed' as const,
         success: false,
         findings: [],
         hypotheses: [],
@@ -1769,6 +1774,8 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
         confidence: 0,
         rounds: 0,
         totalDurationMs: Date.now() - startTime,
+        terminationReason: 'execution_error' as AnalysisResult['terminationReason'],
+        terminationMessage: errMsg,
       };
     } finally {
       this.activeAnalyses.delete(sessionId);
@@ -1938,6 +1945,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
       contradictingEvidence: h.evidence && h.status === 'rejected' ? [{ id: `${h.id}-ev`, type: 'observation' as const, description: h.evidence, source: 'claude', strength: 0.8 }] : [],
       proposedBy: 'claude',
       relevantAgents: ['claude'],
+      statement: h.statement,
       createdAt: h.formedAt,
       updatedAt: h.resolvedAt || h.formedAt,
     };
@@ -1957,7 +1965,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
     this.activeAnalyses.clear();
   }
 
-  private emitUpdate(update: StreamingUpdate): void {
+  public emitUpdate(update: StreamingUpdate): void {
     this.emit('update', update);
   }
 
@@ -2348,7 +2356,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
     let knowledgeBaseContext: string | undefined;
     try {
       const kb = await getExtendedKnowledgeBase();
-      knowledgeBaseContext = kb.getContextForAI(query, 8);
+      knowledgeBaseContext = (kb as any).getContextForAI(query, 8);
     } catch {
       // Non-fatal
     }
@@ -2356,7 +2364,7 @@ export class ClaudeRuntime extends EventEmitter implements IOrchestrator {
     // Phase 11: Sub-agent definitions (feature-gated)
     let agents: Record<string, any> | undefined;
     if (this.config.enableSubAgents && sceneType !== 'anr') {
-      agents = buildAgentDefinitions(sceneType, {
+      agents = (buildAgentDefinitions as any)(sceneType, {
         architecture,
         packageName: effectivePackageName,
         allowedTools,

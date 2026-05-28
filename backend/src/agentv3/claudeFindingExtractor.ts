@@ -3,7 +3,7 @@
 // This file is part of CameraPerf. See LICENSE for details.
 
 import { v4 as uuidv4 } from 'uuid';
-import type { Finding } from '../agent/types';
+import type { Finding } from './types';
 
 const SEVERITY_MAP: Record<string, Finding['severity']> = {
   CRITICAL: 'critical',

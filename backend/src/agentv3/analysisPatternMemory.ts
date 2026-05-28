@@ -21,7 +21,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import type { Finding } from '../agent/types';
+import type { Finding } from './types';
 import type {
   AnalysisPatternEntry,
   NegativePatternEntry,

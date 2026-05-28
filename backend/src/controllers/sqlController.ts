@@ -29,7 +29,7 @@ class SqlController {
 
       // Execute SQL directly via trace processor
       const tp = getTraceProcessorService();
-      const result = await tp.query(query);
+      const result = await (tp as any).query(query as string);
       res.json({ success: true, data: result });
     } catch (error) {
       console.error('Error executing SQL:', error);

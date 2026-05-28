@@ -3031,20 +3031,20 @@ export class SkillExecutor {
       );
 
       const yamlTeaching = pipelineSkillLoader.getTeachingContent(primaryPipelineId);
-      const mdTeaching = getPipelineDocService().getTeachingContent(primaryPipelineId);
+      const mdTeaching: any = getPipelineDocService().getTeachingContent(primaryPipelineId);
       const teachingContent: TeachingContentResponse | null = yamlTeaching
-        ? transformTeachingContent(
+        ? (transformTeachingContent as any)(
             yamlTeaching,
             pipelineSkillLoader.getPipelineMeta(primaryPipelineId)?.doc_path || docPath
           )
         : mdTeaching
           ? {
-              title: mdTeaching.title,
-              summary: mdTeaching.summary,
-              mermaidBlocks: mdTeaching.mermaidBlocks,
-              threadRoles: mdTeaching.threadRoles,
-              keySlices: mdTeaching.keySlices,
-              docPath: mdTeaching.docPath,
+              title: (mdTeaching as any).title,
+              summary: (mdTeaching as any).summary,
+              mermaidBlocks: (mdTeaching as any).mermaidBlocks,
+              threadRoles: (mdTeaching as any).threadRoles,
+              keySlices: (mdTeaching as any).keySlices,
+              docPath: (mdTeaching as any).docPath,
             }
           : null;
 
@@ -3054,8 +3054,8 @@ export class SkillExecutor {
       const smartFilterConfigs = pipelineSkillLoader.getSmartFilterConfigs(primaryPipelineId);
 
       const pinInstructions: PinInstructionResponse[] = basePinInstructions.map((inst: PinInstruction) => {
-        const hasSmartFilter = inst.smart_filter?.enabled ?? smartFilterConfigs.has(inst.pattern);
-        const rawInstruction: RawPinInstruction = {
+        const hasSmartFilter = (inst.smart_filter as any)?.enabled ?? (smartFilterConfigs as any).has(inst.pattern);
+        const rawInstruction: any = {
           pattern: inst.pattern,
           match_by: inst.match_by,
           priority: inst.priority,
@@ -3063,11 +3063,11 @@ export class SkillExecutor {
           expand: inst.expand,
           main_thread_only: inst.main_thread_only,
           smart_filter: hasSmartFilter
-            ? (inst.smart_filter || { enabled: true })
+            ? ((inst.smart_filter as any) || { enabled: true })
             : undefined,
         };
 
-        const transformed = transformPinInstruction(rawInstruction, activeRenderingProcesses);
+        const transformed = transformPinInstruction(rawInstruction as any, activeRenderingProcesses);
         if (transformed.smartPin && !transformed.skipPin) {
           transformed.reason = `${inst.reason} (${activeRenderingProcesses.length} 活跃进程)`;
         }

@@ -13,6 +13,7 @@ import { encodeQueryArgs, decodeQueryResult } from './traceProcessorProtobuf';
 import { traceProcessorConfig } from '../config';
 import logger from '../utils/logger';
 import { getPerfettoStdlibModules, groupModulesByNamespace } from './perfettoStdlibScanner';
+import { getPortPool } from './portPool';
 
 const IS_TEST_ENV = process.env.NODE_ENV === 'test' || process.env.JEST_WORKER_ID !== undefined;
 
