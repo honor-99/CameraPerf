@@ -3,97 +3,62 @@
 [English](README.md) | [中文](README.zh-CN.md)
 
 [![License: AGPL-3.0-or-later](https://img.shields.io/github/license/honor-99/CameraPerf)](LICENSE)
-[![Backend Regression Gate](https://github.com/honor-99/CameraPerf/actions/workflows/backend-agent-regression-gate.yml/badge.svg)](https://github.com/honor-99/CameraPerf/actions/workflows/backend-agent-regression-gate.yml)
-[![Node.js 24 LTS](https://img.shields.io/badge/Node.js-24%20LTS-brightgreen)](package.json)
+[![Node.js 24 LTS](https://img.shields.io/badge/Node.js-24%20LTS-brightgreen)](backend/package.json)
 [![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178c6)](backend/tsconfig.json)
-[![Docker Compose](https://img.shields.io/badge/Docker-Compose-2496ed)](docker-compose.yml)
-[![Perfetto UI fork](https://img.shields.io/badge/Perfetto-UI%20fork-4285f4)](https://perfetto.dev/)
-[![Sponsor](https://img.shields.io/badge/Sponsor-WeChat%20553000664-f66f6f)](#赞助)
+[![Docker Compose](https://img.shields.io/badge/Docker-Compose-2496ed)](docker-compose.hub.yml)
 
-> 基于 [Perfetto](https://perfetto.dev/) 的 AI 驱动 Android 性能分析平台。
+> 基于 [Perfetto](https://perfetto.dev/) 的 AI 驱动 Android Camera 性能分析后端。
 
-CameraPerf 在 Perfetto trace 之上增加了一层 AI 分析能力。你可以加载 trace，用自然语言提问，然后得到带 SQL 证据、Skill 结果、根因推理和优化建议的分析结论。
+CameraPerf 是 [SmartPerfetto](https://github.com/Gracker/SmartPerfetto) 的 Camera 专项衍生版本，专注于 Android Camera 预览、录像和多路输出场景的性能分析。项目保留了 Skill 引擎、trace_processor_shell 通信层和 AI 分析运行时，移除了所有非 Camera 分析域。纯后端架构，通过 REST API 和 SSE 对外提供服务。
 
-项目已经开源，当前处于活跃开发阶段。UI、后端运行时和 Skill 系统已经可用，但公开 API 和内部合约仍可能继续调整。
+## 分析范围
+
+| 问题域 | 分析能力 |
+|--------|----------|
+| **预览卡顿** | 丢帧、VSync 对齐、Buffer stuffing |
+| **录像丢帧** | 编码器背压、发热降频、I/O 压力 |
+| **多路输出背压** | 并发预览 + 录像 + 分析管线竞争 |
+| **发热降频** | DVFS 限频、CPU 集群迁移、GPU 频率塌陷 |
+| **Camera 管线延迟** | Release fence 延迟、Sensor 触发对齐、Binder IPC 开销 |
 
 ## 先配置 AI Provider
 
-CameraPerf 使用 Claude Agent SDK。如果你是在 Claude Code 已经能正常工作的本机上运行，SDK 可以复用 Claude Code 的本地认证/配置，不需要在 `.env` 里写 API key。这既包括 Claude Code 官方订阅登录，也包括 Claude Code 已经配置好的第三方模型 base URL + API key。
+CameraPerf 使用 Claude Agent SDK。如果你是在 Claude Code 已经能正常工作的本机上运行，SDK 可以复用 Claude Code 的本地认证/配置，不需要在 `.env` 里写 API key。
 
 其他情况按运行方式选择配置位置：
 
 | 运行方式 | 推荐凭证位置 | 说明 |
 |----------|--------------|------|
-| 本地源码运行，且 Claude Code 已经能用 | 不需要 `.env` | 如果这个终端里 `claude` 已经能正常写代码，直接运行 `./start.sh` |
+| 本地源码运行，且 Claude Code 已经能用 | 不需要 `.env` | 直接运行后端即可 |
 | 本地源码运行，使用 API key 或代理 | `backend/.env` | 用 `cp backend/.env.example backend/.env` 创建 |
-| Docker Hub 镜像 | 仓库根目录的 `.env` | 用 `cp backend/.env.example .env` 创建；Docker 容器看不到宿主机的 Claude Code 登录态 |
+| Docker Hub 镜像 | 仓库根目录的 `.env` | 用 `cp backend/.env.example .env` 创建；容器看不到宿主机的 Claude Code 登录态 |
 | 从源码构建 Docker 镜像 | `backend/.env` | `docker-compose.yml` 会读取这个文件 |
-
-Perfetto UI 的 AI Assistant 设置面板里有一个 `Backend API Key` 字段。它只对应 `CAMERAPERF_API_KEY`，用于保护 CameraPerf 后端接口，不是填写 Anthropic、OpenAI、DeepSeek、Kimi、MiMo、Qwen、GLM、Ollama 或其他模型厂商 key 的地方。
 
 如果直连 Anthropic API，最小配置是：
 
 ```env
-ANTHROPIC_API_KEY=sk-ant-your-key
+ANTHROPIC_API_KEY=***
 ```
 
-如果接入 OpenAI、Gemini、DeepSeek、Kimi、MiMo、Qwen、GLM、Ollama 或其他第三方模型，推荐先用 one-api/new-api/LiteLLM 或自己的网关暴露 Anthropic 兼容接口，然后配置：
+如果接入 OpenAI、Gemini、DeepSeek 或其他第三方模型，推荐先通过 one-api/new-api/LiteLLM 暴露 Anthropic 兼容接口：
 
 ```env
 ANTHROPIC_BASE_URL=http://localhost:3000
-ANTHROPIC_API_KEY=sk-proxy-or-provider-token
+ANTHROPIC_API_KEY=sk-pro...oken
 CLAUDE_MODEL=your-main-model
 CLAUDE_LIGHT_MODEL=your-light-model
 ```
 
-CameraPerf 默认用简体中文输出 AI 回答、流式进度和生成的报告。如果主要使用者是英文用户，可以配置：
+改完 env 文件后需要重启后端。Docker 运行用 `docker compose -f docker-compose.hub.yml restart`；本地运行重启后端即可。
 
-```env
-CAMERAPERF_OUTPUT_LANGUAGE=en
-```
-
-改完 env 文件后需要启动或重启后端。Docker 运行用 `docker compose -f docker-compose.hub.yml up -d` 或 `docker compose -f docker-compose.hub.yml restart`；本地源码运行用 `./start.sh`，如果后端已经在跑则用 `./scripts/restart-backend.sh`。显式 CameraPerf env/proxy 凭证可以打开 [http://localhost:3000/health](http://localhost:3000/health) 确认 provider 是否生效；本地 Claude Code 路径则以同一终端里 `claude` 能正常请求为准，第一次 AI 分析会走 SDK 的 Claude Code auth/config 路径。
-
-## Perfetto 参考资源
-
-| 资源 | 英文 | 中文 |
-|------|------|------|
-| Android Performance Blog | [androidperformance.com/en](https://www.androidperformance.com/en) | [androidperformance.com](https://www.androidperformance.com/) |
-| Perfetto 官方文档 | [perfetto.dev/docs](https://perfetto.dev/docs/) | [gugu-perf.github.io/perfetto-docs-zh-cn](https://gugu-perf.github.io/perfetto-docs-zh-cn/) |
-
-## 项目做什么
-
-- 分析 Android Perfetto trace 中的滑动卡顿、启动、ANR、交互延迟、内存、游戏和渲染管线问题。
-- 保留 Perfetto 的时间线和 SQL 能力，并在 Perfetto UI 里增加 AI Assistant 面板。
-- 通过 TypeScript 后端编排 Agent 流程、查询 `trace_processor_shell`、调用 YAML Skill，并把结果实时流式传给浏览器。
-- 支持 Anthropic 直连，也支持通过 Anthropic 兼容 API 代理接入其他具备 tool/function calling 能力的大模型，包括像小米 MiMo 这类提供 OpenAI 兼容或 Anthropic 兼容接口的服务。
-- 内置 160+ 个 YAML Skill/配置文件和多场景分析策略，用于 Android 性能排查。
-
-## 技术栈
-
-| 模块 | 技术 |
-|------|------|
-| 前端 | Fork 后的 Perfetto UI，内置 `com.camerapref.AIAssistant` 插件 |
-| 后端 | Node.js 24 LTS、TypeScript strict mode、Express |
-| Agent 运行时 | Claude Agent SDK、MCP 工具、场景策略、Verifier、SSE 流式输出 |
-| Trace 引擎 | Perfetto `trace_processor_shell`，通过 HTTP RPC 调用 |
-| 分析逻辑 | `backend/skills/` 下的 YAML Skill，`backend/strategies/` 下的 Markdown 策略 |
-| 存储 | 本地上传文件、Session 日志、报告、运行时学习文件 |
-| 测试 | Jest、Skill 校验、Strategy 校验、6 条 canonical trace 回归 |
-| 部署 | Docker Compose 或本地开发脚本 |
-
-## 使用者
+## 快速开始
 
 ### Docker 运行（推荐）
 
-只想把 CameraPerf 跑起来时，推荐使用这个方式。你只需要 Docker Desktop/Engine，并在 `.env` 里配置大模型凭证；不需要安装 Node.js，不需要 C++ 工具链，也不需要初始化 `perfetto/` submodule。Docker Hub 镜像每天从 `main` 自动发布，镜像内已经包含后端、预构建 Perfetto UI 和固定版本的 `trace_processor_shell`，也能避开本地首次启动时访问 Google artifact bucket 失败的问题。
-
-容器在没有本地 `.env` 文件时也能启动，用于 health/UI smoke check；真正执行 AI 分析需要配置 `ANTHROPIC_API_KEY`，或配置 `ANTHROPIC_BASE_URL` 加 `ANTHROPIC_API_KEY`。
-
-Windows 用户使用 Docker Desktop，并启用 WSL2 backend。发布的是 Linux container 镜像，由 Docker Desktop 承载运行；不需要单独编译 Windows 版镜像。
+只需要 Docker Desktop/Engine，并在 `.env` 里配置大模型凭证；不需要安装 Node.js，不需要 C++ 工具链。
 
 ```bash
-git clone https://github.com/honor-99/CameraPerf.git
+git clone git@github.com:honor-99/CameraPerf.git
 cd CameraPerf
 cp backend/.env.example .env
 # 编辑 .env，设置 ANTHROPIC_API_KEY，或为代理设置 ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY
@@ -101,7 +66,6 @@ docker compose -f docker-compose.hub.yml pull
 docker compose -f docker-compose.hub.yml up -d
 ```
 
-- 前端：[http://localhost:10000](http://localhost:10000)
 - 后端健康检查：[http://localhost:3000/health](http://localhost:3000/health)
 
 停止容器：
@@ -114,276 +78,178 @@ docker compose -f docker-compose.hub.yml down
 
 ### 本地脚本运行
 
-如果你希望直接从源码 checkout 启动，使用这个方式。前置条件：**Node.js 24 LTS**、`curl`、`lsof`、`pkill`，以及 Claude Code 登录态或大模型凭证。Windows 源码开发请使用 [WSL2](https://learn.microsoft.com/zh-cn/windows/wsl/install)，不要使用原生 Windows shell。
-
-仓库已经带上 `.nvmrc` 和 `.node-version`，npm 也开启了 `engine-strict=true`。`./start.sh`、`./scripts/start-dev.sh` 和 `./scripts/restart-backend.sh` 会优先通过 nvm 或 fnm 自动切到 Node 24。如果后端依赖曾经用其他 Node ABI 安装过，脚本会在启动前自动重装 `backend/node_modules`，避免 `better-sqlite3` 这类 native module 在 Node 20/24/25 之间混用。
-
-macOS 用户如果看到 `trace_processor_shell failed the --version smoke test`、`cannot be opened because the developer cannot be verified` 或终端里只显示 `killed`，通常是系统安全策略拦截了下载的 `trace_processor_shell`。打开 **系统设置 → 隐私与安全性 → 安全性**，对 `trace_processor_shell` 点 **仍要打开 / Allow Anyway**，然后重新运行 `./start.sh` 并在弹窗里选择 **打开**。如果你确认 binary 来源可信，也可以用命令移除隔离属性：
+前置条件：**Node.js 24 LTS**。Windows 请使用 WSL2。
 
 ```bash
-xattr -dr com.apple.quarantine /absolute/path/to/trace_processor_shell
-chmod +x /absolute/path/to/trace_processor_shell
-```
-
-```bash
-git clone https://github.com/honor-99/CameraPerf.git
+git clone git@github.com:honor-99/CameraPerf.git
 cd CameraPerf
 
 # 方式 A：如果这个终端里的 Claude Code 已经能用，不需要 .env。
-claude
-
 # 方式 B：显式配置 API key 或 Anthropic 兼容代理。
 cp backend/.env.example backend/.env
-# 编辑 backend/.env，设置 ANTHROPIC_API_KEY（直连）或
-# ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY（API 代理）
+# 编辑 backend/.env，设置 ANTHROPIC_API_KEY
 
-./start.sh
+# 启动后端
+cd backend && npm run dev
 ```
 
-仓库内置了预构建 Perfetto UI（`frontend/` 目录），所以本地脚本方式也不需要初始化 submodule，不需要等待 Perfetto UI 长时间编译。
+## API 接入
 
-## 开发者
+后端通过 REST 和 SSE 对外提供服务：
 
-### 运行脚本
+| 方法 | 路径 | 用途 |
+|------|------|------|
+| `POST` | `/api/agent/v1/analyze` | 启动分析 |
+| `GET` | `/api/agent/v1/:sessionId/stream` | 订阅 SSE 进度流 |
+| `GET` | `/api/agent/v1/:sessionId/status` | 查询分析状态 |
+| `POST` | `/api/agent/v1/:sessionId/respond` | 继续多轮会话 |
+| `POST` | `/api/agent/v1/resume` | 恢复已有 session |
+| `GET` | `/api/agent/v1/:sessionId/report` | 获取分析报告 |
+| `POST` | `/api/sql/query` | 直接执行 SQL 查询 |
+| `POST` | `/api/trace/:traceId/analyze/*` | 分领域分析端点 |
 
-| 脚本 | 使用场景 |
-|------|---------|
-| `./start.sh` | ✅ **默认推荐** — 日常使用、修改后端/策略/Skill |
-| `./scripts/start-dev.sh` | 修改 AI 插件 UI（`ai_panel.ts`、`styles.scss` 等）时使用，需要 `perfetto/` submodule |
+如果后端不只在本机使用，建议设置 `CAMERAPERF_API_KEY`，受保护接口需带 `Authorization: Bearer ***`。
 
-### 源码构建 Docker 镜像
+## 架构
 
-只有测试 Docker 改动或构建未发布的本地代码时，才需要从源码构建镜像：
-
-```bash
-cp backend/.env.example backend/.env
-docker compose up --build
+```
+Trace (.perfetto-trace)
+        │
+        ▼
+trace_processor_shell  ──  SQL queries (HTTP RPC, 9100-9900)
+        │
+        ▼
+Skill Engine (YAML DSL)
+  ├── atomic/{frame,vsync,fence,...}.skill.yaml     (11 个)
+  ├── composite/{cpu,gpu,thermal,...}.skill.yaml    (17 个)
+  ├── modules/{hardware,kernel,framework}/          (10 个)
+  ├── deep/                                         (2 个)
+  └── pipelines/                                    (1 个)
+        │
+        ▼
+Claude Agent SDK  ──  Analysis + report generation (SSE)
 ```
 
-源码构建会使用仓库内提交的 `frontend/` 预构建包，不会重新构建 `perfetto/` submodule。
+## 技术栈
 
-### 前端插件开发（修改 AI 面板 UI）
+| 模块 | 技术 |
+|------|------|
+| 后端 | Node.js 24 LTS、TypeScript strict mode、Express |
+| Agent 运行时 | Claude Agent SDK、MCP 工具、场景路由、Verifier、SSE 流式 |
+| Trace 引擎 | Perfetto `trace_processor_shell`，通过 HTTP RPC 调用 |
+| Skill 引擎 | `backend/skills/` 下 41 个 YAML Skill |
+| 策略系统 | `backend/strategies/` 下 20 个 Markdown 策略和模板 |
+| 测试 | Jest、Skill 校验、Strategy 校验、canonical trace 回归 |
 
-如果需要修改 AI Assistant 插件的前端代码：
+## 目录结构
 
-```bash
-# 一次性：初始化 perfetto submodule
-git submodule update --init --recursive
-
-# 启动（保存文件自动重编译）
-./scripts/start-dev.sh
+```
+CameraPerf/
+├── backend/
+│   ├── src/agentv3/        # AI 运行时：场景路由、MCP 工具、Verifier
+│   ├── src/services/       # Trace processor、Skill、Report、Session
+│   ├── src/routes/         # REST API 路由
+│   ├── src/controllers/    # 控制器
+│   ├── skills/             # 41 个 YAML 分析 Skill
+│   ├── strategies/         # 20 个场景策略和 Prompt 模板
+│   ├── data/               # Perfetto SQL 索引缓存
+│   └── tests/              # 单元测试和回归测试
+├── docs/                   # 架构、API、Skill 系统文档
+├── scripts/                # 开发和重启脚本
+└── test-traces/            # 测试用 canonical trace 文件
 ```
 
-在浏览器中确认修改效果后，更新预编译产物并提交：
+## 保留资产（来自 SmartPerfetto）
 
-```bash
-./scripts/update-frontend.sh
-git add frontend/
-git commit -m "chore(frontend): update prebuilt"
-```
+- **41 个 Skill**：11 atomic（frame/vsync/fence）+ 17 composite（cpu/gpu/thermal/binder）+ 10 modules（hardware/kernel/framework）+ 2 deep + 1 pipeline
+- **20 个策略**：场景策略 + 知识模板 + Prompt 模板
+- **Skill 引擎**：完整的 YAML DSL 执行运行时
+- **trace_processor_shell**：通信层 + SQL 知识库
+- **Agent v3 运行时**：Claude Agent SDK 集成
+
+## 已移除
+
+- Agent v1/v2 架构
+- Frontend UI（CameraPerf 是纯 API 后端）
+- Rust flamegraph 分析器
+- 非 Camera 领域知识：滑动、启动、ANR、Flutter、Compose、WebView、游戏引擎
 
 ## 进阶 Provider 配置
 
-前面的快速配置已经说明凭证写在哪里。本地 Claude Code 已经能用的用户通常可以完全跳过 CameraPerf env 文件，即使 Claude Code 自己接的是第三方模型。直连 Anthropic API 只需要：
+### 轮次预算
+
+CameraPerf 区分 quick 和 full 两套轮次预算：
 
 ```bash
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
+CLAUDE_QUICK_MAX_TURNS=10  # quick 模式默认值
+CLAUDE_MAX_TURNS=60        # full 模式默认值
 ```
 
-如果要接入第三方大模型，可以使用一个接受 Anthropic Messages 请求、再转发到目标厂商的 API 代理：
-
-```bash
-ANTHROPIC_BASE_URL=http://localhost:3000
-ANTHROPIC_API_KEY=sk-proxy-xxx
-CLAUDE_MODEL=your-main-model
-CLAUDE_LIGHT_MODEL=your-light-model
-```
-
-常见代理包括 [one-api](https://github.com/songquanpeng/one-api)、[new-api](https://github.com/Calcium-Ion/new-api) 和 [LiteLLM](https://github.com/BerriAI/litellm)。选择的模型需要稳定支持流式输出和 tool/function calling。对于小米 MiMo，如果你拿到的是 OpenAI 兼容接口，推荐先在代理里接入 MiMo，再把 `ANTHROPIC_BASE_URL` 指向代理暴露出来的 Anthropic 兼容地址，并把 `CLAUDE_MODEL` 设成代理映射后的 MiMo 模型名；如果你使用的 MiMo 网关本身已经兼容 Anthropic Messages API，也可以直接把 `ANTHROPIC_BASE_URL` 指向那个地址。完整厂商示例和调优参数见 [backend/.env.example](backend/.env.example)。
-
-> 注意：Claude Code 自己的本地认证/配置是 Claude Agent SDK 的原生认证路径，不管它背后是 Anthropic 订阅，还是 Claude Code 里已经配置好的第三方 endpoint。Codex CLI、Gemini CLI、OpenCode 等其他工具管理的是各自独立的配置和登录态；CameraPerf 不会自动读取这些凭证。只有当目标 provider 不能通过本机 Claude Code 直接使用，或你希望 CameraPerf 显式接管代理配置时，才需要在 `.env` 里配置 `ANTHROPIC_BASE_URL`。
-
-前端设置弹窗只保存后端地址和可选的 `CAMERAPERF_API_KEY` 后端鉴权 token。大模型 provider 凭证要么来自 Claude Code 本地认证/配置，要么来自上面说明的后端或 Docker env 文件。
-
-如果本地 Claude Code 路径不可用、额度用尽，或你希望 CameraPerf 使用一个不同于 Claude Code 的 provider，可以显式使用代理方式：
-
-```bash
-ANTHROPIC_BASE_URL=http://localhost:3000
-ANTHROPIC_API_KEY=sk-proxy-xxx
-CLAUDE_MODEL=your-provider-main-model
-CLAUDE_LIGHT_MODEL=your-provider-light-model
-```
-
-修改配置后需要重启后端。`GET /health` 会返回 `aiEngine.providerMode` 和 `aiEngine.diagnostics`，用于确认当前是 Anthropic 直连、AWS Bedrock 还是 Anthropic 兼容代理。
+如果使用较慢模型，或某些 trace 需要更多工具调用轮次，可以调高这些值。修改 `.env` 后需要重启后端。
 
 ### 输出语言
 
-面向用户的输出默认是简体中文。如果希望 AI 回答、流式进度文案和生成的 Agent-Driven 报告都使用英文，配置：
+面向用户的输出默认是简体中文。如果希望 AI 回答、流式进度和报告使用英文：
 
 ```bash
 CAMERAPERF_OUTPUT_LANGUAGE=en
 ```
 
-可用值包括 `zh-CN` 和 `en`。修改 `.env` 后需要重启 backend。
-
-### 轮次预算
-
-CameraPerf 区分 fast 和 full 两套轮次预算：
+## 运行检查
 
 ```bash
-CLAUDE_QUICK_MAX_TURNS=10  # fast 模式默认值
-CLAUDE_MAX_TURNS=60        # full 模式默认值
-```
+# 类型检查
+cd backend && npm run typecheck
 
-如果使用较慢模型，或某些 trace 需要更多工具调用轮次，可以调高这些值。总 safety timeout 会随轮次预算放大：full 模式每轮使用 `CLAUDE_FULL_PER_TURN_MS`，fast 模式每轮使用 `CLAUDE_QUICK_PER_TURN_MS`。修改 `.env` 后需要重启 backend。
+# Skill 校验
+cd backend && npm run validate:skills
 
-## 基本用法
+# Strategy 校验
+cd backend && npm run validate:strategies
 
-1. 打开 [http://localhost:10000](http://localhost:10000)。
-2. 加载 Perfetto trace 文件（`.pftrace` 或 `.perfetto-trace`）。
-3. 打开 AI Assistant 面板。
-4. 输入问题，例如：
-   - `分析滑动卡顿`
-   - `启动为什么慢？`
-   - `CPU 调度有没有问题？`
-   - `帮我看看这个 ANR`
+# 核心测试
+cd backend && npm run test:core
 
-CameraPerf 最适合分析包含 FrameTimeline 数据的 Android 12+ trace。建议采集的 atrace category：
+# 场景回归测试
+cd backend && npm run test:scene-trace-regression
 
-| 场景 | 最低 category | 建议额外添加 |
-|------|---------------|--------------|
-| 滑动 | `gfx`, `view`, `input`, `sched` | `binder_driver`, `freq`, `disk` |
-| 启动 | `am`, `dalvik`, `wm`, `sched` | `binder_driver`, `freq`, `disk` |
-| ANR | `am`, `wm`, `sched`, `binder_driver` | `dalvik`, `disk` |
-
-## CLI 用法
-
-CameraPerf 同时提供终端 CLI，可以不打开浏览器 UI 直接分析 trace。CLI 复用和 Web 端相同的 agentv3 运行时，并把本地 session、transcript 和报告写到 `~/.camerapref/`。
-
-```bash
-# 需要 Node.js 24 LTS
-npm install -g @camerapref/cli
-
-# 分析 trace，并继续追问或打开报告。
-smp -f trace.pftrace -p "分析滑动卡顿"
-smp resume <sessionId> --query "为什么 RenderThread 这么慢？"
-smp list
-smp report <sessionId> --open
-
-# 或者直接进入 Claude-Code 风格的交互 REPL。
-smp
-```
-
-第一次分析时，如果本机还没有 `trace_processor_shell`，CLI 会自动下载固定版本。若网络无法访问 Google artifact bucket，可以设置 `TRACE_PROCESSOR_PATH=/path/to/trace_processor_shell` 使用本机已有 binary，或设置 `TRACE_PROCESSOR_DOWNLOAD_BASE` / `TRACE_PROCESSOR_DOWNLOAD_URL` 指向可信镜像；下载内容仍会按固定 SHA256 校验。`camerapref` 仍保留为长命令名；源码 checkout 里的脚本只用于维护者调试 CLI。完整命令、REPL slash 命令、存储布局和 resume 语义见 [CLI 参考](docs/reference/cli.md)。
-
-## API 接入
-
-浏览器 UI 通过 REST 和 SSE 与后端通信。如果你要自建 UI 或自动化流程，可以从这些接口开始：
-
-| 方法 | 路径 | 用途 |
-|------|------|------|
-| `POST` | `/api/agent/v1/analyze` | 启动分析 |
-| `GET` | `/api/agent/v1/:sessionId/stream` | 订阅 SSE 进度和 answer token |
-| `GET` | `/api/agent/v1/:sessionId/status` | 查询分析状态 |
-| `POST` | `/api/agent/v1/:sessionId/respond` | 继续多轮会话 |
-| `POST` | `/api/agent/v1/resume` | 恢复已有 session 的 SDK 上下文 |
-| `POST` | `/api/agent/v1/scene-reconstruct` | 启动场景重建 |
-| `GET` | `/api/agent/v1/:sessionId/report` | 获取生成的分析报告 |
-
-如果后端不只在本机使用，建议在 `backend/.env` 设置 `CAMERAPERF_API_KEY`。开启后，受保护接口需要带上 `Authorization: Bearer <token>`。
-
-## 架构
-
-```text
-Frontend (Perfetto UI @ :10000)
-  └─ CameraPerf AI Assistant plugin
-       └─ SSE / HTTP
-Backend (Express @ :3000)
-  ├─ agentv3 runtime: 场景路由、Prompt、MCP 工具、Verifier
-  ├─ Skill engine: YAML 分析管线
-  ├─ Session/report/log 服务
-  └─ trace_processor_shell 进程池（HTTP RPC, 9100-9900）
-```
-
-目录结构：
-
-```text
-CameraPerf/
-├── backend/
-│   ├── src/agentv3/        # 主 AI 运行时
-│   ├── src/services/       # Trace processor、Skill、Report、Session 服务
-│   ├── skills/             # YAML 分析 Skill 和配置
-│   ├── strategies/         # 场景策略和 Prompt 模板
-│   └── tests/              # Skill eval 和回归测试
-├── docs/                   # 架构、MCP、Skill、渲染管线文档
-├── scripts/                # 开发和重启脚本
-└── perfetto/               # Fork 后的 Perfetto UI submodule
-```
-
-## 开发
-
-常用命令：
-
-```bash
-./scripts/start-dev.sh
-./scripts/restart-backend.sh
-
-# 提 PR 前运行：包含质量检查、构建/类型检查、Skill/Strategy 校验、
-# 核心单测和 6 条 canonical trace 回归。
+# 完整 PR 检查
 npm run verify:pr
-
-cd backend
-npm run build
-npm run cli:build-run -- --help
-npm run test:scene-trace-regression
-npm run validate:skills
-npm run validate:strategies
-npm run test:core
 ```
+
+## 开发指南
 
 必须满足的检查：
 
 - 提 PR 前：在仓库根目录运行 `npm run verify:pr`
-- 代码改动按类别：
-  - Contract / 纯类型（`backend/src/types/sparkContracts.ts` 等）：`cd backend && npx tsc --noEmit` + 相关 `__tests__/sparkContracts.test.ts`
-  - CRUD-only service（仅文件 IO，未触 agent 路径）：该 service 的单测
-  - 触 mcp / memory / report / agent runtime：`cd backend && npm run test:scene-trace-regression`
-- Skill YAML 改动：`npm run validate:skills` 加场景回归
-- Strategy/template Markdown 改动：`npm run validate:strategies` 加场景回归
-- 构建或类型问题：`cd backend && npm run typecheck`
+- Contract / 纯类型改动：`cd backend && npx tsc --noEmit` + 相关单测
+- Skill YAML 改动：`npm run validate:skills` + 场景回归
+- Strategy/template Markdown 改动：`npm run validate:strategies` + 场景回归
 
-不要在 TypeScript 里硬编码 Prompt 内容。场景逻辑应放在 `backend/strategies/*.strategy.md`，可复用内容放在 `*.template.md`。
+**不要在 TypeScript 里硬编码 Prompt 内容。** 场景逻辑应放在 `backend/strategies/*.strategy.md`，可复用内容放在 `*.template.md`。
 
 ## 文档
 
 - [文档中心](docs/README.md)
-- [快速开始](docs/getting-started/quick-start.md)
 - [架构总览](docs/architecture/overview.md)
 - [API 参考](docs/reference/api.md)
-- [CLI 参考](docs/reference/cli.md)
-- [MCP 工具参考](docs/reference/mcp-tools.md)
 - [Skill 系统指南](docs/reference/skill-system.md)
-- [数据合约](backend/docs/DATA_CONTRACT_DESIGN.md)
-- [渲染管线参考](docs/rendering_pipelines/)
-- [安全策略](SECURITY.md)
+- [MCP 工具参考](docs/reference/mcp-tools.md)
 
 ## 贡献
 
 欢迎贡献。比较适合开始的方向：
 
-- 用一条小 trace 复现具体性能问题，并写清楚问题和期望输出
 - 新增或改进 YAML Skill
 - 改进场景策略和输出模板
-- 修复 Perfetto 插件里的 UI 问题
 - 为已知 trace 场景补充回归测试
 
 提交 PR 前：
 
-1. 阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。
-2. Fork 仓库，并基于 `main` 创建分支。
-3. 保持改动范围清晰，并写明测试计划。
-4. 运行上方对应检查。
-5. 遵守 [行为准则](CODE_OF_CONDUCT.md)。
+1. 阅读 CONTRIBUTING.md
+2. Fork 仓库，并基于 `master` 创建分支
+3. 保持改动范围清晰，并写明测试计划
+4. 运行上方对应检查
 
 ## 联系
 
@@ -391,16 +257,6 @@ npm run test:core
 - 安全问题：[GitHub private advisory](https://github.com/honor-99/CameraPerf/security/advisories/new) 或 `qwerhyc@163.com`
 - 合作、商业支持、赞助：微信 `553000664`
 
-## 赞助
-
-开源项目常见的赞助方式包括 GitHub Sponsors、OpenCollective、Buy Me a Coffee、爱发电、微信/支付宝收款码，以及企业商业支持或商业授权。
-
-CameraPerf 目前还没有公开支付页面。如果你想赞助、捐赠、试用企业支持或咨询商业授权，请通过微信联系维护者：`553000664`。
-
 ## 许可证
 
-CameraPerf 核心代码使用 [AGPL-3.0-or-later](LICENSE)。
-
-`perfetto/` submodule 是 [Google Perfetto](https://github.com/google/perfetto) 的 fork，继续使用 [Apache-2.0](perfetto/LICENSE)。
-
-如需不受 AGPL 义务约束的商业授权，请通过微信 `553000664` 联系维护者。
+CameraPerf 核心代码使用 [AGPL-3.0-or-later](LICENSE)。如需不受 AGPL 义务约束的商业授权，请通过微信 `553000664` 联系维护者。

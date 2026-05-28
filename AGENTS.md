@@ -26,7 +26,7 @@ Backend (Express @ :3000) ─── trace_processor_shell
 
 **Core Concepts:**
 - **Runtime: agentv3** — Claude Agent SDK 编排 (MCP tools)
-- **Skill 引擎**: YAML DSL, 43 个 Camera 专用 Skill（Atomic/Composite/Config/Module/Fragment）
+- **Skill 引擎**: YAML DSL, 41 个 Camera 专用 Skill（Atomic/Composite/Config/Module/Camera）
 - **知识领域**: Camera 预览、录像、多路输出背压、发热降频、帧/Fence/VSync 分析
 - SSE 实时流式输出
 
@@ -54,6 +54,6 @@ CAMERAPERF_API_KEY=xxx              # Optional, bearer token auth
 
 ## Skill Routing
 
-- Camera 性能分析 → invoke_skill (自动匹配 43 个 Camera Skill)
+- Camera 性能分析 → invoke_skill (自动匹配 41 个 Camera Skill)
 - SQL 查询 → execute_sql
 - Trace 查询 → trace_processor_shell
