@@ -20,7 +20,7 @@ Build: cd backend && npm run build
 Backend (Express @ :3000) ─── trace_processor_shell
          │
     ┌────┴────┐
-    │ agentv3 │  Skill Engine (43 Camera Skills)
+    │ agentv3 │  Skill Engine (41 Camera Skills)
     └─────────┘  MCP tools (SQL/Skill/Perfetto)
 ```
 

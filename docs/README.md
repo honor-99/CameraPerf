@@ -26,7 +26,6 @@ docs/
 ├── operations/                       # 运行与故障排查
 ├── rendering_pipelines/              # Android 渲染管线知识库，运行时会读取
 ├── product/                          # 项目定位与外部介绍
-├── archive/                          # 历史方案、spike、决策记录
 └── images/                           # 文档图片资源
 ```
 
@@ -35,8 +34,6 @@ docs/
 - 当前系统入口与运行方式以 [快速开始](getting-started/quick-start.md) 和 [本地开发](development/local-development.md) 为准。
 - 当前后端 API 以 [API 参考](reference/api.md) 为准。
 - Skill DSL 与分层结果以 [Skill 系统指南](reference/skill-system.md) 为准。
-- DataEnvelope 与前后端数据 contract 以 [Data Contract](../backend/docs/DATA_CONTRACT_DESIGN.md) 为准。
-- `archive/` 下文档只保留历史背景，不代表当前推荐实现。
 
 ## 运行时依赖的文档
 

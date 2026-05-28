@@ -2,7 +2,9 @@
 // Copyright (C) 2024-2026 Gracker (Chris)
 // This file is part of CameraPerf. See LICENSE for details.
 
-/** ConclusionContract stub — referenced by types/dataContract.ts */
 export interface ConclusionContract {
-  [key: string]: any;
+  traceId: string;
+  sessionId: string;
+  findings: string[];
+  hypothesis: string;
 }

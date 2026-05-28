@@ -20,7 +20,7 @@ Build: cd backend && npm run build
 Backend (Express @ :3000) ─── trace_processor_shell
          │
     ┌────┴────┐
-    │ agentv3 │  Skill Engine (43 Camera Skills)
+    │ agentv3 │  Skill Engine (41 Camera Skills)
     └─────────┘  MCP tools (SQL/Skill/Perfetto)
 ```
 
@@ -54,6 +54,6 @@ CAMERAPERF_API_KEY=xxx              # Optional, bearer token auth
 
 ## Skill Routing
 
-- Camera 性能分析 → invoke_skill (自动匹配 43 个 Camera Skill)
+- Camera 性能分析 → invoke_skill (自动匹配 41 个 Camera Skill)
 - SQL 查询 → execute_sql
 - Trace 查询 → trace_processor_shell
